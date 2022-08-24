@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace AdjustableVoltageSource
 
     public partial class MeasureScreen : Window, INotifyPropertyChanged
     {
+        public static SerialPort serialPort;
         private string _measuredValue;
         public string MeasuredValue
         {
@@ -32,14 +34,12 @@ namespace AdjustableVoltageSource
                 }
             }
         }
-        public MeasureScreen()
+        public MeasureScreen(SerialPort s)
         {
             InitializeComponent(); 
             Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
             DataContext = this;
-            //
-            // Initialisatie status connectToGround enz
-            //
+            serialPort = s;
         }
         private void CloseMeasureScreen(object sender, RoutedEventArgs e)
         {
@@ -47,15 +47,13 @@ namespace AdjustableVoltageSource
         }
         private void MeasureValue(object sender, RoutedEventArgs e)
         {
+			// TODO
             Debug.WriteLine(SelectMeasureFunction.SelectedItem.ToString());
             if (SelectMeasureFunction.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Measure current")
             {
-                //TODO
-                //Measure Current
                 MeasuredValue = 4 + "A";
             }                
-            //TODO
-            //Measure Current
+
             else
             {
                 MeasuredValue = 8 + "V";
@@ -63,6 +61,7 @@ namespace AdjustableVoltageSource
         }
         private Boolean isConnectedToBus(int i)
         {
+			// TODO
             return true;
         }
 

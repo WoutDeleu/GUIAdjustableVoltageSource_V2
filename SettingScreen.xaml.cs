@@ -36,14 +36,13 @@ namespace AdjustableVoltageSource
                 }
             }
         }
-        public SettingScreen()
-        {
+        public SettingScreen(SerialPort s)
+        {    
             InitializeComponent();
             BoardNumber = getBoardNumberArduino();
             Current_BoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
+            serialPort = s;
             DataContext = this;
-            serialPort = new SerialPort("COM10", 115200);
-            serialPort.Open();
         }
         private void CancelBoardNumber(object sender, RoutedEventArgs e)
         {
@@ -57,28 +56,22 @@ namespace AdjustableVoltageSource
             if (isValidBoardNumber(boardNumberStr))
             {
                 BoardNumber = Convert.ToInt32(boardNumberStr);
-
-                setBoardNumberArduino(BoardNumber);
+				// TODO
             }
             else
             {
                 Debug.WriteLine("Fault in fomrat input");
-                // TODO
                 // ... -> foutmelding
             }
         }
-        public void toggleLed()
-        {
-            Debug.WriteLine("ksetLed");
-            serialPort.WriteLine("kSetLed");
-        }
         public void setBoardNumberArduino(int boardNumber)
         {
-            toggleLed();
+			// TODO
         }
 
         private int getBoardNumberArduino()
         {
+			// TODO
             int boardNumber;
             
             boardNumber = 0;

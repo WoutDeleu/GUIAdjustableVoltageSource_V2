@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.IO.Ports;
+using SerialCom = SerialCommunication;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text;  
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +19,7 @@ using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Diagnostics;
 
+
 namespace AdjustableVoltageSource
 {
     /// <summary>
@@ -23,6 +27,7 @@ namespace AdjustableVoltageSource
     /// </summary>
     public partial class MainWindow : Window
     {
+        SerialPort serialPort;
         public bool ConnectedToGround_1 { get; set; }
         public bool ConnectedToGround_2 { get; set; }
         public bool ConnectedToGround_3 { get; set; }
@@ -221,88 +226,76 @@ namespace AdjustableVoltageSource
             if(updatedGnd) updatedGnd = true;
         }
 
-
         private bool updatedGnd { get; set; }
         private bool updatedBus { get; set; }
-        private int voltage { get; set; }
+        private double voltage { get; set; }
 
-        public MainWindow()
-        {
-            InitializeComponent();
-            DataContext = this;
-            // TODO
-            // Arduino Setup methode?
-        }
+
         private void OpenSettingScreen(object sender, RoutedEventArgs e)
         {
-            SettingScreen settings = new SettingScreen();
+            SettingScreen settings = new SettingScreen(serialPort);
             settings.ShowDialog();
         }
         private void OpenMeasureScreen(object sender, RoutedEventArgs e)
         {
-            MeasureScreen measureScreen = new MeasureScreen();
+            MeasureScreen measureScreen = new MeasureScreen(serialPort);
             measureScreen.ShowDialog();
         }
 
         private void PutVoltage(object sender, RoutedEventArgs e)
         { 
             e.Handled = true;
-            string voltagestr = VoltageTextBox.Text;
+            string voltagestr = VoltageTextBox.Text.Replace(".", ",");
             if (isValidVoltage(voltagestr))
             {
-                voltage = Convert.ToInt32(voltagestr);
+                voltage = Convert.ToDouble(voltagestr);
 
-                //TODO
-                // ConnectToBus initialiseren
-                //Send to arduino
-                // Debuggen statussen 
+                // TODO
+                try
+                {
+                    serialPort.Open();
+
+                    Debug.WriteLine((int)SerialCom.Functions.PUT_VOLTAGE + "," + voltage + ";");
+                    SerialCom.writeSerialPort( (int)SerialCom.Functions.PUT_VOLTAGE + "," + voltage + ";", serialPort);
+                    Debug.WriteLine("has sent");
+
+                    serialPort.Close();
+                }
+                catch (IOException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
 
                 updatedBus = true;
             }
+            else Debug.WriteLine("Invalid number");
         }
         private void Connect2Ground(object sender, RoutedEventArgs e)
         {
             if(!updatedGnd)
             {
-
                 //TODO
-                //Send to arduino
-                // Debuggen statussen printen
-
                 updatedGnd = true;
             }
         }
         
         private void ConnectToBus(object sender, RoutedEventArgs e)
         {
-            //TODO
-            //Send to arduino
-            // Debuggen statussen printen
-
+            // TODO
             updatedBus = true;
         }
-
+ 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            if (regex.IsMatch(e.Text))
-            {
-                if (Int32.Parse(e.Text) > 0 && Int32.Parse(e.Text) < 30)
-                {
-                    e.Handled = regex.IsMatch(e.Text);
-                }
-            }
-            else
-            {
-                e.Handled = false;
-            }
+            e.Handled = isValidVoltage(e.Text.Replace(".", ","));
         }
         private bool isValidVoltage(string s)
         {
-            Regex regex = new Regex("[^0-9]+");
-            if (regex.IsMatch(s))
+            double voltage;
+            bool isNumeric = double.TryParse(s, out voltage);
+            if (isNumeric)
             {
-                if (Int32.Parse(s) > 0 && Int32.Parse(s) < 30)
+                if (voltage > 0.0 && voltage < 30.0)
                 {
                     return true;
                 }
@@ -314,6 +307,32 @@ namespace AdjustableVoltageSource
             }
         }
         
+        public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = this;
 
+            serialPort = new SerialPort("COM5", 115200);
+            // SerialCom.initSerialPort(serialPort);
+        }
+
+        // Toggle led
+        public void test_serialport(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                serialPort.Open();
+                // SerialCom.openSerialPort(serialPort);
+
+                SerialCom.writeSerialPort("0;", serialPort);
+
+                serialPort.Close();
+                // SerialCom.openSerialPort(serialPort);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
     }
 }

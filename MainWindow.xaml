@@ -108,7 +108,8 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Separator Width="40" Background="Transparent"/>
                     <Label>Voltage:</Label>
-                    <TextBox Name="VoltageTextBox" PreviewTextInput="NumberValidationTextBox"  Background="Transparent" Width="30" Height="30"/>
+                    <TextBox Name="VoltageTextBox" Background="White" Width="30" Height="30"/>
+                    <!--> PreviewTextInput="NumberValidationTextBox"<!-->
                     <Label>V</Label>
                     <Separator Width="40" Background="Transparent"/>
                 </StackPanel>
@@ -116,5 +117,6 @@
             </StackPanel>
         </GroupBox>
         <Separator Height="15" Background="Transparent"/>
+        <Button Width="auto" Height="auto" Name="test" Click="test_serialport">Toggle Test-led</Button>
     </StackPanel>
 </Window>

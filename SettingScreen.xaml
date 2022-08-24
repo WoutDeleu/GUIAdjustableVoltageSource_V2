@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdjustableVoltageSource"
         mc:Ignorable="d"
-        Title="Settings" Height="auto" Width="auto" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Background="#FFADADAD">
+        Title="Settings" Height="auto" Width="auto" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Background="#FFE0E0E0">
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal">
             <Label>Current BoardNumber: </Label>
