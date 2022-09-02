@@ -20,7 +20,7 @@ namespace AdjustableVoltageSource
 
     public partial class MeasureScreen : Window, INotifyPropertyChanged
     {
-        public static SerialPort serialPort;
+        public static Tierce serialPort;
         private string _measuredValue;
         public string MeasuredValue
         {
@@ -34,7 +34,7 @@ namespace AdjustableVoltageSource
                 }
             }
         }
-        public MeasureScreen(SerialPort s)
+        public MeasureScreen(Tierce s)
         {
             InitializeComponent(); 
             Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));

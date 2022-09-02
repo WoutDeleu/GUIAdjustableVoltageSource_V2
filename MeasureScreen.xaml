@@ -6,6 +6,10 @@
         xmlns:local="clr-namespace:AdjustableVoltageSource"
         mc:Ignorable="d"
         Title="Measure" Height="auto" Width="auto" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Background="#FFE0E0E0">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CloseMeasureScreen"/>
+    </Window.CommandBindings>
     <Grid>
         <StackPanel Orientation="Vertical">
             <Separator Height="15" Background="Transparent"/>

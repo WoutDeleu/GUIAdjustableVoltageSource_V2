@@ -22,7 +22,7 @@ namespace AdjustableVoltageSource
     /// </summary>
     public partial class SettingScreen : Window, INotifyPropertyChanged
     {
-        public static SerialPort serialPort;
+        public static Tierce serialPort;
         private int _boardNumber;
         public int BoardNumber
         {
@@ -36,7 +36,7 @@ namespace AdjustableVoltageSource
                 }
             }
         }
-        public SettingScreen(SerialPort s)
+        public SettingScreen(Tierce s)
         {    
             InitializeComponent();
             BoardNumber = getBoardNumberArduino();
