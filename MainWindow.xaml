@@ -35,22 +35,22 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding ConnectedToGround_1}" Content="1" Checked="ConnectGnd1"  Unchecked="ConnectGnd1" />
-                        <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding ConnectedToGround_2}" Content="2" Checked="ConnectGnd2"  Unchecked="ConnectGnd2"/>
-                        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding ConnectedToGround_3}" Content="3" Checked="ConnectGnd3"  Unchecked="ConnectGnd3"/>
-                        <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding ConnectedToGround_4}" Content="4" Checked="ConnectGnd4"  Unchecked="ConnectGnd4"/>
-                        <CheckBox Grid.Row="4" Grid.Column="0" IsChecked="{Binding ConnectedToGround_5}" Content="5" Checked="ConnectGnd5"  Unchecked="ConnectGnd5"/>
-                        <CheckBox Grid.Row="5" Grid.Column="0" IsChecked="{Binding ConnectedToGround_6}" Content="6" Checked="ConnectGnd6"  Unchecked="ConnectGnd6"/>
-                        <CheckBox Grid.Row="6" Grid.Column="0" IsChecked="{Binding ConnectedToGround_7}" Content="7" Checked="ConnectGnd7"  Unchecked="ConnectGnd7"/>
-                        <CheckBox Grid.Row="7" Grid.Column="0" IsChecked="{Binding ConnectedToGround_8}" Content="8" Checked="ConnectGnd8"  Unchecked="ConnectGnd8"/>
-                        <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="{Binding ConnectedToGround_9}" Content="9" Checked="ConnectGnd9"  Unchecked="ConnectGnd9"/>
-                        <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="{Binding ConnectedToGround_10}" Content="10" Checked="ConnectGnd10"  Unchecked="ConnectGnd10"/>
-                        <CheckBox Grid.Row="2" Grid.Column="3" IsChecked="{Binding ConnectedToGround_11}" Content="11" Checked="ConnectGnd11"  Unchecked="ConnectGnd11"/>
-                        <CheckBox Grid.Row="3" Grid.Column="4" IsChecked="{Binding ConnectedToGround_12}" Content="12" Checked="ConnectGnd12"  Unchecked="ConnectGnd12"/>
-                        <CheckBox Grid.Row="4" Grid.Column="5" IsChecked="{Binding ConnectedToGround_13}" Content="13" Checked="ConnectGnd13"  Unchecked="ConnectGnd13"/>
-                        <CheckBox Grid.Row="5" Grid.Column="6" IsChecked="{Binding ConnectedToGround_14}" Content="14" Checked="ConnectGnd14"  Unchecked="ConnectGnd14"/>
-                        <CheckBox Grid.Row="6" Grid.Column="7" IsChecked="{Binding ConnectedToGround_15}" Content="15" Checked="ConnectGnd15"  Unchecked="ConnectGnd15"/>
-                        <CheckBox Grid.Row="7" Grid.Column="8" IsChecked="{Binding ConnectedToGround_16}" Content="16" Checked="ConnectGnd16"  Unchecked="ConnectBus16"/>
+                        <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding ConnectedToGround_1, Mode=TwoWay}" Content="1" Checked="ConnectGnd1"  Unchecked="ConnectGnd1" />
+                        <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding ConnectedToGround_2, Mode=TwoWay}" Content="2" Checked="ConnectGnd2"  Unchecked="ConnectGnd2"/>
+                        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding ConnectedToGround_3, Mode=TwoWay}" Content="3" Checked="ConnectGnd3"  Unchecked="ConnectGnd3"/>
+                        <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding ConnectedToGround_4, Mode=TwoWay}" Content="4" Checked="ConnectGnd4"  Unchecked="ConnectGnd4"/>
+                        <CheckBox Grid.Row="4" Grid.Column="0" IsChecked="{Binding ConnectedToGround_5, Mode=TwoWay}" Content="5" Checked="ConnectGnd5"  Unchecked="ConnectGnd5"/>
+                        <CheckBox Grid.Row="5" Grid.Column="0" IsChecked="{Binding ConnectedToGround_6, Mode=TwoWay}" Content="6" Checked="ConnectGnd6"  Unchecked="ConnectGnd6"/>
+                        <CheckBox Grid.Row="6" Grid.Column="0" IsChecked="{Binding ConnectedToGround_7, Mode=TwoWay}" Content="7" Checked="ConnectGnd7"  Unchecked="ConnectGnd7"/>
+                        <CheckBox Grid.Row="7" Grid.Column="0" IsChecked="{Binding ConnectedToGround_8, Mode=TwoWay}" Content="8" Checked="ConnectGnd8"  Unchecked="ConnectGnd8"/>
+                        <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="{Binding ConnectedToGround_9, Mode=TwoWay}" Content="9" Checked="ConnectGnd9"  Unchecked="ConnectGnd9"/>
+                        <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="{Binding ConnectedToGround_10, Mode=TwoWay}" Content="10" Checked="ConnectGnd10"  Unchecked="ConnectGnd10"/>
+                        <CheckBox Grid.Row="2" Grid.Column="3" IsChecked="{Binding ConnectedToGround_11, Mode=TwoWay}" Content="11" Checked="ConnectGnd11"  Unchecked="ConnectGnd11"/>
+                        <CheckBox Grid.Row="3" Grid.Column="4" IsChecked="{Binding ConnectedToGround_12, Mode=TwoWay}" Content="12" Checked="ConnectGnd12"  Unchecked="ConnectGnd12"/>
+                        <CheckBox Grid.Row="4" Grid.Column="5" IsChecked="{Binding ConnectedToGround_13, Mode=TwoWay}" Content="13" Checked="ConnectGnd13"  Unchecked="ConnectGnd13"/>
+                        <CheckBox Grid.Row="5" Grid.Column="6" IsChecked="{Binding ConnectedToGround_14, Mode=TwoWay}" Content="14" Checked="ConnectGnd14"  Unchecked="ConnectGnd14"/>
+                        <CheckBox Grid.Row="6" Grid.Column="7" IsChecked="{Binding ConnectedToGround_15, Mode=TwoWay}" Content="15" Checked="ConnectGnd15"  Unchecked="ConnectGnd15"/>
+                        <CheckBox Grid.Row="7" Grid.Column="8" IsChecked="{Binding ConnectedToGround_16, Mode=TwoWay}" Content="16" Checked="ConnectGnd16"  Unchecked="ConnectBus16"/>
                     </Grid>
                     <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
                         <Button Width="auto" Height="auto" Name="ConnectToGround" Click="Connect2Ground">Connect To Ground</Button>
@@ -98,7 +98,7 @@
                         <CheckBox Grid.Row="7" Grid.Column="8" Content="16" IsChecked="{Binding ConnectedToBus_16, Mode=TwoWay}" Checked="ConnectBus16"  Unchecked="ConnectBus16"/>
                     </Grid>
                     <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
-                        <Button Width="auto" Height="auto" Name="ConnectChannelToBus">Connect Channels To Bus</Button>
+                        <Button Width="auto" Height="auto" Name="ConnectChannelToBus" Click="Connect2Bus">Connect Channels To Bus</Button>
                     </StackPanel>
                 </Grid>
             </GroupBox>
@@ -117,6 +117,6 @@
             </StackPanel>
         </GroupBox>
         <Separator Height="15" Background="Transparent"/>
-        <Button Width="auto" Height="auto" Name="test" Click="test_serialport">Toggle Test-led</Button>
+        <Button Width="auto" Height="auto" Name="test" Click="toggleLed">Toggle Test-led</Button>
     </StackPanel>
 </Window>

@@ -10,14 +10,14 @@ public class SerialCommunication
     public static string port = "COM5";
 	public enum Functions
 	{
-        TOGGLE_LED = 0,
-        PUT_VOLTAGE = 1,
-        CONNECT_TO_GROUND = 2,
-        CONNECT_TO_BUS = 3,
-        MEASURE_VOLTAGE = 4,
-        MEASURE_CURRENT = 5,
-        CHANGE_BOARDNUMBER = 6,
-        GET_BOARDNUMBER = 7,
+        TOGGLE_LED = 1,
+        PUT_VOLTAGE = 2,
+        CONNECT_TO_GROUND = 3,
+        CONNECT_TO_BUS = 4,
+        MEASURE_VOLTAGE = 5,
+        MEASURE_CURRENT = 6,
+        CHANGE_BOARDNUMBER = 7,
+        GET_BOARDNUMBER = 8,
     }
 	public SerialCommunication()
 	{
@@ -31,6 +31,7 @@ public class SerialCommunication
 			{
 				Thread.Sleep(50);
 				serialPort.WriteLine(data);
+                Debug.WriteLine(data);
 				Thread.Sleep(50);
 			}
 		}
@@ -62,7 +63,7 @@ public class SerialCommunication
             serialPort.BaudRate = 115200;
 			// serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(DataReceivedHandler);
             // serialPort.Open();
-			//Status
+			//Status    
 		}
 		catch (Exception ex)
 		{
