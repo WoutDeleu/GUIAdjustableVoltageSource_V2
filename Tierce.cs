@@ -9,7 +9,7 @@ using System.Windows;
 
 public class Tierce
 { 
-    private string port = "COM5";
+    private string port = "COM4";
     private int baudrate = 115200;
     public SerialPort serialPort;
 	public enum Functions

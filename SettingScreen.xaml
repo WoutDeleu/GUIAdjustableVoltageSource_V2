@@ -13,7 +13,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label>Change BoardNumber: </Label>
-            <TextBox Height="15" Width="40" Name="NewBoardNumber"></TextBox>
+            <TextBox Height="18" Width="40" Name="NewBoardNumber"></TextBox>
             <Label Foreground="#FF696464" FontSize="10">(Format: integer)</Label>
             <Separator Width="15" Background="Transparent"/>
         </StackPanel>

@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Management;
+using System.IO;
 
 namespace AdjustableVoltageSource
 {
@@ -22,7 +23,7 @@ namespace AdjustableVoltageSource
     /// </summary>
     public partial class SettingScreen : Window, INotifyPropertyChanged
     {
-        public static Tierce serialPort;
+        public static Tierce tierce;
         private int _boardNumber;
         public int BoardNumber
         {
@@ -41,7 +42,7 @@ namespace AdjustableVoltageSource
             InitializeComponent();
             BoardNumber = getBoardNumberArduino();
             Current_BoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
-            serialPort = s;
+            tierce = s;
             DataContext = this;
         }
         private void CancelBoardNumber(object sender, RoutedEventArgs e)
@@ -56,7 +57,7 @@ namespace AdjustableVoltageSource
             if (isValidBoardNumber(boardNumberStr))
             {
                 BoardNumber = Convert.ToInt32(boardNumberStr);
-				// TODO
+				setBoardNumberArduino(BoardNumber);
             }
             else
             {
@@ -66,9 +67,15 @@ namespace AdjustableVoltageSource
         }
         public void setBoardNumberArduino(int boardNumber)
         {
-			// TODO
+            try 
+            {
+                tierce.writeSerialPort((int)Tierce.Functions.CHANGE_BOARDNUMBER + "," + boardNumber + ";");
+            }
+            catch(IOException ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
         }
-
         private int getBoardNumberArduino()
         {
 			// TODO

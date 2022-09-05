@@ -18,7 +18,7 @@ using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualBasic;
-
+using System.Threading;
 
 namespace AdjustableVoltageSource
 {
@@ -714,47 +714,63 @@ namespace AdjustableVoltageSource
             if (updatedGnd) updatedGnd = false;
         }
 
-        private string formatBusdata()
+        private int boolToInt(bool boolean)
+        {
+            if (boolean) return 1;
+            else return 0;
+        }
+        private string formatBusdata_pt1()
         {
             string data = (int)Tierce.Functions.CONNECT_TO_BUS + ",";
-            data = data + 1 + "," + ConnectedToBus_1 + ",";
-            data = data + 2 + "," + ConnectedToBus_2 + ",";
-            data = data + 3 + "," + ConnectedToBus_3 + ",";
-            data = data + 4 + "," + ConnectedToBus_4 + ",";
-            data = data + 5 + "," + ConnectedToBus_5 + ",";
-            data = data + 6 + "," + ConnectedToBus_6 + ",";
-            data = data + 7 + "," + ConnectedToBus_7 + ",";
-            data = data + 8 + "," + ConnectedToBus_8 + ",";
-            data = data + 9 + "," + ConnectedToBus_9 + ",";
-            data = data + 10 + "," + ConnectedToBus_10 + ",";
-            data = data + 11 + "," + ConnectedToBus_11 + ",";
-            data = data + 12 + "," + ConnectedToBus_12 + ",";
-            data = data + 13 + "," + ConnectedToBus_13 + ",";
-            data = data + 14 + "," + ConnectedToBus_14 + ",";
-            data = data + 15 + "," + ConnectedToBus_15 + ",";
-            data = data + 16 + "," + ConnectedToBus_16;
+            data = data + 1 + "," + boolToInt(ConnectedToBus_1) + ",";
+            data = data + 2 + "," + boolToInt(ConnectedToBus_2) + ",";
+            data = data + 3 + "," + boolToInt(ConnectedToBus_3) + ",";
+            data = data + 4 + "," + boolToInt(ConnectedToBus_4) + ",";
+            data = data + 5 + "," + boolToInt(ConnectedToBus_5) + ",";
+            data = data + 6 + "," + boolToInt(ConnectedToBus_6) + ",";
+            data = data + 7 + "," + boolToInt(ConnectedToBus_7) + ",";
+            data = data + 8 + "," + boolToInt(ConnectedToBus_8) + ",";
             data = data + ";";
             return data;
         }
-        private string formatGrounddata()
+        private string formatBusdata_pt2() 
+        {
+            string data = (int)Tierce.Functions.CONNECT_TO_BUS + ",";
+            data = data + 9 + "," + boolToInt(ConnectedToBus_9) + ",";
+            data = data + 10 + "," + boolToInt(ConnectedToBus_10) + ",";
+            data = data + 11 + "," + boolToInt(ConnectedToBus_11) + ",";
+            data = data + 12 + "," + boolToInt(ConnectedToBus_12) + ",";
+            data = data + 13 + "," + boolToInt(ConnectedToBus_13) + ",";
+            data = data + 14 + "," + boolToInt(ConnectedToBus_14) + ",";
+            data = data + 15 + "," + boolToInt(ConnectedToBus_15) + ",";
+            data = data + 16 + "," + boolToInt(ConnectedToBus_16);
+            data = data + ";";
+            return data;
+        }
+        private string formatGrounddata_pt1()
         {
             string data = (int)Tierce.Functions.CONNECT_TO_GROUND + ",";
-            data = data + 1 + "," + ConnectedToGround_1 + ",";
-            data = data + 2 + "," + ConnectedToGround_2 + ",";
-            data = data + 3 + "," + ConnectedToGround_3 + ",";
-            data = data + 4 + "," + ConnectedToGround_4 + ",";
-            data = data + 5 + "," + ConnectedToGround_5 + ",";
-            data = data + 6 + "," + ConnectedToGround_6 + ",";
-            data = data + 7 + "," + ConnectedToGround_7 + ",";
-            data = data + 8 + "," + ConnectedToGround_8 + ",";
-            data = data + 9 + "," + ConnectedToGround_9 + ",";
-            data = data + 10 + "," + ConnectedToGround_10 + ",";
-            data = data + 11 + "," + ConnectedToGround_11 + ",";
-            data = data + 12 + "," + ConnectedToGround_12 + ",";
-            data = data + 13 + "," + ConnectedToGround_13 + ",";
-            data = data + 14 + "," + ConnectedToGround_14 + ",";
-            data = data + 15 + "," + ConnectedToGround_15 + ",";
-            data = data + 16 + "," + ConnectedToGround_16;
+            data = data + 1 + "," + boolToInt(ConnectedToGround_1) + ",";
+            data = data + 2 + "," + boolToInt(ConnectedToGround_2) + ",";
+            data = data + 3 + "," + boolToInt(ConnectedToGround_3) + ",";
+            data = data + 4 + "," + boolToInt(ConnectedToGround_4) + ",";
+            data = data + 5 + "," + boolToInt(ConnectedToGround_5) + ",";
+            data = data + 6 + "," + boolToInt(ConnectedToGround_6) + ",";
+            data = data + 7 + "," + boolToInt(ConnectedToGround_7) + ",";
+            data = data + 8 + "," + boolToInt(ConnectedToGround_8) + ",";
+            data = data + ";";
+            return data;
+        }
+        private string formatGrounddata_pt2() {
+            string data = (int)Tierce.Functions.CONNECT_TO_GROUND + ",";
+            data = data + 9 + "," + boolToInt(ConnectedToGround_9) + ",";
+            data = data + 10 + "," + boolToInt(ConnectedToGround_10) + ",";
+            data = data + 11 + "," + boolToInt(ConnectedToGround_11) + ",";
+            data = data + 12 + "," + boolToInt(ConnectedToGround_12) + ",";
+            data = data + 13 + "," + boolToInt(ConnectedToGround_13) + ",";
+            data = data + 14 + "," + boolToInt(ConnectedToGround_14) + ",";
+            data = data + 15 + "," + boolToInt(ConnectedToGround_15) + ",";
+            data = data + 16 + "," + boolToInt(ConnectedToGround_16);
             data = data + ";";
             return data;
         }
@@ -813,19 +829,24 @@ namespace AdjustableVoltageSource
         }
         private void Connect(object sender, RoutedEventArgs e)
         {
-            if (!updatedBus)
+            if (!updatedBus || !updatedGnd)
             {
-                string data = formatBusdata();
-                Debug.WriteLine("Bus: " + data);
-                // Seriële communicatie (volgorde van connecten?)
+                string data = formatGrounddata_pt1();
+                tierce.writeSerialPort(data);
+                data = formatGrounddata_pt2();
+                tierce.writeSerialPort(data);
 
-                data = formatGrounddata();
-                Debug.WriteLine("Ground: " + data);
-                // Seriële communicatie (volgorde van connecten?)
+                data = formatBusdata_pt1();
+                tierce.writeSerialPort(data);
+                data = formatBusdata_pt2();
+                tierce.writeSerialPort(data);
 
+                Debug.WriteLine("");
 
                 updatedBus = true;
+                updatedGnd = true;
             }
+            else Debug.WriteLine("Nothing to update");
         }
         private void PutVoltage(object sender, RoutedEventArgs e)
         {
@@ -834,8 +855,6 @@ namespace AdjustableVoltageSource
             if (isValidVoltage(voltagestr))
             {
                 voltage = Convert.ToDouble(voltagestr);
-
-                // TODO
                 try
                 {
                     tierce.writeSerialPort((int)Tierce.Functions.PUT_VOLTAGE + "," + voltage + ";");
