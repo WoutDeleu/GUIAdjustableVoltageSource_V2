@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +21,7 @@ namespace AdjustableVoltageSource
 
     public partial class MeasureScreen : Window, INotifyPropertyChanged
     {
-        public static Tierce serialPort;
+        public static Tierce tierce;
         private string _measuredValue;
         public string MeasuredValue
         {
@@ -39,7 +40,7 @@ namespace AdjustableVoltageSource
             InitializeComponent(); 
             Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
             DataContext = this;
-            serialPort = s;
+            tierce = s;
         }
         private void CloseMeasureScreen(object sender, RoutedEventArgs e)
         {
@@ -47,13 +48,29 @@ namespace AdjustableVoltageSource
         }
         private void MeasureValue(object sender, RoutedEventArgs e)
         {
-			// TODO
             Debug.WriteLine(SelectMeasureFunction.SelectedItem.ToString());
             if (SelectMeasureFunction.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Measure current")
             {
-                MeasuredValue = 4 + "A";
-            }                
+                double current_out;
+                tierce.writeSerialPort((int)Tierce.Functions.MEASURE_CURRENT + ";");
 
+                String input ="";
+
+                while(tierce.serialPort.BytesToRead != 0)
+                {
+                    input += tierce.serialPort.ReadExisting();
+                }
+                Debug.WriteLine(input);
+                string current = extractInput(input).Replace(".", ",");
+                if (double.TryParse(current, out current_out))
+                    MeasuredValue = current_out + " A";
+                else
+                {
+                    Debug.WriteLine("Fault in measure format...");
+                    MeasuredValue = "FAULT";
+
+                }
+            }                
             else
             {
                 MeasuredValue = 8 + "V";
@@ -63,6 +80,26 @@ namespace AdjustableVoltageSource
         {
 			// TODO
             return true;
+        }
+        private string extractInput(string s)
+        {
+            char[] array = s.ToCharArray();
+            int begin = 0, end = 0, length ;
+            for(int i=0; i<array.Length; i++)
+            {
+                if (array[i] == '[') begin = i;
+                if (array[i] == ']') end = i;
+            }
+            if (end == 0)
+                {
+                Debug.WriteLine("FAULT IN COMMUNICATION");
+                return "FAULT IN COMMUNICATION";
+            }
+            else
+            {
+                Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
+                return s.Substring(begin + 1, (end - begin - 1));
+            }
         }
 
         #region INotifyPropertyChanged Implementation

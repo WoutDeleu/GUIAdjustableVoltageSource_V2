@@ -38,11 +38,11 @@ namespace AdjustableVoltageSource
             }
         }
         public SettingScreen(Tierce s)
-        {    
+        {
+            tierce = s;
             InitializeComponent();
             BoardNumber = getBoardNumberArduino();
             Current_BoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
-            tierce = s;
             DataContext = this;
         }
         private void CancelBoardNumber(object sender, RoutedEventArgs e)
@@ -58,11 +58,11 @@ namespace AdjustableVoltageSource
             {
                 BoardNumber = Convert.ToInt32(boardNumberStr);
 				setBoardNumberArduino(BoardNumber);
+                Close();
             }
             else
             {
                 Debug.WriteLine("Fault in fomrat input");
-                // ... -> foutmelding
             }
         }
         public void setBoardNumberArduino(int boardNumber)
@@ -78,18 +78,49 @@ namespace AdjustableVoltageSource
         }
         private int getBoardNumberArduino()
         {
-			// TODO
             int boardNumber;
-            
-            boardNumber = 0;
-            return boardNumber;
+
+            tierce.writeSerialPort((int)Tierce.Functions.GET_BOARDNUMBER + ";");
+
+            string input = "";
+            while (tierce.serialPort.BytesToRead != 0)
+            {
+                input += tierce.serialPort.ReadExisting();
+            }
+            string nr = extractInput(input);
+            if (int.TryParse(nr, out boardNumber)) return boardNumber;
+            else
+            {
+                Debug.WriteLine("Fault in fetching boardNumber...");
+                return 999999;
+            } 
+        }
+
+        private string extractInput(string s)
+        {
+            char[] array = s.ToCharArray();
+            int begin = 0, end = 0, length;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == '[') begin = i;
+                if (array[i] == ']') end = i;
+            }
+            if (end == 0)
+            {
+                Debug.WriteLine("FAULT IN COMMUNICATION");
+                return "FAULT IN COMMUNICATION";
+            }
+            else
+            {
+                Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
+                return s.Substring(begin + 1, (end - begin - 1));
+            }
         }
 
         private Boolean isValidBoardNumber(String s)
         {
             return Regex.IsMatch(s, @"^\d+$");
         }
-
         #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string name)
