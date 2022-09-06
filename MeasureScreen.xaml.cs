@@ -2,19 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO.Ports;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AdjustableVoltageSource
 {
@@ -23,6 +14,21 @@ namespace AdjustableVoltageSource
     {
         public static Tierce tierce;
         private string _measuredValue;
+        private bool[] connected;
+        private Visibility selectionVisible;
+        public Visibility SelectionVisible 
+        {
+            get
+            {
+                return selectionVisible;
+            }
+            set
+            {
+                selectionVisible = value;
+                OnPropertyChanged("SelectionVisible");
+            }
+        }
+
         public string MeasuredValue
         {
             get { return _measuredValue; }
@@ -35,21 +41,111 @@ namespace AdjustableVoltageSource
                 }
             }
         }
-        public MeasureScreen(Tierce s)
+        
+        public bool ch1_connected
         {
+            get { return connected[0]; }
+        }
+        public bool ch2_connected
+        {
+            get { return connected[1]; }
+        }
+        public bool ch3_connected
+        {
+            get { return connected[2]; }
+        }
+        public bool ch4_connected
+        {
+            get { return connected[3]; }
+        }
+        public bool ch5_connected
+        {
+            get { return connected[4]; }
+        }
+        public bool ch6_connected
+        {
+            get { return connected[5]; }
+        }
+        public bool ch7_connected
+        {
+            get { return connected[6]; }
+        }
+        public bool ch8_connected
+        {
+            get { return connected[7]; }
+        }
+        public bool ch9_connected
+        {
+            get { return connected[8]; }
+        }
+        public bool ch10_connected
+        {
+            get { return connected[9]; }
+        }
+        public bool ch11_connected
+        {
+            get { return connected[10]; }
+        } 
+        public bool ch12_connected
+        {
+            get { return connected[11]; }
+        }
+        public bool ch13_connected
+        {
+            get { return connected[12]; }
+        }
+        public bool ch14_connected
+        {
+            get { return connected[13]; }
+        }
+        public bool ch15_connected
+        {
+            get { return connected[14]; }
+        }
+        public bool ch16_connected
+        {
+            get { return connected[15]; }
+        }
+        
+        public MeasureScreen(Tierce s, bool[] con)
+        {
+            SelectionVisible = Visibility.Visible;
             InitializeComponent(); 
             Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
             DataContext = this;
             tierce = s;
+            connected = con;
         }
         private void CloseMeasureScreen(object sender, RoutedEventArgs e)
         {
             Close();
         }
+        private void measureVoltageCmd()
+        {
+            string channel = "";
+            if (ch1.IsChecked == true) channel = "1";
+            else if (ch2.IsChecked == true) channel = "2";
+            else if (ch3.IsChecked == true) channel = "3";
+            else if (ch4.IsChecked == true) channel = "4";
+            else if (ch5.IsChecked == true) channel = "5";
+            else if (ch6.IsChecked == true) channel = "6";
+            else if (ch7.IsChecked == true) channel = "7";
+            else if (ch8.IsChecked == true) channel = "8";
+            else if (ch9.IsChecked == true) channel = "9";
+            else if (ch10.IsChecked == true) channel = "10";
+            else if (ch11.IsChecked == true) channel = "11";
+            else if (ch12.IsChecked == true) channel = "12";
+            else if (ch13.IsChecked == true) channel = "13";
+            else if (ch14.IsChecked == true) channel = "14";
+            else if (ch15.IsChecked == true) channel = "15";
+            else if (ch16.IsChecked == true) channel = "16";
+
+            tierce.writeSerialPort((int)Tierce.Functions.MEASURE_VOLTAGE + "," + channel + ";");
+        }
         private void MeasureValue(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine(SelectMeasureFunction.SelectedItem.ToString());
-            if (SelectMeasureFunction.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem: Measure current")
+            if (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Measure Current")
             {
                 double current_out;
                 tierce.writeSerialPort((int)Tierce.Functions.MEASURE_CURRENT + ";");
@@ -68,18 +164,55 @@ namespace AdjustableVoltageSource
                 {
                     Debug.WriteLine("Fault in measure format...");
                     MeasuredValue = "FAULT";
-
                 }
             }                
             else
             {
-                MeasuredValue = 8 + "V";
+                double voltage_out;
+                measureVoltageCmd();
+
+                String input = "";
+
+                while (tierce.serialPort.BytesToRead != 0)
+                {
+                    input += tierce.serialPort.ReadExisting();
+                }
+                Debug.WriteLine(input);
+                string voltage = extractInput(input).Replace(".", ",");
+                if (double.TryParse(voltage, out voltage_out))
+                    MeasuredValue = voltage_out + " V";
+                else
+                {
+                    Debug.WriteLine("Fault in measure format...");
+                    MeasuredValue = "FAULT";
+                }
             }
         }
-        private Boolean isConnectedToBus(int i)
+
+        private bool handle = true;
+        private void selectMeasureFunction_DropDownClosed(object sender, EventArgs e)
         {
-			// TODO
-            return true;
+            if (handle) Handle();
+            handle = true;
+        }
+        private void selectMeasureFunction_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+            handle = !cmb.IsDropDownOpen;
+            Handle();
+            Debug.WriteLine(SelectionVisible);
+        }
+        private void Handle()
+        {
+            switch (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
+            {
+                case "Measure Current":
+                    SelectionVisible = Visibility.Collapsed;
+                    break;
+                default:
+                    SelectionVisible = Visibility.Visible;
+                    break;
+            }
         }
         private string extractInput(string s)
         {

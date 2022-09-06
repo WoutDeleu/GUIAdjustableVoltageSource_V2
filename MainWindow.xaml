@@ -35,8 +35,8 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding ConnectedToGround_1, Mode=TwoWay}" Content="1" Checked="ConnectGnd1"  Unchecked="ConnectGnd1"/>
-                        <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding ConnectedToGround_2, Mode=TwoWay}" Content="2" Checked="ConnectGnd2"  Unchecked="ConnectGnd2"/>
+                        <RadioButton Grid.Row="0" Grid.Column="0" IsChecked="{Binding ConnectedToGround_1, Mode=TwoWay}" Content="1" Checked="ConnectGnd1"  Unchecked="ConnectGnd1"/>
+                        <RadioButton Grid.Row="1" Grid.Column="0" IsChecked="{Binding ConnectedToGround_2, Mode=TwoWay}" Content="2" Checked="ConnectGnd2"  Unchecked="ConnectGnd2"/>
                         <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding ConnectedToGround_3, Mode=TwoWay}" Content="3" Checked="ConnectGnd3"  Unchecked="ConnectGnd3"/>
                         <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding ConnectedToGround_4, Mode=TwoWay}" Content="4" Checked="ConnectGnd4"  Unchecked="ConnectGnd4"/>
                         <CheckBox Grid.Row="4" Grid.Column="0" IsChecked="{Binding ConnectedToGround_5, Mode=TwoWay}" Content="5" Checked="ConnectGnd5"  Unchecked="ConnectGnd5"/>
@@ -84,8 +84,8 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <CheckBox Grid.Row="0" Grid.Column="0" Content="1" IsChecked="{Binding ConnectedToBus_1, Mode=TwoWay}" Checked="ConnectBus1"  Unchecked="ConnectBus1" />
-                        <CheckBox Grid.Row="1" Grid.Column="0" Content="2" IsChecked="{Binding ConnectedToBus_2, Mode=TwoWay}" Checked="ConnectBus2"  Unchecked="ConnectBus2"/>
+                        <RadioButton Grid.Row="0" Grid.Column="0" Content="1" IsChecked="{Binding ConnectedToBus_1, Mode=TwoWay}" Checked="ConnectBus1"  Unchecked="ConnectBus1" />
+                        <RadioButton Grid.Row="1" Grid.Column="0" Content="2" IsChecked="{Binding ConnectedToBus_2, Mode=TwoWay}" Checked="ConnectBus2"  Unchecked="ConnectBus2"/>
                         <CheckBox Grid.Row="2" Grid.Column="0" Content="3" IsChecked="{Binding ConnectedToBus_3, Mode=TwoWay}" Checked="ConnectBus3"  Unchecked="ConnectBus3"/>
                         <CheckBox Grid.Row="3" Grid.Column="0" Content="4" IsChecked="{Binding ConnectedToBus_4, Mode=TwoWay}" Checked="ConnectBus4"  Unchecked="ConnectBus4"/>
                         <CheckBox Grid.Row="4" Grid.Column="0" Content="5" IsChecked="{Binding ConnectedToBus_5, Mode=TwoWay}" Checked="ConnectBus5"  Unchecked="ConnectBus5"/>

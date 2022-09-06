@@ -774,7 +774,27 @@ namespace AdjustableVoltageSource
             data = data + ";";
             return data;
         }
-
+        private bool[] formatBusConnectArray()
+        {
+            bool[] connected = new bool[16];
+            connected[0] = ConnectedToBus_1;
+            connected[1] = ConnectedToBus_2;
+            connected[2] = ConnectedToBus_3;
+            connected[3] = ConnectedToBus_4;
+            connected[4] = ConnectedToBus_5;
+            connected[5] = ConnectedToBus_6;
+            connected[6] = ConnectedToBus_7;
+            connected[7] = ConnectedToBus_8;
+            connected[8] = ConnectedToBus_9;
+            connected[9] = ConnectedToBus_10;
+            connected[10] = ConnectedToBus_11;
+            connected[11] = ConnectedToBus_12;
+            connected[12] = ConnectedToBus_13;
+            connected[13] = ConnectedToBus_14;
+            connected[14] = ConnectedToBus_15;
+            connected[15] = ConnectedToBus_16;
+            return connected;
+        }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             e.Handled = isValidVoltage(e.Text.Replace(".", ","));
@@ -804,13 +824,28 @@ namespace AdjustableVoltageSource
 
         private void OpenSettingScreen(object sender, RoutedEventArgs e)
         {
+        
+            if(updatedBus && updatedGnd)
+            {
             SettingScreen settings = new SettingScreen(tierce);
             settings.ShowDialog();
-        }
+            }
+            else
+            {
+                Debug.WriteLine("Make sure every connection is updated to board");
+            }
+}
         private void OpenMeasureScreen(object sender, RoutedEventArgs e)
         {
-            MeasureScreen measureScreen = new MeasureScreen(tierce);
-            measureScreen.ShowDialog();
+            if(updatedBus && updatedGnd)
+            {
+                MeasureScreen measureScreen = new MeasureScreen(tierce, formatBusConnectArray());
+                measureScreen.ShowDialog();
+            }
+            else
+            {
+                Debug.WriteLine("Make sure every connection is updated to board");
+            }
         }
         public void CloseMainWindow()
         {
@@ -878,22 +913,5 @@ namespace AdjustableVoltageSource
                 Console.WriteLine(ex);
             }
         }
-
-        /*
-        void readSerialPort()
-        {
-            // byte b = (byte)serialPort.ReadByte();
-            // char c = (char)serialPort.ReadChar();
-            // string line = serialPort.ReadLine();
-            string all = serialPort.ReadExisting();
-
-            Debug.WriteLine("--------------------------------------");
-            // Debug.WriteLine(b);
-            // Debug.WriteLine(c);
-            Debug.WriteLine(all);
-            // Debug.WriteLine(all);
-            Debug.WriteLine("--------------------------------------");
-        }
-        */
     }
 }

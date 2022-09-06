@@ -15,16 +15,52 @@
             <Separator Height="15" Background="Transparent"/>
             <StackPanel Orientation="Horizontal">
                 <Separator Width="15" Background="Transparent"/>
-                <ComboBox x:Name="SelectMeasureFunction">
-                    <ComboBoxItem Tag="MeasVoltage" IsSelected="True">Measure voltage</ComboBoxItem>
-                    <ComboBoxItem Tag="MeasCurrent">Measure current</ComboBoxItem>
+                <ComboBox x:Name="SelectMeasureFunction" SelectionChanged="selectMeasureFunction_Changed" DropDownClosed="selectMeasureFunction_DropDownClosed">
+                    <ComboBoxItem Tag="MeasVoltage" IsSelected="True">Measure Voltage</ComboBoxItem>
+                    <ComboBoxItem Tag="MeasCurrent">Measure Current</ComboBoxItem>
                 </ComboBox>
                 <Separator Width="15" Background="Transparent"/>
             </StackPanel>
             <Separator Height="15" Background="Transparent"/>
-            <StackPanel Orientation="Horizontal">
-                <Label>Result: </Label>
-                <Label Name="Current_MeasuredValue" FontWeight="Bold" FontSize="14"/>
+            <Separator Width="15" Background="Transparent"/>
+            <GroupBox Name="SelectChannelBox" Header="Select Channel (only for Measure Voltage)" Width="250" HorizontalAlignment="Center" Visibility="{Binding SelectionVisible}">
+                <Grid RenderTransformOrigin="0,1" HorizontalAlignment="Center" Width="200">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <RadioButton x:Name="ch1" Grid.Row="0" Grid.Column="0" Content="1" IsEnabled="{Binding ch1_connected}"/>
+                    <RadioButton x:Name="ch2" Grid.Row="1" Grid.Column="0" Content="2" IsEnabled="{Binding ch2_connected}"/>
+                    <RadioButton x:Name="ch3" Grid.Row="2" Grid.Column="0" Content="3" IsEnabled="{Binding ch3_connected}"/>
+                    <RadioButton x:Name="ch4" Grid.Row="3" Grid.Column="0" Content="4" IsEnabled="{Binding ch4_connected}"/>
+                    <RadioButton x:Name="ch5" Grid.Row="4" Grid.Column="0" Content="5" IsEnabled="{Binding ch5_connected}"/>
+                    <RadioButton x:Name="ch6" Grid.Row="5" Grid.Column="0" Content="6" IsEnabled="{Binding ch6_connected}"/>
+                    <RadioButton x:Name="ch7" Grid.Row="6" Grid.Column="0" Content="7" IsEnabled="{Binding ch7_connected}"/>
+                    <RadioButton x:Name="ch8" Grid.Row="7" Grid.Column="0" Content="8" IsEnabled="{Binding ch8_connected}"/>
+                    <RadioButton x:Name="ch9" Grid.Row="0" Grid.Column="1" Content="9" IsEnabled="{Binding ch9_connected}"/>
+                    <RadioButton x:Name="ch10" Grid.Row="1" Grid.Column="2" Content="10" IsEnabled="{Binding ch10_connected}"/>
+                    <RadioButton x:Name="ch11" Grid.Row="2" Grid.Column="3" Content="11" IsEnabled="{Binding ch11_connected}"/>
+                    <RadioButton x:Name="ch12" Grid.Row="3" Grid.Column="4" Content="12" IsEnabled="{Binding ch12_connected}"/>
+                    <RadioButton x:Name="ch13" Grid.Row="4" Grid.Column="5" Content="13" IsEnabled="{Binding ch13_connected}"/>
+                    <RadioButton x:Name="ch14" Grid.Row="5" Grid.Column="6" Content="14" IsEnabled="{Binding ch14_connected}"/>
+                    <RadioButton x:Name="ch15" Grid.Row="6" Grid.Column="7" Content="15" IsEnabled="{Binding ch15_connected}"/>
+                    <RadioButton x:Name="ch16" Grid.Row="7" Grid.Column="8" Content="16" IsEnabled="{Binding ch16_connected}"/>
+                </Grid>
+            </GroupBox>
+            <Separator Height="15" Background="Transparent"/>
+            <StackPanel Orientation="Horizontal" >
+                <Label FontSize="15">Result: </Label>
+                <Label Name="Current_MeasuredValue" FontWeight="Bold" FontSize="18"/>
             </StackPanel>
             <Separator Height="15" Background="Transparent"/>
             <StackPanel HorizontalAlignment="Center"  Orientation="Horizontal">
