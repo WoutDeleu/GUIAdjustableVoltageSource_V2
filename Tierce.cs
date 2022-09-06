@@ -22,6 +22,7 @@ public class Tierce
         MEASURE_CURRENT = 6,
         CHANGE_BOARDNUMBER = 7,
         GET_BOARDNUMBER = 8,
+        DISCONNECT_VOLTAGE = 9,
     }
 	public Tierce()
 	{

@@ -217,7 +217,7 @@ namespace AdjustableVoltageSource
         private string extractInput(string s)
         {
             char[] array = s.ToCharArray();
-            int begin = 0, end = 0, length ;
+            int begin = 0, end = 0;
             for(int i=0; i<array.Length; i++)
             {
                 if (array[i] == '[') begin = i;

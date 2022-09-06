@@ -902,6 +902,11 @@ namespace AdjustableVoltageSource
             }
             else Debug.WriteLine("Invalid number");
         }
+        public void DisconnectVoltage(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            tierce.writeSerialPort((int)Tierce.Functions.DISCONNECT_VOLTAGE + ";");
+        }
         public void toggleLed(object sender, RoutedEventArgs e)
         {
             try
@@ -911,6 +916,31 @@ namespace AdjustableVoltageSource
             catch (IOException ex)
             {
                 Console.WriteLine(ex);
+            }
+        }
+        private string extractInput(string s)
+        {
+            char[] array = s.ToCharArray();
+            int begin = 0, end = 0;
+            bool foundBegin = false;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == '|' && !foundBegin)
+                {
+                    foundBegin = true;
+                    begin = i;
+                }
+                if (array[i] == '|' && begin !=i) end = i;
+            }
+            if (end == 0)
+            {
+                Debug.WriteLine("FAULT IN COMMUNICATION");
+                return "FAULT IN COMMUNICATION";
+            }
+            else
+            {
+                Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
+                return s.Substring(begin + 1, (end - begin - 1));
             }
         }
     }
