@@ -11,7 +11,7 @@ public class Tierce
 { 
     private string port = "COM5";
     private int baudrate = 115200;
-    public SerialPort serialPort;
+    public SerialPort serialPort ;
 	public enum Functions
 	{
         TOGGLE_LED = 1,
