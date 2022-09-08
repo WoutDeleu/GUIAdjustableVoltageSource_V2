@@ -155,6 +155,6 @@
             </Grid>
         </Grid>
         <Separator Height="15" Background="Transparent"/>
-        <Button Width="auto" Height="auto" Name="resetButton" Click="reset" FontSize="20" Background="#FFFF3D3D">RESET</Button>
+        <Button Width="auto" Height="auto" Name="resetButton" Click="Reset" FontSize="20" Background="#FFFF3D3D">RESET</Button>
     </StackPanel>
 </Window>
