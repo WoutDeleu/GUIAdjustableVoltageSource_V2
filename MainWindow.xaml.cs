@@ -29,7 +29,6 @@ namespace AdjustableVoltageSource
     {
         delegate void serialCalback(string val);
         public event PropertyChangedEventHandler PropertyChanged;
-        Tierce tierce = new Tierce();
         // Create the OnPropertyChanged method to raise the event 
         protected void OnPropertyChanged(string name)
         {
@@ -39,7 +38,7 @@ namespace AdjustableVoltageSource
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
-
+        Tierce tierce = new Tierce();
 
         private bool _ConnectedToGround_1;
         private bool _ConnectedToBus_1;
@@ -905,18 +904,58 @@ namespace AdjustableVoltageSource
         public void DisconnectVoltage(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
+            clearVoltageTextbox();
             tierce.writeSerialPort((int)Tierce.Functions.DISCONNECT_VOLTAGE + ";");
         }
-        public void toggleLed(object sender, RoutedEventArgs e)
+        public void reset(object sender, RoutedEventArgs e) {
+            disconnectAll();
+
+            updatedGnd = true;
+            updatedBus = true;
+            tierce.writeSerialPort((int)Tierce.Functions.RESET + ";");
+        }
+        private void disconnectAll()
         {
-            try
-            {
-                tierce.writeSerialPort((int)Tierce.Functions.TOGGLE_LED + ";");
-            }
-            catch (IOException ex)
-            {
-                Console.WriteLine(ex);
-            }
+            ConnectedToBus_1 = false;
+            ConnectedToBus_2 = false;
+            ConnectedToBus_3 = false;
+            ConnectedToBus_4 = false;
+            ConnectedToBus_5 = false;
+            ConnectedToBus_6 = false;
+            ConnectedToBus_7 = false;
+            ConnectedToBus_8 = false;
+            ConnectedToBus_9 = false;
+            ConnectedToBus_10 = false;
+            ConnectedToBus_11 = false;
+            ConnectedToBus_12 = false;
+            ConnectedToBus_13 = false;
+            ConnectedToBus_14 = false;
+            ConnectedToBus_15 = false;
+            ConnectedToBus_16 = false;
+
+            ConnectedToGround_1 = false;
+            ConnectedToGround_2 = false;
+            ConnectedToGround_3 = false;
+            ConnectedToGround_4 = false;
+            ConnectedToGround_5 = false;
+            ConnectedToGround_6 = false;
+            ConnectedToGround_7 = false;
+            ConnectedToGround_8 = false;
+            ConnectedToGround_9 = false;
+            ConnectedToGround_10 = false;
+            ConnectedToGround_11 = false;
+            ConnectedToGround_12 = false;
+            ConnectedToGround_13 = false;
+            ConnectedToGround_14 = false;
+            ConnectedToGround_15 = false;
+            ConnectedToGround_16 = false;
+
+            tierce.writeSerialPort((int)Tierce.Functions.DISCONNECT_VOLTAGE + ";");
+            clearVoltageTextbox();
+        }
+        private void clearVoltageTextbox()
+        {
+            VoltageTextBox.Text = "";
         }
         private string extractInput(string s)
         {
@@ -943,5 +982,7 @@ namespace AdjustableVoltageSource
                 return s.Substring(begin + 1, (end - begin - 1));
             }
         }
+
+
     }
 }

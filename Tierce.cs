@@ -8,12 +8,12 @@ using System.Threading;
 using System.Windows;
 
 public class Tierce
-{ 
+{
     private string port = "COM5";
     private int baudrate = 115200;
-    public SerialPort serialPort ;
-	public enum Functions
-	{
+    public SerialPort serialPort;
+    public enum Functions
+    {
         TOGGLE_LED = 1,
         PUT_VOLTAGE = 2,
         CONNECT_TO_GROUND = 3,
@@ -23,36 +23,37 @@ public class Tierce
         CHANGE_BOARDNUMBER = 7,
         GET_BOARDNUMBER = 8,
         DISCONNECT_VOLTAGE = 9,
+        RESET = 10
     }
-	public Tierce()
-	{
+    public Tierce()
+    {
         serialPort = new SerialPort(port);
         serialPort.PortName = port;
         serialPort.BaudRate = baudrate;
-	}
+    }
 
-	public void writeSerialPort(string data)
-	{
-		try
-		{
-			if(serialPort.IsOpen)
-			{
-				Thread.Sleep(50);
-				serialPort.WriteLine(data);
+    public void writeSerialPort(string data)
+    {
+        try
+        {
+            if (serialPort.IsOpen)
+            {
+                Thread.Sleep(50);
+                serialPort.WriteLine(data);
                 Debug.WriteLine("Data to send: " + data);
-				Thread.Sleep(50);
-			}
+                Thread.Sleep(50);
+            }
             else
             {
                 Debug.WriteLine("closed");
             }
-		}
-		catch(Exception ex)
-		{
+        }
+        catch (Exception ex)
+        {
             Debug.WriteLine(ex.Message);
-		}
-	}
-	public void initSerialPort()
+        }
+    }
+    public void initSerialPort()
     {
         try
         {
@@ -93,16 +94,16 @@ public class Tierce
                 else
                 {
             */
-                    serialPort.PortName = port;
-                // }
+            serialPort.PortName = port;
+            // }
 
-                serialPort.DtrEnable = true;
-                serialPort.RtsEnable = true;
-                serialPort.ReceivedBytesThreshold = 1;
-                serialPort.BaudRate = 115200;
-                this.serialPort.DataReceived += new SerialDataReceivedEventHandler(this.serialPort_DataReceived);
-                serialPort.Open();
-                Debug.WriteLine("'" + serialPort.PortName + "' Port Opened Succesfully\n");
+            serialPort.DtrEnable = true;
+            serialPort.RtsEnable = true;
+            serialPort.ReceivedBytesThreshold = 1;
+            serialPort.BaudRate = 115200;
+            this.serialPort.DataReceived += new SerialDataReceivedEventHandler(this.serialPort_DataReceived);
+            serialPort.Open();
+            Debug.WriteLine("'" + serialPort.PortName + "' Port Opened Succesfully\n");
         }
         catch (Exception ex)
         {
@@ -133,16 +134,16 @@ public class Tierce
     }
 
     public void closeSerialPort()
-	{
-		serialPort.Open();
-		serialPort.DiscardOutBuffer();
-		serialPort.DiscardInBuffer();
+    {
+        serialPort.Open();
+        serialPort.DiscardOutBuffer();
+        serialPort.DiscardInBuffer();
 
-		Thread.Sleep(500);
-			
-		serialPort.Dispose();
-		serialPort.Close();
-	}
+        Thread.Sleep(500);
+
+        serialPort.Dispose();
+        serialPort.Close();
+    }
     public void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
     {
         string readSciMessage = "";
@@ -178,6 +179,5 @@ public class Tierce
             Debug.WriteLine(ex.ToString() + "\n");
         }
     }
-
 }
 
