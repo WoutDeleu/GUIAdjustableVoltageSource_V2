@@ -12,7 +12,7 @@ namespace AdjustableVoltageSource
 
     public partial class MeasureScreen : Window, INotifyPropertyChanged
     {
-        public static Tierce tierce;
+        public static Communicator communicator;
         private string _measuredValue;
         private bool[] connected;
         private Visibility selectionVisible;
@@ -107,13 +107,13 @@ namespace AdjustableVoltageSource
             get { return connected[15]; }
         }
         
-        public MeasureScreen(Tierce s, bool[] con)
+        public MeasureScreen(Communicator s, bool[] con)
         {
             SelectionVisible = Visibility.Visible;
             InitializeComponent(); 
             Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
             DataContext = this;
-            tierce = s;
+            communicator = s;
             connected = con;
         }
         private void CloseMeasureScreen(object sender, RoutedEventArgs e)
@@ -140,7 +140,7 @@ namespace AdjustableVoltageSource
             else if (ch15.IsChecked == true) channel = "15";
             else if (ch16.IsChecked == true) channel = "16";
 
-            tierce.writeSerialPort((int)Tierce.Functions.MEASURE_VOLTAGE + "," + channel + ";");
+            communicator.writeSerialPort((int)Communicator.Functions.MEASURE_VOLTAGE + "," + channel + ";");
         }
         private void MeasureValue(object sender, RoutedEventArgs e)
         {
@@ -148,13 +148,13 @@ namespace AdjustableVoltageSource
             if (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Measure Current")
             {
                 double current_out;
-                tierce.writeSerialPort((int)Tierce.Functions.MEASURE_CURRENT + ";");
+                communicator.writeSerialPort((int)Communicator.Functions.MEASURE_CURRENT + ";");
 
                 String input ="";
 
-                while(tierce.serialPort.BytesToRead != 0)
+                while(communicator.serialPort.BytesToRead != 0)
                 {
-                    input += tierce.serialPort.ReadExisting();
+                    input += communicator.serialPort.ReadExisting();
                 }
                 Debug.WriteLine(input);
                 string current = extractInput(input).Replace(".", ",");
@@ -173,9 +173,9 @@ namespace AdjustableVoltageSource
 
                 String input = "";
 
-                while (tierce.serialPort.BytesToRead != 0)
+                while (communicator.serialPort.BytesToRead != 0)
                 {
-                    input += tierce.serialPort.ReadExisting();
+                    input += communicator.serialPort.ReadExisting();
                 }
                 Debug.WriteLine(input);
                 string voltage = extractInput(input).Replace(".", ",");

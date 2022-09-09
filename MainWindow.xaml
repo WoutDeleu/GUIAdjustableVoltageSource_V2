@@ -8,6 +8,12 @@
         Title="Adjustable Voltage Source" Height="auto" Width="auto" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Background="#FFE0E0E0">
 
     <StackPanel>
+        <Separator Height="5" Background="Transparent"/>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Width="100" Height="auto" Name="Measure" Click="OpenMeasureScreen" FontSize="18" Background="#FFEDEDED">Measure</Button>
+            <Separator Width="75" Background="Transparent"/>
+            <Button Width="100" Height="auto" Name="Settings" Click="OpenSettingScreen" FontSize="18" Background="#FFEDEDED">Settings</Button>
+        </StackPanel>
         <Grid Width="525">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40*"/>
@@ -15,12 +21,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <Separator Height="5" Background="Transparent"/>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Width="100" Height="auto" Name="Measure" Click="OpenMeasureScreen" FontSize="18" Background="#FFEDEDED">Measure</Button>
-                    <Separator Width="40" Background="Transparent"/>
-                    <Button Width="100" Height="auto" Name="Settings" Click="OpenSettingScreen" FontSize="18" Background="#FFEDEDED">Settings</Button>
-                </StackPanel>
+                <Separator Height="15" Background="Transparent"/>
                 <GroupBox Header="Connect Channel To Ground" Width="auto" HorizontalAlignment="Center" FontSize="20">
                     <GroupBox Header="Select Channel" Width="auto" HorizontalAlignment="left" FontSize="10">
                         <Grid Width="290">
@@ -70,6 +71,7 @@
                         </Grid>
                     </GroupBox>
                 </GroupBox>
+                <Separator Height="15" Background="Transparent"/>
                 <GroupBox Header="Connect To Function Bus" Width="auto" HorizontalAlignment="Center" FontSize="20">
                     <GroupBox Header="Select Channel" Width="auto" HorizontalAlignment="left" FontSize="10">
                         <Grid Width="290">
@@ -119,6 +121,7 @@
                         </Grid>
                     </GroupBox>
                 </GroupBox>
+                <Separator Height="15" Background="Transparent"/>
                 <GroupBox Header="Put Voltage" Width="auto" HorizontalAlignment="Center" FontSize="20">
                     <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

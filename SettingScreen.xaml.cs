@@ -23,7 +23,7 @@ namespace AdjustableVoltageSource
     /// </summary>
     public partial class SettingScreen : Window, INotifyPropertyChanged
     {
-        public static Tierce tierce;
+        public static Communicator communicator;
         private int _boardNumber;
         public int BoardNumber
         {
@@ -37,9 +37,9 @@ namespace AdjustableVoltageSource
                 }
             }
         }
-        public SettingScreen(Tierce s)
+        public SettingScreen(Communicator s)
         {
-            tierce = s;
+            communicator = s;
             InitializeComponent();
             BoardNumber = getBoardNumberArduino();
             Current_BoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
@@ -69,7 +69,7 @@ namespace AdjustableVoltageSource
         {
             try 
             {
-                tierce.writeSerialPort((int)Tierce.Functions.CHANGE_BOARDNUMBER + "," + boardNumber + ";");
+                communicator.writeSerialPort((int)Communicator.Functions.CHANGE_BOARDNUMBER + "," + boardNumber + ";");
             }
             catch(IOException ex)
             {
@@ -80,12 +80,12 @@ namespace AdjustableVoltageSource
         {
             int boardNumber;
 
-            tierce.writeSerialPort((int)Tierce.Functions.GET_BOARDNUMBER + ";");
+            communicator.writeSerialPort((int)Communicator.Functions.GET_BOARDNUMBER + ";");
 
             string input = "";
-            while (tierce.serialPort.BytesToRead != 0)
+            while (communicator.serialPort.BytesToRead != 0)
             {
-                input += tierce.serialPort.ReadExisting();
+                input += communicator.serialPort.ReadExisting();
             }
             string nr = extractInput(input);
             if (int.TryParse(nr, out boardNumber)) return boardNumber;

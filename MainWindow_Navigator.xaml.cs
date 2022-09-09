@@ -12,7 +12,7 @@ namespace AdjustableVoltageSource
             InitializeComponent();
             DataContext = this;
 
-            tierce.initSerialPort();
+            communicator.initSerialPort();
             updatedGnd = true;
             updatedBus = true;
         }
@@ -21,7 +21,7 @@ namespace AdjustableVoltageSource
 
             if (updatedBus && updatedGnd)
             {
-                SettingScreen settings = new SettingScreen(tierce);
+                SettingScreen settings = new SettingScreen(communicator);
                 settings.ShowDialog();
             }
             else
@@ -33,7 +33,7 @@ namespace AdjustableVoltageSource
         {
             if (updatedBus && updatedGnd)
             {
-                MeasureScreen measureScreen = new MeasureScreen(tierce, formatBusConnectArray());
+                MeasureScreen measureScreen = new MeasureScreen(communicator, formatBusConnectArray());
                 measureScreen.ShowDialog();
             }
             else
@@ -43,7 +43,7 @@ namespace AdjustableVoltageSource
         }
         public void CloseMainWindow()
         {
-            tierce.closeSerialPort();
+            communicator.closeSerialPort();
             Close();
         }
 
@@ -52,14 +52,14 @@ namespace AdjustableVoltageSource
             if (!updatedBus || !updatedGnd)
             {
                 string data = formatGrounddata_pt1();
-                tierce.writeSerialPort(data);
+                communicator.writeSerialPort(data);
                 data = formatGrounddata_pt2();
-                tierce.writeSerialPort(data);
+                communicator.writeSerialPort(data);
 
                 data = formatBusdata_pt1();
-                tierce.writeSerialPort(data);
+                communicator.writeSerialPort(data);
                 data = formatBusdata_pt2();
-                tierce.writeSerialPort(data);
+                communicator.writeSerialPort(data);
 
                 Debug.WriteLine("");
 
@@ -74,7 +74,14 @@ namespace AdjustableVoltageSource
 
             updatedGnd = true;
             updatedBus = true;
-            tierce.writeSerialPort((int)Tierce.Functions.RESET + ";");
+            communicator.writeSerialPort((int)Communicator.Functions.RESET + ";"); 
+            
+            InitializeComponent();
+            DataContext = this;
+
+            communicator.initSerialPort();
+            updatedGnd = true;
+            updatedBus = true;
         }
     }
 }

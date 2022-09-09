@@ -38,7 +38,12 @@ namespace AdjustableVoltageSource
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
-        Tierce tierce = new Tierce();
+
+        private bool updatedGnd { get; set; }
+        private bool updatedBus { get; set; }
+        private double voltage { get; set; }
+
+        Communicator communicator = new Communicator();
 
 
         private int boolToInt(bool boolean)
@@ -48,7 +53,7 @@ namespace AdjustableVoltageSource
         }
         private string formatBusdata_pt1()
         {
-            string data = (int)Tierce.Functions.CONNECT_TO_BUS + ",";
+            string data = (int)Communicator.Functions.CONNECT_TO_BUS + ",";
             data = data + 1 + "," + boolToInt(ConnectedToBus_1) + ",";
             data = data + 2 + "," + boolToInt(ConnectedToBus_2) + ",";
             data = data + 3 + "," + boolToInt(ConnectedToBus_3) + ",";
@@ -62,7 +67,7 @@ namespace AdjustableVoltageSource
         }
         private string formatBusdata_pt2() 
         {
-            string data = (int)Tierce.Functions.CONNECT_TO_BUS + ",";
+            string data = (int)Communicator.Functions.CONNECT_TO_BUS + ",";
             data = data + 9 + "," + boolToInt(ConnectedToBus_9) + ",";
             data = data + 10 + "," + boolToInt(ConnectedToBus_10) + ",";
             data = data + 11 + "," + boolToInt(ConnectedToBus_11) + ",";
@@ -76,7 +81,7 @@ namespace AdjustableVoltageSource
         }
         private string formatGrounddata_pt1()
         {
-            string data = (int)Tierce.Functions.CONNECT_TO_GROUND + ",";
+            string data = (int)Communicator.Functions.CONNECT_TO_GROUND + ",";
             data = data + 1 + "," + boolToInt(ConnectedToGround_1) + ",";
             data = data + 2 + "," + boolToInt(ConnectedToGround_2) + ",";
             data = data + 3 + "," + boolToInt(ConnectedToGround_3) + ",";
@@ -89,7 +94,7 @@ namespace AdjustableVoltageSource
             return data;
         }
         private string formatGrounddata_pt2() {
-            string data = (int)Tierce.Functions.CONNECT_TO_GROUND + ",";
+            string data = (int)Communicator.Functions.CONNECT_TO_GROUND + ",";
             data = data + 9 + "," + boolToInt(ConnectedToGround_9) + ",";
             data = data + 10 + "," + boolToInt(ConnectedToGround_10) + ",";
             data = data + 11 + "," + boolToInt(ConnectedToGround_11) + ",";
@@ -122,10 +127,12 @@ namespace AdjustableVoltageSource
             connected[15] = ConnectedToBus_16;
             return connected;
         }
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void clearVoltageTextbox()
         {
-            e.Handled = isValidVoltage(e.Text.Replace(".", ","));
+            VoltageTextBox.Text = "";
         }
+
+
         private bool isValidVoltage(string s)
         {
             double voltage;
@@ -143,13 +150,6 @@ namespace AdjustableVoltageSource
                 return false;
             }
         }
-
-        private bool updatedGnd { get; set; }
-        private bool updatedBus { get; set; }
-        private double voltage { get; set; }
-
-
-        
         private void PutVoltage(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
@@ -159,8 +159,7 @@ namespace AdjustableVoltageSource
                 voltage = Convert.ToDouble(voltagestr);
                 try
                 {
-                    tierce.writeSerialPort((int)Tierce.Functions.PUT_VOLTAGE + "," + voltage + ";");
-                    // tierce.closeSerialPort();
+                    communicator.writeSerialPort((int)Communicator.Functions.PUT_VOLTAGE + "," + voltage + ";");
                 }
                 catch (IOException ex)
                 {
@@ -173,11 +172,7 @@ namespace AdjustableVoltageSource
         {
             e.Handled = true;
             clearVoltageTextbox();
-            tierce.writeSerialPort((int)Tierce.Functions.DISCONNECT_VOLTAGE + ";");
-        }
-        private void clearVoltageTextbox()
-        {
-            VoltageTextBox.Text = "";
+            communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
         }
         private string extractInput(string s)
         {
@@ -204,7 +199,5 @@ namespace AdjustableVoltageSource
                 return s.Substring(begin + 1, (end - begin - 1));
             }
         }
-
-
     }
 }

@@ -716,7 +716,7 @@ namespace AdjustableVoltageSource
             ConnectedToGround_15 = false;
             ConnectedToGround_16 = false;
 
-            tierce.writeSerialPort((int)Tierce.Functions.DISCONNECT_VOLTAGE + ";");
+            communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
             clearVoltageTextbox();
         }
     }
