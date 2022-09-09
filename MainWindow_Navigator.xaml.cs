@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Media;
 
 namespace AdjustableVoltageSource
 {
@@ -15,6 +16,16 @@ namespace AdjustableVoltageSource
             communicator.initSerialPort();
             updatedGnd = true;
             updatedBus = true;
+
+            CommandInterface.SelectAll();
+            CommandInterface.Selection.Text = "";
+
+            Status.SelectAll();
+            Status.Selection.Text = "";
+
+            Registers.SelectAll();
+            Registers.Selection.Text = "";
+
         }
         private void OpenSettingScreen(object sender, RoutedEventArgs e)
         {
@@ -33,7 +44,7 @@ namespace AdjustableVoltageSource
         {
             if (updatedBus && updatedGnd)
             {
-                MeasureScreen measureScreen = new MeasureScreen(communicator, formatBusConnectArray());
+                MeasureScreen measureScreen = new MeasureScreen(communicator, FormatBusConnectArray());
                 measureScreen.ShowDialog();
             }
             else
@@ -51,14 +62,14 @@ namespace AdjustableVoltageSource
         {
             if (!updatedBus || !updatedGnd)
             {
-                string data = formatGrounddata_pt1();
+                string data = FormatGrounddata_pt1();
                 communicator.writeSerialPort(data);
-                data = formatGrounddata_pt2();
+                data = FormatGrounddata_pt2();
                 communicator.writeSerialPort(data);
 
-                data = formatBusdata_pt1();
+                data = FormatBusdata_pt1();
                 communicator.writeSerialPort(data);
-                data = formatBusdata_pt2();
+                data = FormatBusdata_pt2();
                 communicator.writeSerialPort(data);
 
                 Debug.WriteLine("");
@@ -74,8 +85,8 @@ namespace AdjustableVoltageSource
 
             updatedGnd = true;
             updatedBus = true;
-            communicator.writeSerialPort((int)Communicator.Functions.RESET + ";"); 
-            
+            communicator.writeSerialPort((int)Communicator.Functions.RESET + ";");
+
             InitializeComponent();
             DataContext = this;
 

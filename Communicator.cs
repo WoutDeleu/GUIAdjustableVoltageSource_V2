@@ -1,10 +1,12 @@
-﻿using Microsoft.Win32;
+﻿using AdjustableVoltageSource;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO.Ports;
 using System.Management;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
@@ -13,7 +15,8 @@ public class Communicator
 {
     private string port = "COM5";
     private int baudrate = 115200;
-    public SerialPort serialPort;
+    public SerialPort serialPort; 
+    MainWindow mw = (MainWindow)Application.Current.MainWindow;
     public enum Functions
     {
         TOGGLE_LED = 1,
@@ -127,7 +130,7 @@ public class Communicator
             serialPort.RtsEnable = true;
             serialPort.ReceivedBytesThreshold = 1;
             serialPort.BaudRate = 115200;
-            this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
+            serialPort.DataReceived += new SerialDataReceivedEventHandler(this.serialPort_DataReceived);
             serialPort.Open();
             Debug.WriteLine("'" + serialPort.PortName + "' Port Opened Succesfully\n");
         }
@@ -284,5 +287,88 @@ public class Communicator
     //    }
     //    return "";
     //}
+    
+    public static string ExtractInput(string s)
+    {
+        char[] array = s.ToCharArray();
+        int begin = 0, end = 0;
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] == '[') begin = i;
+            if (array[i] == ']') end = i;
+        }
+        if (end == 0)
+        {
+            Debug.WriteLine("FAULT IN COMMUNICATION");
+            return "FAULT IN COMMUNICATION";
+        }
+        else
+        {
+            Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
+            return s.Substring(begin + 1, (end - begin - 1));
+        }
+    }    
+    public static string ExtractErrorMessage(string s)
+    {
+        char[] array = s.ToCharArray();
+        int begin = 0, end = 0;
+        bool foundBeginning = false;
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] == '|' && array[i + 1] == '|' && !foundBeginning) begin = i+1;
+            if (array[i] == '|' && array[i + 1] == '|' && foundBeginning) end = i;
+        }
+        if (end == 0)
+        {
+            Debug.WriteLine("FAULT IN COMMUNICATION");
+            return "FAULT IN COMMUNICATION";
+        }
+        else
+        {
+            Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
+            return s.Substring(begin + 1, (end - begin - 1));
+        }
+    }   
+    public static string ExtractStatus(string s)
+    {
+        char[] array = s.ToCharArray();
+        int begin = 0, end = 0;
+        bool foundBeginning = false;
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] == '#' && array[i + 1] == '#' && !foundBeginning) begin = i+1;
+            if (array[i] == '#' && array[i + 1] == '#' && foundBeginning) end = i;
+        }
+        if (end == 0)
+        {
+            Debug.WriteLine("FAULT IN COMMUNICATION");
+            return "FAULT IN COMMUNICATION";
+        }
+        else
+        {
+            Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
+            return s.Substring(begin + 1, (end - begin - 1));
+        }
+    }   
+    public static string ExtractRegisters(string s)
+    {
+        char[] array = s.ToCharArray();
+        int begin = 0, end = 0;
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] == '(' && array[i + 1] == '(') begin = i+1;
+            if (array[i] == ')' && array[i + 1] == ')') end = i;
+        }
+        if (end == 0)
+        {
+            Debug.WriteLine("FAULT IN COMMUNICATION");
+            return "FAULT IN COMMUNICATION";
+        }
+        else
+        {
+            Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
+            return s.Substring(begin + 1, (end - begin - 1));
+        }
+    }
 }
 

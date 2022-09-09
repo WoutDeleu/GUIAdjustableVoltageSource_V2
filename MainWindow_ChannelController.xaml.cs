@@ -717,7 +717,7 @@ namespace AdjustableVoltageSource
             ConnectedToGround_16 = false;
 
             communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
-            clearVoltageTextbox();
+            VoltageTextBox.Text = "";
         }
     }
 }

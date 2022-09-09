@@ -23,6 +23,7 @@ namespace AdjustableVoltageSource
     /// </summary>
     public partial class SettingScreen : Window, INotifyPropertyChanged
     {
+        MainWindow mw = (MainWindow)Application.Current.MainWindow;
         public static Communicator communicator;
         private int _boardNumber;
         public int BoardNumber
@@ -41,7 +42,7 @@ namespace AdjustableVoltageSource
         {
             communicator = s;
             InitializeComponent();
-            BoardNumber = getBoardNumberArduino();
+            BoardNumber = GetBoardNumberArduino();
             Current_BoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
             DataContext = this;
         }
@@ -53,30 +54,21 @@ namespace AdjustableVoltageSource
         {
             e.Handled = true;
             String boardNumberStr = NewBoardNumber.Text;
-            Debug.WriteLine(boardNumberStr);
-            if (isValidBoardNumber(boardNumberStr))
+            if (IsValidBoardNumber(boardNumberStr))
             {
                 BoardNumber = Convert.ToInt32(boardNumberStr);
-				setBoardNumberArduino(BoardNumber);
-                Close();
+                SetBoardNumberArduino(BoardNumber);
             }
             else
             {
-                Debug.WriteLine("Fault in fomrat input");
+                mw.StatusBox_Error = ("Fault in format boardNumber");
             }
         }
-        public void setBoardNumberArduino(int boardNumber)
+        public void SetBoardNumberArduino(int boardNumber)
         {
-            try 
-            {
-                communicator.writeSerialPort((int)Communicator.Functions.CHANGE_BOARDNUMBER + "," + boardNumber + ";");
-            }
-            catch(IOException ex)
-            {
-                Debug.WriteLine(ex.ToString());
-            }
+            communicator.writeSerialPort((int)Communicator.Functions.CHANGE_BOARDNUMBER + "," + boardNumber + ";");
         }
-        private int getBoardNumberArduino()
+        private int GetBoardNumberArduino()
         {
             int boardNumber;
 
@@ -87,7 +79,7 @@ namespace AdjustableVoltageSource
             {
                 input += communicator.serialPort.ReadExisting();
             }
-            string nr = extractInput(input);
+            string nr = Communicator.ExtractInput(input);
             if (int.TryParse(nr, out boardNumber)) return boardNumber;
             else
             {
@@ -95,29 +87,7 @@ namespace AdjustableVoltageSource
                 return 999999;
             } 
         }
-
-        private string extractInput(string s)
-        {
-            char[] array = s.ToCharArray();
-            int begin = 0, end = 0, length;
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (array[i] == '[') begin = i;
-                if (array[i] == ']') end = i;
-            }
-            if (end == 0)
-            {
-                Debug.WriteLine("FAULT IN COMMUNICATION");
-                return "FAULT IN COMMUNICATION";
-            }
-            else
-            {
-                Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
-                return s.Substring(begin + 1, (end - begin - 1));
-            }
-        }
-
-        private Boolean isValidBoardNumber(String s)
+        private static bool IsValidBoardNumber(String s)
         {
             return Regex.IsMatch(s, @"^\d+$");
         }

@@ -12,6 +12,7 @@ namespace AdjustableVoltageSource
 
     public partial class MeasureScreen : Window, INotifyPropertyChanged
     {
+        MainWindow mw = (MainWindow)Application.Current.MainWindow;
         public static Communicator communicator;
         private string _measuredValue;
         private bool[] connected;
@@ -110,11 +111,13 @@ namespace AdjustableVoltageSource
         public MeasureScreen(Communicator s, bool[] con)
         {
             SelectionVisible = Visibility.Visible;
-            InitializeComponent(); 
-            Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
-            DataContext = this;
+
             communicator = s;
             connected = con;
+
+            DataContext = this;
+            InitializeComponent();
+            Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
         }
         private void CloseMeasureScreen(object sender, RoutedEventArgs e)
         {
@@ -144,7 +147,6 @@ namespace AdjustableVoltageSource
         }
         private void MeasureValue(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine(SelectMeasureFunction.SelectedItem.ToString());
             if (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Measure Current")
             {
                 double current_out;
@@ -156,13 +158,12 @@ namespace AdjustableVoltageSource
                 {
                     input += communicator.serialPort.ReadExisting();
                 }
-                Debug.WriteLine(input);
                 string current = extractInput(input).Replace(".", ",");
                 if (double.TryParse(current, out current_out))
                     MeasuredValue = current_out + " A";
                 else
                 {
-                    Debug.WriteLine("Fault in measure format...");
+                    mw.StatusBox_Error = ("Fault in measure format");
                     MeasuredValue = "FAULT";
                 }
             }                
