@@ -4,6 +4,7 @@ using System.Windows;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Data;
+using System.Threading;
 
 namespace AdjustableVoltageSource
 {
@@ -135,18 +136,16 @@ namespace AdjustableVoltageSource
 
             CommandInterface.SelectAll();
             CommandInterface.Selection.Text = "";
-
             Status.SelectAll();
             Status.Selection.Text = "";
-
             Registers.SelectAll();
             Registers.Selection.Text = "";
 
             SelectionVisible = Visibility.Visible;
             Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
 
-            BoardNumber = GetBoardNumberArduino();
             Current_BoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
+            GetBoardNumberArduino();
             DataContext = this;
         }
         
@@ -156,27 +155,6 @@ namespace AdjustableVoltageSource
             Close();
         }
 
-        private void Connect(object sender, RoutedEventArgs e)
-        {
-            if (!updatedBus || !updatedGnd)
-            {
-                string data = FormatGrounddata_pt1();
-                communicator.writeSerialPort(data);
-                data = FormatGrounddata_pt2();
-                communicator.writeSerialPort(data);
-
-                data = FormatBusdata_pt1();
-                communicator.writeSerialPort(data);
-                data = FormatBusdata_pt2();
-                communicator.writeSerialPort(data);
-
-                Debug.WriteLine("");
-
-                updatedBus = true;
-                updatedGnd = true;
-            }
-            else Debug.WriteLine("Nothing to update");
-        }
         public void Reset(object sender, RoutedEventArgs e)
         {
             DisconnectAll();

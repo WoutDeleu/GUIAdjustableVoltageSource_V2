@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.ComponentModel;
+using System;
 
 namespace AdjustableVoltageSource
 {
@@ -716,8 +717,47 @@ namespace AdjustableVoltageSource
             ConnectedToGround_15 = false;
             ConnectedToGround_16 = false;
 
+            ch1.IsEnabled = false;
+            ch2.IsEnabled = false;
+            ch3.IsEnabled = false;
+            ch4.IsEnabled = false;
+            ch5.IsEnabled = false;
+            ch6.IsEnabled = false;
+            ch7.IsEnabled = false;
+            ch8.IsEnabled = false;
+            ch9.IsEnabled = false;
+            ch10.IsEnabled = false;
+            ch11.IsEnabled = false;
+            ch12.IsEnabled = false;
+            ch13.IsEnabled = false;
+            ch14.IsEnabled = false;
+            ch15.IsEnabled = false;
+            ch16.IsEnabled = false;
+
             communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
             VoltageTextBox.Text = "";
+        }
+
+        private void Connect(object sender, RoutedEventArgs e)
+        {
+            if (!updatedBus || !updatedGnd)
+            {
+                string data = FormatGrounddata_pt1();
+                communicator.writeSerialPort(data);
+                data = FormatGrounddata_pt2();
+                communicator.writeSerialPort(data);
+
+                data = FormatBusdata_pt1();
+                communicator.writeSerialPort(data);
+                data = FormatBusdata_pt2();
+                communicator.writeSerialPort(data);
+
+                updateMeasureBoxes();
+
+                updatedBus = true;
+                updatedGnd = true;
+            }
+            else StatusBox_Status = "Nothing to update";
         }
     }
 }

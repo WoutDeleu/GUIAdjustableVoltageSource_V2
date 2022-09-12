@@ -42,71 +42,6 @@ namespace AdjustableVoltageSource
 
         private bool handle = true;
 
-        public bool ch1_definitiveConnected
-        {
-            get { return ConnectedToBus_1 & updatedBus & updatedGnd; }
-        }
-        public bool ch2_definitiveConnected
-        {
-            get { return ConnectedToBus_2 & updatedBus & updatedGnd; }
-        }
-        public bool ch3_definitiveConnected
-        {
-            get { return ConnectedToBus_3 & updatedBus & updatedGnd; }
-        }
-        public bool ch4_definitiveConnected
-        {
-            get { return ConnectedToBus_4 & updatedBus & updatedGnd; }
-        }
-        public bool ch5_definitiveConnected
-        {
-            get { return ConnectedToBus_5 & updatedBus & updatedGnd; }
-        }
-        public bool ch6_definitiveConnected
-        {
-            get { return ConnectedToBus_6 & updatedBus & updatedGnd; }
-        }
-        public bool ch7_definitiveConnected
-        {
-            get { return ConnectedToBus_7 & updatedBus & updatedGnd; }
-        }
-        public bool ch8_definitiveConnected
-        {
-            get { return ConnectedToBus_8 & updatedBus & updatedGnd; }
-        }
-        public bool ch9_definitiveConnected
-        {
-            get { return ConnectedToBus_9 & updatedBus & updatedGnd; }
-        }
-        public bool ch10_definitiveConnected
-        {
-            get { return ConnectedToBus_10 & updatedBus & updatedGnd; }
-        }
-        public bool ch11_definitiveConnected
-        {
-            get { return ConnectedToBus_11 & updatedBus & updatedGnd; }
-        }
-        public bool ch12_definitiveConnected
-        {
-            get { return ConnectedToBus_12 & updatedBus & updatedGnd; }
-        }
-        public bool ch13_definitiveConnected
-        {
-            get { return ConnectedToBus_13 & updatedBus & updatedGnd; }
-        }
-        public bool ch14_definitiveConnected
-        {
-            get { return ConnectedToBus_14 & updatedBus & updatedGnd; }
-        }
-        public bool ch15_definitiveConnected
-        {
-            get { return ConnectedToBus_15 & updatedBus & updatedGnd; }
-        }
-        public bool ch16_definitiveConnected
-        {
-            get { return ConnectedToBus_16 & updatedBus & updatedGnd; }
-        }
-
         private void measureVoltageCmd()
         {
             string channel = "";
@@ -142,7 +77,7 @@ namespace AdjustableVoltageSource
                 {
                     input += communicator.serialPort.ReadExisting();
                 }
-                string current = extractInput(input).Replace(".", ",");
+                string current = Communicator.ExtractInput(input, this).Replace(".", ",");
                 if (double.TryParse(current, out current_out))
                     MeasuredValue = current_out + " A";
                 else
@@ -163,7 +98,7 @@ namespace AdjustableVoltageSource
                     input += communicator.serialPort.ReadExisting();
                 }
                 Debug.WriteLine(input);
-                string voltage = extractInput(input).Replace(".", ",");
+                string voltage = Communicator.ExtractInput(input, this).Replace(".", ",");
                 if (double.TryParse(voltage, out voltage_out))
                     MeasuredValue = voltage_out + " V";
                 else
@@ -196,26 +131,24 @@ namespace AdjustableVoltageSource
                     break;
             }
         }
-        private string extractInput(string s)
+        private void updateMeasureBoxes()
         {
-            char[] array = s.ToCharArray();
-            int begin = 0, end = 0;
-            for(int i=0; i<array.Length; i++)
-            {
-                if (array[i] == '[') begin = i;
-                if (array[i] == ']') end = i;
-            }
-            if (end == 0)
-                {
-                StatusBox_Error = "FAULT IN COMMUNICATION";
-                return "FAULT IN COMMUNICATION";
-            }
-            else
-            {
-                Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
-                return s.Substring(begin + 1, (end - begin - 1));
-            }
+            ch1.IsEnabled = ConnectedToBus_1;
+            ch2.IsEnabled = ConnectedToBus_2;
+            ch3.IsEnabled = ConnectedToBus_3;
+            ch4.IsEnabled = ConnectedToBus_4;
+            ch5.IsEnabled = ConnectedToBus_5;
+            ch6.IsEnabled = ConnectedToBus_6;
+            ch7.IsEnabled = ConnectedToBus_7;
+            ch8.IsEnabled = ConnectedToBus_8;
+            ch9.IsEnabled = ConnectedToBus_9;
+            ch10.IsEnabled = ConnectedToBus_10;
+            ch11.IsEnabled = ConnectedToBus_11;
+            ch12.IsEnabled = ConnectedToBus_12;
+            ch13.IsEnabled = ConnectedToBus_13;
+            ch14.IsEnabled = ConnectedToBus_14;
+            ch15.IsEnabled = ConnectedToBus_15;
+            ch16.IsEnabled = ConnectedToBus_16;
         }
-
     }
 }
