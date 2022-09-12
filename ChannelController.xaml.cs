@@ -680,7 +680,7 @@ namespace AdjustableVoltageSource
             if (updatedGnd) updatedGnd = false;
         }
         
-        private void disconnectAll()
+        private void DisconnectAll()
         {
             ConnectedToBus_1 = false;
             ConnectedToBus_2 = false;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -9,13 +9,10 @@ using System.Windows.Data;
 
 namespace AdjustableVoltageSource
 {
-
-    public partial class MeasureScreen : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        MainWindow mw = (MainWindow)Application.Current.MainWindow;
-        public static Communicator communicator;
         private string _measuredValue;
-        private bool[] connected;
+
         private Visibility selectionVisible;
         public Visibility SelectionVisible 
         {
@@ -42,87 +39,74 @@ namespace AdjustableVoltageSource
                 }
             }
         }
-        
-        public bool ch1_connected
-        {
-            get { return connected[0]; }
-        }
-        public bool ch2_connected
-        {
-            get { return connected[1]; }
-        }
-        public bool ch3_connected
-        {
-            get { return connected[2]; }
-        }
-        public bool ch4_connected
-        {
-            get { return connected[3]; }
-        }
-        public bool ch5_connected
-        {
-            get { return connected[4]; }
-        }
-        public bool ch6_connected
-        {
-            get { return connected[5]; }
-        }
-        public bool ch7_connected
-        {
-            get { return connected[6]; }
-        }
-        public bool ch8_connected
-        {
-            get { return connected[7]; }
-        }
-        public bool ch9_connected
-        {
-            get { return connected[8]; }
-        }
-        public bool ch10_connected
-        {
-            get { return connected[9]; }
-        }
-        public bool ch11_connected
-        {
-            get { return connected[10]; }
-        } 
-        public bool ch12_connected
-        {
-            get { return connected[11]; }
-        }
-        public bool ch13_connected
-        {
-            get { return connected[12]; }
-        }
-        public bool ch14_connected
-        {
-            get { return connected[13]; }
-        }
-        public bool ch15_connected
-        {
-            get { return connected[14]; }
-        }
-        public bool ch16_connected
-        {
-            get { return connected[15]; }
-        }
-        
-        public MeasureScreen(Communicator s, bool[] con)
-        {
-            SelectionVisible = Visibility.Visible;
 
-            communicator = s;
-            connected = con;
+        private bool handle = true;
 
-            DataContext = this;
-            InitializeComponent();
-            Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
-        }
-        private void CloseMeasureScreen(object sender, RoutedEventArgs e)
+        public bool ch1_definitiveConnected
         {
-            Close();
+            get { return ConnectedToBus_1 & updatedBus & updatedGnd; }
         }
+        public bool ch2_definitiveConnected
+        {
+            get { return ConnectedToBus_2 & updatedBus & updatedGnd; }
+        }
+        public bool ch3_definitiveConnected
+        {
+            get { return ConnectedToBus_3 & updatedBus & updatedGnd; }
+        }
+        public bool ch4_definitiveConnected
+        {
+            get { return ConnectedToBus_4 & updatedBus & updatedGnd; }
+        }
+        public bool ch5_definitiveConnected
+        {
+            get { return ConnectedToBus_5 & updatedBus & updatedGnd; }
+        }
+        public bool ch6_definitiveConnected
+        {
+            get { return ConnectedToBus_6 & updatedBus & updatedGnd; }
+        }
+        public bool ch7_definitiveConnected
+        {
+            get { return ConnectedToBus_7 & updatedBus & updatedGnd; }
+        }
+        public bool ch8_definitiveConnected
+        {
+            get { return ConnectedToBus_8 & updatedBus & updatedGnd; }
+        }
+        public bool ch9_definitiveConnected
+        {
+            get { return ConnectedToBus_9 & updatedBus & updatedGnd; }
+        }
+        public bool ch10_definitiveConnected
+        {
+            get { return ConnectedToBus_10 & updatedBus & updatedGnd; }
+        }
+        public bool ch11_definitiveConnected
+        {
+            get { return ConnectedToBus_11 & updatedBus & updatedGnd; }
+        }
+        public bool ch12_definitiveConnected
+        {
+            get { return ConnectedToBus_12 & updatedBus & updatedGnd; }
+        }
+        public bool ch13_definitiveConnected
+        {
+            get { return ConnectedToBus_13 & updatedBus & updatedGnd; }
+        }
+        public bool ch14_definitiveConnected
+        {
+            get { return ConnectedToBus_14 & updatedBus & updatedGnd; }
+        }
+        public bool ch15_definitiveConnected
+        {
+            get { return ConnectedToBus_15 & updatedBus & updatedGnd; }
+        }
+        public bool ch16_definitiveConnected
+        {
+            get { return ConnectedToBus_16 & updatedBus & updatedGnd; }
+        }
+
         private void measureVoltageCmd()
         {
             string channel = "";
@@ -163,7 +147,7 @@ namespace AdjustableVoltageSource
                     MeasuredValue = current_out + " A";
                 else
                 {
-                    mw.StatusBox_Error = ("Fault in measure format");
+                    StatusBox_Error = "Fault in measure format";
                     MeasuredValue = "FAULT";
                 }
             }                
@@ -184,13 +168,11 @@ namespace AdjustableVoltageSource
                     MeasuredValue = voltage_out + " V";
                 else
                 {
-                    Debug.WriteLine("Fault in measure format...");
+                    StatusBox_Error = "Fault in measure format...";
                     MeasuredValue = "FAULT";
                 }
             }
         }
-
-        private bool handle = true;
         private void selectMeasureFunction_DropDownClosed(object sender, EventArgs e)
         {
             if (handle) Handle();
@@ -201,7 +183,6 @@ namespace AdjustableVoltageSource
             ComboBox cmb = sender as ComboBox;
             handle = !cmb.IsDropDownOpen;
             Handle();
-            Debug.WriteLine(SelectionVisible);
         }
         private void Handle()
         {
@@ -226,7 +207,7 @@ namespace AdjustableVoltageSource
             }
             if (end == 0)
                 {
-                Debug.WriteLine("FAULT IN COMMUNICATION");
+                StatusBox_Error = "FAULT IN COMMUNICATION";
                 return "FAULT IN COMMUNICATION";
             }
             else
@@ -236,16 +217,5 @@ namespace AdjustableVoltageSource
             }
         }
 
-        #region INotifyPropertyChanged Implementation
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string name)
-        {
-            var handler = System.Threading.Interlocked.CompareExchange(ref PropertyChanged, null, null);
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
-        }
-        #endregion
     }
 }

@@ -15,8 +15,8 @@ public class Communicator
 {
     private string port = "COM5";
     private int baudrate = 115200;
-    public SerialPort serialPort; 
-    MainWindow mw = (MainWindow)Application.Current.MainWindow;
+    public SerialPort serialPort;
+    public MainWindow mw;
     public enum Functions
     {
         TOGGLE_LED = 1,
@@ -35,6 +35,7 @@ public class Communicator
         serialPort = new SerialPort(port);
         serialPort.PortName = port;
         serialPort.BaudRate = baudrate;
+        mw = (MainWindow)Application.Current.MainWindow;
     }
 
     public void writeSerialPort(string data)
@@ -45,12 +46,12 @@ public class Communicator
             {
                 Thread.Sleep(50);
                 serialPort.WriteLine(data);
-                Debug.WriteLine("Data to send: " + data);
+                mw.CommandBox =  data;
                 Thread.Sleep(50);
             }
             else
             {
-                Debug.WriteLine("closed");
+                mw.StatusBox_Error = "FAULT in connection. SerialPort is closed.";
             }
         }
         catch (Exception ex)
@@ -68,7 +69,7 @@ public class Communicator
 
                 if (!serialPort.IsOpen)
                 {
-                    Debug.WriteLine("'" + serialPort.PortName + "' Port Closed\n");
+                    mw.StatusBox_Status = "'" + serialPort.PortName + "' Port Closed\n";
                 }
             }
             
@@ -117,32 +118,9 @@ public class Communicator
             Debug.WriteLine(ex.Message + "\n");
         }
     }
-    void closeSerialPort(string port)
-    {
-        try
-        {
-            if (serialPort.IsOpen)
-            {
-                serialPort.Close();
-            }
-            serialPort.PortName = port;
-            serialPort.DtrEnable = true;
-            serialPort.RtsEnable = true;
-            serialPort.ReceivedBytesThreshold = 1;
-            serialPort.BaudRate = 115200;
-            serialPort.DataReceived += new SerialDataReceivedEventHandler(this.serialPort_DataReceived);
-            serialPort.Open();
-            Debug.WriteLine("'" + serialPort.PortName + "' Port Opened Succesfully\n");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message + "\n");
-        }
-    }
-
     public void closeSerialPort()
     {
-        serialPort.Open();
+        if(!serialPort.IsOpen) serialPort.Open();
         serialPort.DiscardOutBuffer();
         serialPort.DiscardInBuffer();
 
@@ -159,15 +137,24 @@ public class Communicator
             if (serialPort.IsOpen)
             {
                 Thread.Sleep(200);
-
                 do
                 {
                     readSciMessage += serialPort.ReadExisting();
                 } while (serialPort.BytesToRead != 0);
 
-                Debug.WriteLine(readSciMessage);
+                if (readSciMessage.Contains("||"))
+                {
+                    mw.StatusBox_Error = ExtractErrorMessage(readSciMessage, mw);
+                }
+                if (readSciMessage.Contains("##"))
+                {
+                    mw.StatusBox_Status = ExtractStatus(readSciMessage, mw);
+                }
+                if (readSciMessage.Contains("(("))
+                {
+                    mw.RegisterBox = ExtractRegisters(readSciMessage, mw);
+                }
 
-                Thread.Sleep(100);
             }
         }
         catch (IndexOutOfRangeException ex)
@@ -186,6 +173,7 @@ public class Communicator
             Debug.WriteLine(ex.ToString() + "\n");
         }
     }
+    
     //string ComPortName(String VID, String PID)
     //{
     //    String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
@@ -288,7 +276,7 @@ public class Communicator
     //    return "";
     //}
     
-    public static string ExtractInput(string s)
+    public static string ExtractInput(string s, MainWindow mainWindow)
     {
         char[] array = s.ToCharArray();
         int begin = 0, end = 0;
@@ -299,17 +287,17 @@ public class Communicator
         }
         if (end == 0)
         {
-            Debug.WriteLine("FAULT IN COMMUNICATION");
+            mainWindow.StatusBox_Error = "FAULT IN COMMUNICATION";
             return "FAULT IN COMMUNICATION";
         }
         else
         {
-            Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
             return s.Substring(begin + 1, (end - begin - 1));
         }
     }    
-    public static string ExtractErrorMessage(string s)
+    public static string ExtractErrorMessage(string s, MainWindow mainWindow)
     {
+        Debug.WriteLine(s);
         char[] array = s.ToCharArray();
         int begin = 0, end = 0;
         bool foundBeginning = false;
@@ -320,17 +308,17 @@ public class Communicator
         }
         if (end == 0)
         {
-            Debug.WriteLine("FAULT IN COMMUNICATION");
+            mainWindow.StatusBox_Error = ("FAULT IN COMMUNICATION");
             return "FAULT IN COMMUNICATION";
         }
         else
         {
-            Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
             return s.Substring(begin + 1, (end - begin - 1));
         }
     }   
-    public static string ExtractStatus(string s)
+    public static string ExtractStatus(string s, MainWindow mainWindow)
     {
+        Debug.WriteLine(s);
         char[] array = s.ToCharArray();
         int begin = 0, end = 0;
         bool foundBeginning = false;
@@ -341,17 +329,17 @@ public class Communicator
         }
         if (end == 0)
         {
-            Debug.WriteLine("FAULT IN COMMUNICATION");
+            mainWindow.StatusBox_Error = ("FAULT IN COMMUNICATION");
             return "FAULT IN COMMUNICATION";
         }
         else
         {
-            Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
-            return s.Substring(begin + 1, (end - begin - 1));
+            return s.Substring(begin + 1, (end - begin - 2));
         }
     }   
-    public static string ExtractRegisters(string s)
+    public static string ExtractRegisters(string s, MainWindow mainWindow)
     {
+        Debug.WriteLine(s);
         char[] array = s.ToCharArray();
         int begin = 0, end = 0;
         for (int i = 0; i < array.Length; i++)
@@ -361,13 +349,12 @@ public class Communicator
         }
         if (end == 0)
         {
-            Debug.WriteLine("FAULT IN COMMUNICATION");
+            mainWindow.StatusBox_Error = ("FAULT IN COMMUNICATION");
             return "FAULT IN COMMUNICATION";
         }
         else
         {
-            Debug.WriteLine(s.Substring(begin + 1, (end - begin - 1)));
-            return s.Substring(begin + 1, (end - begin - 1));
+            return s.Substring(begin+1, (end - begin - 2));
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿<Application x:Class="AdjustableVoltageSource.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:AdjustableVoltageSource"
+             xmlns:local="clr-namespace:AdjustableVoltageSource" xmlns:converterNamespace="clr-namespace:ConverterNamespace"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        
     </Application.Resources>
 </Application>

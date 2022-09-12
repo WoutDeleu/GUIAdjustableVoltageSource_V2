@@ -3,12 +3,10 @@ using System.IO;
 using System.Windows;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Data;
 
 namespace AdjustableVoltageSource
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         delegate void serialCalback(string val);
@@ -26,9 +24,8 @@ namespace AdjustableVoltageSource
         private bool updatedGnd { get; set; }
         private bool updatedBus { get; set; }
         private double voltage { get; set; }
-        
-        Communicator communicator = new();
 
+        Communicator communicator;
 
         private static int BoolToInt(bool boolean)
         {
@@ -90,29 +87,6 @@ namespace AdjustableVoltageSource
             data = data + ";";
             return data;
         }
-        private bool[] FormatBusConnectArray()
-        {
-            bool[] connected = new bool[16];
-            connected[0] = ConnectedToBus_1;
-            connected[1] = ConnectedToBus_2;
-            connected[2] = ConnectedToBus_3;
-            connected[3] = ConnectedToBus_4;
-            connected[4] = ConnectedToBus_5;
-            connected[5] = ConnectedToBus_6;
-            connected[6] = ConnectedToBus_7;
-            connected[7] = ConnectedToBus_8;
-            connected[8] = ConnectedToBus_9;
-            connected[9] = ConnectedToBus_10;
-            connected[10] = ConnectedToBus_11;
-            connected[11] = ConnectedToBus_12;
-            connected[12] = ConnectedToBus_13;
-            connected[13] = ConnectedToBus_14;
-            connected[14] = ConnectedToBus_15;
-            connected[15] = ConnectedToBus_16;
-            return connected;
-        }
-
-
         private static bool IsValidVoltage(string s)
         {
             double voltage;
@@ -139,7 +113,7 @@ namespace AdjustableVoltageSource
                 voltage = Convert.ToDouble(voltagestr);
                 communicator.writeSerialPort((int)Communicator.Functions.PUT_VOLTAGE + "," + voltage + ";");
             }
-            else Debug.WriteLine("Invalid number");
+            else StatusBox_Error = "Invalid Voltage, voltage must be in range [0V...30V] and it must be a number.";
         }
         public void DisconnectVoltage(object sender, RoutedEventArgs e)
         {
@@ -148,5 +122,75 @@ namespace AdjustableVoltageSource
             communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
         }
 
+        public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            communicator = new();
+            communicator.initSerialPort();
+
+            updatedGnd = true;
+            updatedBus = true;
+
+            CommandInterface.SelectAll();
+            CommandInterface.Selection.Text = "";
+
+            Status.SelectAll();
+            Status.Selection.Text = "";
+
+            Registers.SelectAll();
+            Registers.Selection.Text = "";
+
+            SelectionVisible = Visibility.Visible;
+            Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
+
+            BoardNumber = GetBoardNumberArduino();
+            Current_BoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
+            DataContext = this;
+        }
+        
+        public void CloseMainWindow()
+        {
+            communicator.closeSerialPort();
+            Close();
+        }
+
+        private void Connect(object sender, RoutedEventArgs e)
+        {
+            if (!updatedBus || !updatedGnd)
+            {
+                string data = FormatGrounddata_pt1();
+                communicator.writeSerialPort(data);
+                data = FormatGrounddata_pt2();
+                communicator.writeSerialPort(data);
+
+                data = FormatBusdata_pt1();
+                communicator.writeSerialPort(data);
+                data = FormatBusdata_pt2();
+                communicator.writeSerialPort(data);
+
+                Debug.WriteLine("");
+
+                updatedBus = true;
+                updatedGnd = true;
+            }
+            else Debug.WriteLine("Nothing to update");
+        }
+        public void Reset(object sender, RoutedEventArgs e)
+        {
+            DisconnectAll();
+
+            updatedGnd = true;
+            updatedBus = true;
+            communicator.writeSerialPort((int)Communicator.Functions.RESET + ";");
+
+            InitializeComponent();
+            DataContext = this;
+
+            communicator.initSerialPort();
+            updatedGnd = true;
+            updatedBus = true;
+        }
     }
 }
