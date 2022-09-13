@@ -680,7 +680,8 @@ namespace AdjustableVoltageSource
             // ConnectedToGround_16 = !ConnectedToGround_16;
             if (updatedGnd) updatedGnd = false;
         }
-        
+
+        // Defintly disconnect all channels to bus and ground as selected
         private void DisconnectAll()
         {
             ConnectedToBus_1 = false;
@@ -736,10 +737,12 @@ namespace AdjustableVoltageSource
 
             communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
             VoltageTextBox.Text = "";
+            StatusBox_Status = "Everything is Disconnected";
         }
-
+        // Defintly connect all channels to bus and ground as selected
         private void Connect(object sender, RoutedEventArgs e)
         {
+            // if there are no changes being made, there is no need to update the registers
             if (!updatedBus || !updatedGnd)
             {
                 string data = FormatGrounddata_pt1();
@@ -752,12 +755,13 @@ namespace AdjustableVoltageSource
                 data = FormatBusdata_pt2();
                 communicator.writeSerialPort(data);
 
-                updateMeasureBoxes();
+                UpdateMeasureBoxes();
 
                 updatedBus = true;
                 updatedGnd = true;
+                StatusBox_Status = "Connections are established";
             }
-            else StatusBox_Status = "Nothing to update";
+            else StatusBox_Status = "Nothing to update while connecting";
         }
     }
 }

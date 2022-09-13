@@ -23,22 +23,27 @@ namespace AdjustableVoltageSource
             }
         }
 
-
+        // Communicator with the arduino
         Communicator communicator;
+        // Keep track of time which app is opened
+        Stopwatch stopwatch;
         private bool updatedGnd { get; set; }
         private bool updatedBus { get; set; }
         private double voltage { get; set; }
 
 
-
+        // Start up app
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
 
+            // Initialize timer and communication with arduino
             communicator = new();
-            communicator.initSerialPort();
+            communicator.initSerialPort(); 
+            stopwatch = Stopwatch.StartNew();
 
+            // Clear textboxes logs
             CommandInterface.SelectAll();
             CommandInterface.Selection.Text = "";
             Status.SelectAll();
@@ -46,6 +51,7 @@ namespace AdjustableVoltageSource
             Registers.SelectAll();
             Registers.Selection.Text = "";
 
+            // Loop until communication is established
             string message = "";
             bool started = false, finished = false;
             while(!started)
@@ -58,12 +64,13 @@ namespace AdjustableVoltageSource
                 message += communicator.serialPort.ReadExisting();
                 if (message.Contains("##Setup Complete##")) finished = true;
             }
-
+            StatusBox_Status = "Setup Arduino started";
+            StatusBox_Status = "Setup Arduino finished";
+            
+            // Bindings and default values
             updatedGnd = true;
             updatedBus = true;
 
-            StatusBox_Status = "Setup Arduino started";
-            StatusBox_Status = "Setup Arduino finished";
             SelectionVisible = Visibility.Visible;
             Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
 

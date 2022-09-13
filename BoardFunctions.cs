@@ -8,6 +8,7 @@ namespace AdjustableVoltageSource
 {
 	public partial class MainWindow
 	{
+		// Set correct voltage on arduino
 		private void PutVoltage(object sender, RoutedEventArgs e)
 		{
 			e.Handled = true;
@@ -16,16 +17,21 @@ namespace AdjustableVoltageSource
 			{
 				voltage = Convert.ToDouble(voltagestr);
 				communicator.writeSerialPort((int)Communicator.Functions.PUT_VOLTAGE + "," + voltage + ";");
+				StatusBox_Status = "Set Voltage to " + voltage + ".";
 			}
 			else StatusBox_Error = "Invalid Voltage, voltage must be in range [0V...30V] and it must be a number.";
 		}
+
+		// disconnect voltage source on arduino
 		public void DisconnectVoltage(object sender, RoutedEventArgs e)
 		{
 			e.Handled = true;
 			VoltageTextBox.Text = "";
 			communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
+			StatusBox_Status = "Disconnect voltageSource";
 		}
 
+		// Write the chosen boardNr to the Arduino
 		private void ApplyBoardNumber(object sender, RoutedEventArgs e)
 		{
 			e.Handled = true;
@@ -38,9 +44,10 @@ namespace AdjustableVoltageSource
 			}
 			else
 			{
-				StatusBox_Error = "Fault setting BoardNumber. Fault in format.";
+				StatusBox_Error = "Fault setting BoardNumber => Fault in format.";
 			}
 		}
+		// Fetch BoardNumber stored on the arduino code to see what boardNr it will to connect to
 		private void GetBoardNumberArduino()
 		{
 			int boardNumber;
@@ -52,10 +59,12 @@ namespace AdjustableVoltageSource
 			{
 				input += communicator.serialPort.ReadExisting();
 			}
-			Debug.WriteLine(input);
 			string nr = Communicator.ExtractInput(input, this);
-			Debug.WriteLine("nr: " + nr);
-			if (int.TryParse(nr, out boardNumber)) BoardNumber = boardNumber;
+			if (int.TryParse(nr, out boardNumber)) 
+			{
+				StatusBox_Status = "Boardnumber received: " + boardNumber;
+				BoardNumber = boardNumber; 
+			}
 			else
 			{
 				StatusBox_Error = "Fault in fetching boardNumber...";
@@ -63,6 +72,7 @@ namespace AdjustableVoltageSource
 			}
 		}
 
+		// Measure the current/voltage (based on the selection in the combobox) from the Arduino
 		private void MeasureValue(object sender, RoutedEventArgs e)
 		{
 			if (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Measure Current")
@@ -78,7 +88,10 @@ namespace AdjustableVoltageSource
 				}
 				string current = Communicator.ExtractInput(input, this).Replace(".", ",");
 				if (double.TryParse(current, out current_out))
+				{
 					MeasuredValue = current_out + " A";
+					StatusBox_Status = "Measured Current: " + current_out;
+				}
 				else
 				{
 					StatusBox_Error = "Fault in measure format";
@@ -88,7 +101,7 @@ namespace AdjustableVoltageSource
 			else
 			{
 				double voltage_out;
-				MeasureVoltageCmd();
+				MeasureVoltageChannel();
 
 				String input = "";
 
@@ -99,7 +112,10 @@ namespace AdjustableVoltageSource
 				Debug.WriteLine(input);
 				string voltage = Communicator.ExtractInput(input, this).Replace(".", ",");
 				if (double.TryParse(voltage, out voltage_out))
+				{
+					StatusBox_Status = "Measured Voltage: " + voltage_out;
 					MeasuredValue = voltage_out + " V";
+				}
 				else
 				{
 					StatusBox_Error = "Fault in measure format (received)...";
@@ -107,7 +123,8 @@ namespace AdjustableVoltageSource
 				}
 			}
 		}
-		private void MeasureVoltageCmd()
+		// Formatting messages based on the selection of the measuring channel
+		private void MeasureVoltageChannel()
 		{
 			string channel = "";
 			if (ch1.IsChecked == true) channel = "1";

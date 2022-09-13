@@ -1,4 +1,5 @@
 ﻿using AdjustableVoltageSource;
+using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -19,16 +20,15 @@ public class Communicator
     public MainWindow mw;
     public enum Functions
     {
-        TOGGLE_LED = 1,
-        PUT_VOLTAGE = 2,
-        CONNECT_TO_GROUND = 3,
-        CONNECT_TO_BUS = 4,
-        MEASURE_VOLTAGE = 5,
-        MEASURE_CURRENT = 6,
-        CHANGE_BOARDNUMBER = 7,
-        GET_BOARDNUMBER = 8,
-        DISCONNECT_VOLTAGE = 9,
-        RESET = 10
+        PUT_VOLTAGE = 1,
+        CONNECT_TO_GROUND = 2,
+        CONNECT_TO_BUS = 3,
+        MEASURE_VOLTAGE = 4,
+        MEASURE_CURRENT = 5,
+        CHANGE_BOARDNUMBER = 6,
+        GET_BOARDNUMBER = 7,
+        DISCONNECT_VOLTAGE = 8,
+        RESET = 9
     }
     public Communicator()
     {
@@ -38,27 +38,6 @@ public class Communicator
         mw = (MainWindow)Application.Current.MainWindow;
     }
 
-    public void writeSerialPort(string data)
-    {
-        try
-        {
-            if (serialPort.IsOpen)
-            {
-                Thread.Sleep(50);
-                serialPort.WriteLine(data);
-                mw.CommandBox =  data;
-                Thread.Sleep(50);
-            }
-            else
-            {
-                mw.StatusBox_Error = "FAULT in connection. SerialPort is closed.";
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-        }
-    }
     public void initSerialPort()
     {
         try
@@ -72,7 +51,7 @@ public class Communicator
                     mw.StatusBox_Status = "'" + serialPort.PortName + "' Port Closed\n";
                 }
             }
-            
+
             //// selectieboxjes
             ////if ((string)cmbComPort.SelectedItem != "disconnect")
             //if(true)
@@ -101,8 +80,8 @@ public class Communicator
             //    }
             //    else
             //    {
-                    serialPort.PortName = port;
-                //}
+            serialPort.PortName = port;
+            //}
 
             serialPort.DtrEnable = true;
             serialPort.RtsEnable = true;
@@ -118,9 +97,10 @@ public class Communicator
             Debug.WriteLine(ex.Message + "\n");
         }
     }
+    
     public void closeSerialPort()
     {
-        if(!serialPort.IsOpen) serialPort.Open();
+        if (!serialPort.IsOpen) serialPort.Open();
         serialPort.DiscardOutBuffer();
         serialPort.DiscardInBuffer();
 
@@ -129,6 +109,60 @@ public class Communicator
         serialPort.Dispose();
         serialPort.Close();
     }
+    
+    public void writeSerialPort(string data)
+    {
+        try
+        {
+            if (serialPort.IsOpen)
+            {
+                Thread.Sleep(50);
+                serialPort.WriteLine(data);
+                switch(data[0])
+                {
+                    case '1':
+                        mw.CommandBox = "Put Voltage: \t" + data;
+                        break;
+                    case '2':
+                        mw.CommandBox = "Connect to Gnd: \t" + data;
+                        break;
+                    case '3':
+                        mw.CommandBox = "Connect to Bus: \t" + data;
+                        break;
+                    case '4':
+                        mw.CommandBox = "Measure Voltage: \t" + data;
+                        break;
+                    case '5':
+                        mw.CommandBox = "Measure Current: \t" + data;
+                        break;
+                    case '6':
+                        mw.CommandBox = "Change BoardNumber: " + data;
+                        break;
+                    case '7':
+                        mw.CommandBox = "Get BoardNumber: " + data;
+                        break;
+                    case '8':
+                        mw.CommandBox = "Disconnect Voltage Source: " + data;
+                        break;
+                    case '9':
+                        mw.CommandBox = "RESET: \t" + data;
+                        break;
+                    default:
+                        break;
+                }
+                Thread.Sleep(50);
+            }
+            else
+            {
+                mw.StatusBox_Error = "FAULT in connection. SerialPort is closed.";
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+    }
+    
     public void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
     {
         string readSciMessage = "";
@@ -142,6 +176,7 @@ public class Communicator
                     readSciMessage += serialPort.ReadExisting();
                 } while (serialPort.BytesToRead != 0);
 
+                Debug.WriteLine(readSciMessage);
                 string[] strings = readSciMessage.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
                 foreach (String str in strings)
                 {
@@ -279,85 +314,115 @@ public class Communicator
     //    return "";
     //}
     
-    public static string ExtractInput(string s, MainWindow mainWindow)
+    public static string ExtractInput(string input, MainWindow mainWindow)
     {
-        char[] array = s.ToCharArray();
+        char[] inputArray = input.ToCharArray();
         int begin = 0, end = 0;
-        for (int i = 0; i < array.Length; i++)
+        for (int i = 0; i < inputArray.Length - 1; i++)
         {
-            if (array[i] == '[') begin = i;
-            if (array[i] == ']') end = i;
+            if (inputArray[i] == '[') begin = i;
+            if (inputArray[i] == ']') end = i;
         }
         if (end != 0)
         {
-            mainWindow.StatusBox_Error = "FAULT IN COMMUNICATION";
-            return "FAULT IN COMMUNICATION";
+            return input.Substring(begin + 1, (end - begin - 1));
         }
         else
         {
-            return s.Substring(begin + 1, (end - begin - 1));
+            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from input message.";
+            return null;
         }
     }    
-    public static string ExtractErrorMessage(string s, MainWindow mainWindow)
+    public static string ExtractErrorMessage(string errorMessage, MainWindow mainWindow)
     {
-        Debug.WriteLine(s);
-        char[] array = s.ToCharArray();
+        char[] iputArray = errorMessage.ToCharArray();
         int begin = 0, end = 0;
         bool foundBeginning = false;
-        for (int i = 0; i < array.Length; i++)
+        for (int i = 0; i < iputArray.Length - 1; i++)
         {
-            if (array[i] == '|' && array[i + 1] == '|' && !foundBeginning) begin = i+1;
-            if (array[i] == '|' && array[i + 1] == '|' && foundBeginning) end = i;
+            if (iputArray[i] == '|' && iputArray[i + 1] == '|' && !foundBeginning)
+            {
+                begin = i + 1;
+                foundBeginning = true;
+            }
+            else if (iputArray[i] == '|' && iputArray[i + 1] == '|' && foundBeginning)
+            {
+                end = i;
+            }
         }
-        if (end == 0)
+        if (end != 0)
         {
-            mainWindow.StatusBox_Error = ("FAULT IN COMMUNICATION");
-            return "FAULT IN COMMUNICATION";
+            return errorMessage.Substring(begin + 1, (end - begin - 1));
         }
         else
         {
-            return s.Substring(begin + 1, (end - begin - 1));
+            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from communication message.";
+            return null;
         }
     }   
-    public static string ExtractStatus(string s, MainWindow mainWindow)
+    public static string ExtractStatus(string status, MainWindow mainWindow)
     {
-        Debug.WriteLine(s);
-        char[] array = s.ToCharArray();
+        char[] inputArray = status.ToCharArray();
         int begin = 0, end = 0;
         bool foundBeginning = false;
-        for (int i = 0; i < array.Length; i++)
+        for (int i = 0; i < inputArray.Length-1; i++)
         {
-            if (array[i] == '#' && array[i + 1] == '#' && !foundBeginning) begin = i+1;
-            if (array[i] == '#' && array[i + 1] == '#' && foundBeginning) end = i;
+            if (inputArray[i] == '#' && inputArray[i + 1] == '#' && !foundBeginning) 
+            {
+                begin = i + 1;
+                foundBeginning=true;
+            }
+            else if (inputArray[i] == '#' && inputArray[i + 1] == '#' && foundBeginning)
+            {
+                end = i;
+            }
         }
-        if (end == 0)
+        if (end != 0)
         {
-            mainWindow.StatusBox_Error = ("FAULT IN COMMUNICATION");
-            return "FAULT IN COMMUNICATION";
+            return status.Substring(begin + 1, (end - begin - 1));
         }
         else
         {
-            return s.Substring(begin + 1, (end - begin - 2));
+            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from communication message.";
+            return null;
         }
     }   
-    public static string ExtractRegisters(string s, MainWindow mainWindow)
+    public static string ExtractRegisters(string registersMessage, MainWindow mainWindow)
     {
-        Debug.WriteLine(s);
-        char[] array = s.ToCharArray();
+        char[] registerArray = registersMessage.ToCharArray();
         int begin = 0, end = 0;
-        for (int i = 0; i < array.Length; i++)
+        bool foundBeginning = false;
+        for (int i = 0; i < registerArray.Length-1; i++)
         {
-            if (array[i] == '(' && array[i + 1] == '(') begin = i+1;
-            if (array[i] == ')' && array[i + 1] == ')') end = i;
+            if (registerArray[i] == '(' && registerArray[i + 1] == '(' && !foundBeginning)
+            {
+                begin = i + 1;
+                foundBeginning = true;
+            }
+            else if (registerArray[i] == ')' && registerArray[i + 1] == ')' && foundBeginning)
+            {
+                end = i;
+            }
         }
         if (end == 0)
         {
-            mainWindow.StatusBox_Error = ("FAULT IN COMMUNICATION");
-            return "FAULT IN COMMUNICATION";
+            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from communication message.";
+            return null;
         }
         else
         {
-            return s.Substring(begin+1, (end - begin - 2));
+            registersMessage = registersMessage.Substring(begin+1, (end - begin - 1));
+            if (registersMessage.Contains("::"))
+            {
+                string[] splitUpRegisters = registersMessage.Split("_");
+                string output = "";
+                foreach (String str in splitUpRegisters)
+                {
+                    output += str + "\r";
+                }
+                return output;
+            }
+            else return registersMessage;
         }
     }
 }

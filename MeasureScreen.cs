@@ -53,6 +53,9 @@ namespace AdjustableVoltageSource
             handle = !cmb.IsDropDownOpen;
             Handle();
         }
+        // Based on the selection of the combobox (measure current/voltage) the selection of channels is invisible/visible.
+        // Measuring current is only possible on 1 defined port
+        // Measuring voltage is possible on all ports which are connected to the bus. 
         private void Handle()
         {
             switch (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
@@ -65,7 +68,8 @@ namespace AdjustableVoltageSource
                     break;
             }
         }
-        private void updateMeasureBoxes()
+        // Sync values selected on the HomeScreen with the ones on the MeasureScreen (enable/disable radiobuttons)
+        private void UpdateMeasureBoxes()
         {
             ch1.IsEnabled = ConnectedToBus_1;
             ch2.IsEnabled = ConnectedToBus_2;
