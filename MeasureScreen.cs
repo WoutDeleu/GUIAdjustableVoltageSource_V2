@@ -40,23 +40,24 @@ namespace AdjustableVoltageSource
             }
         }
 
-        private bool handle = true;
+        private bool handledMeasureSelection = true;
 
         private void selectMeasureFunction_DropDownClosed(object sender, EventArgs e)
         {
-            if (handle) Handle();
-            handle = true;
+            if (handledMeasureSelection) HandleSelectMeasure();
+            handledMeasureSelection = true;
         }
         private void selectMeasureFunction_Changed(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cmb = sender as ComboBox;
-            handle = !cmb.IsDropDownOpen;
-            Handle();
+            handledMeasureSelection = !cmb.IsDropDownOpen;
+            HandleSelectMeasure();
         }
-        // Based on the selection of the combobox (measure current/voltage) the selection of channels is invisible/visible.
+        
+        // Based on the selection of the combobox (measure current/voltage) the selection of channels is invisible/visible
         // Measuring current is only possible on 1 defined port
-        // Measuring voltage is possible on all ports which are connected to the bus. 
-        private void Handle()
+        // Measuring voltage is possible on all ports which are connected to the bus
+        private void HandleSelectMeasure()
         {
             switch (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
             {

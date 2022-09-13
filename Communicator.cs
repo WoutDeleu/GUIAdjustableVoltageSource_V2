@@ -32,12 +32,21 @@ public class Communicator
     }
     public Communicator()
     {
-        serialPort = new SerialPort(port);
+        serialPort = new SerialPort();
         serialPort.PortName = port;
         serialPort.BaudRate = baudrate;
         mw = (MainWindow)Application.Current.MainWindow;
     }
 
+    public void setCom(string port)
+    {
+        this.port = port;
+        serialPort.PortName = port;
+    }
+    public void autoDetectCOM()
+    {
+
+    }
     public void initSerialPort()
     {
         try
@@ -51,13 +60,9 @@ public class Communicator
                     mw.StatusBox_Status = "'" + serialPort.PortName + "' Port Closed\n";
                 }
             }
-
-            //// selectieboxjes
-            ////if ((string)cmbComPort.SelectedItem != "disconnect")
-            //if(true)
+            //if ((string) cmbComPort.SelectedItem != "disconnect")
             //{
-            //    if(true)
-            //    //if ((string)cmbComPort.SelectedItem == "auto")
+            //    if ((string) cmbComPort.SelectedItem == "auto")
             //    {
             //        if (false)
             //        { }
@@ -75,21 +80,20 @@ public class Communicator
             //        }
             //        else
             //        {
-            //            Debug.WriteLine("Communicator Connection Problem!");
+            //            mw.StatusBox_Error = "Communicator Connection Problem!";
             //        }
             //    }
             //    else
             //    {
-            serialPort.PortName = port;
-            //}
-
-            serialPort.DtrEnable = true;
-            serialPort.RtsEnable = true;
-            serialPort.ReceivedBytesThreshold = 1;
-            serialPort.BaudRate = 115200;
-            this.serialPort.DataReceived += new SerialDataReceivedEventHandler(this.serialPort_DataReceived);
-            serialPort.Open();
-            Debug.WriteLine("'" + serialPort.PortName + "' Port Opened Succesfully\n");
+                    serialPort.PortName = port;
+                //}
+                serialPort.DtrEnable = true;
+                serialPort.RtsEnable = true;
+                serialPort.ReceivedBytesThreshold = 1;
+                serialPort.BaudRate = 115200;
+                serialPort.DataReceived += new SerialDataReceivedEventHandler(serialPort_DataReceived);
+                serialPort.Open();
+                Debug.WriteLine("'" + serialPort.PortName + "' Port Opened Succesfully\n");
             //}
         }
         catch (Exception ex)
@@ -121,7 +125,7 @@ public class Communicator
                 switch(data[0])
                 {
                     case '1':
-                        mw.CommandBox = "Put Voltage: \t" + data;
+                        mw.CommandBox = "Put Voltage: \t\t" + data;
                         break;
                     case '2':
                         mw.CommandBox = "Connect to Gnd: \t" + data;
@@ -136,13 +140,13 @@ public class Communicator
                         mw.CommandBox = "Measure Current: \t" + data;
                         break;
                     case '6':
-                        mw.CommandBox = "Change BoardNumber: " + data;
+                        mw.CommandBox = "Change BoardNumber: \t" + data;
                         break;
                     case '7':
-                        mw.CommandBox = "Get BoardNumber: " + data;
+                        mw.CommandBox = "Get BoardNumber: \t" + data;
                         break;
                     case '8':
-                        mw.CommandBox = "Disconnect Voltage Source: " + data;
+                        mw.CommandBox = "Disconnect Voltage: \t" + data;
                         break;
                     case '9':
                         mw.CommandBox = "RESET: \t" + data;
@@ -211,7 +215,7 @@ public class Communicator
             Debug.WriteLine(ex.ToString() + "\n");
         }
     }
-    
+
     //string ComPortName(String VID, String PID)
     //{
     //    String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
@@ -240,7 +244,6 @@ public class Communicator
     //            }
     //        }
     //    }
-    //    //UpdateRichTextBox("Comports.count: " + comports.Count.ToString() + "\n");
     //    if (comports.Count >= 1)
     //    {
     //        string[] portNames = SerialPort.GetPortNames();
@@ -313,7 +316,7 @@ public class Communicator
     //    }
     //    return "";
     //}
-    
+
     public static string ExtractInput(string input, MainWindow mainWindow)
     {
         char[] inputArray = input.ToCharArray();
@@ -356,7 +359,7 @@ public class Communicator
         }
         else
         {
-            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from communication message.";
+            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from Error message.";
             return null;
         }
     }   
@@ -383,7 +386,7 @@ public class Communicator
         }
         else
         {
-            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from communication message.";
+            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from Status message.";
             return null;
         }
     }   
@@ -406,7 +409,7 @@ public class Communicator
         }
         if (end == 0)
         {
-            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from communication message.";
+            mainWindow.StatusBox_Error = "Fault in communication. Could not extract message from Register message.";
             return null;
         }
         else

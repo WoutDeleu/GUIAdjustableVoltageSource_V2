@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using System.Windows;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Data;
@@ -36,6 +35,7 @@ namespace AdjustableVoltageSource
         public MainWindow()
         {
             InitializeComponent();
+            ComSelector.SelectedItem = ComSelector.SelectedIndex = 0;
             DataContext = this;
 
             // Initialize timer and communication with arduino

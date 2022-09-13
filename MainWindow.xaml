@@ -190,8 +190,8 @@
                             <Label Name="Current_MeasuredValue" FontWeight="Bold" FontSize="18"/>
                         </StackPanel>
                         <Separator Height="15" Background="Transparent"/>
-                        <StackPanel HorizontalAlignment="Center"  Orientation="Horizontal">
-                            <Button HorizontalAlignment="Center" Click="MeasureValue">Measure</Button>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button HorizontalAlignment="Center" Width="200" Click="MeasureValue">Measure</Button>
                         </StackPanel>
                         <Separator Height="15" Background="Transparent"/>
                     </StackPanel>
@@ -199,18 +199,57 @@
             </TabItem>
             <TabItem Header="Settings">
                 <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Current BoardNumber:</Label>
-                        <Label Name="Current_BoardNumber" FontWeight="Bold" FontSize="14"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Change BoardNumber:</Label>
-                        <TextBox Height="18" Width="40" Name="NewBoardNumber"></TextBox>
-                        <Label Foreground="#FF696464" FontSize="10">(Format: integer)</Label>
-                        <Separator Width="15" Background="Transparent"/>
-                    </StackPanel>
+                    <GroupBox Header="BoardNumber" Width="425" HorizontalAlignment="left" FontSize="10">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label FontSize="15">Current BoardNumber:</Label>
+                                <Label Name="Current_BoardNumber" FontWeight="Bold" FontSize="14"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label FontSize="15">Change BoardNumber:</Label>
+                                <TextBox Height="18" Width="40" Name="NewBoardNumber" FontSize="13"></TextBox>
+                                <Label Foreground="#FF696464" FontSize="10">(Format: integer)</Label>
+                                <Separator Width="15" Background="Transparent"/>
+                            </StackPanel>
+                            <Button Grid.Row="1" HorizontalAlignment="Center" Click="ApplyBoardNumber" Width="150" Height="20" FontSize="12">Change BoardNumber</Button>
+                        </StackPanel>
+                    </GroupBox>
+                    <Separator Height="7.5" Background="Transparent"/>
+                    <GroupBox Header="Arduino connect" Width="425" HorizontalAlignment="left" FontSize="10">
+                        <StackPanel Orientation="Vertical" >
+                            <Grid Width="400">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="3*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Width="400" Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width ="2*"/>
+                                        <ColumnDefinition Width ="2*"/>
+                                        <ColumnDefinition Width ="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label FontSize="15" Grid.Column="0">Select COM-port:</Label>
+                                    <ComboBox x:Name="ComSelector" SelectionChanged="selectCom_Changed" DropDownClosed="selectCom_DropDownClosed" Grid.Column="1" Height="20" Width="100">
+                                        <ComboBoxItem Tag="MeasVoltage">Auto-detect</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasVoltage">COM1</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasCurrent">COM2</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasCurrent">COM3</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasCurrent">COM4</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasCurrent">COM5</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasCurrent">COM6</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasCurrent">COM7</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasCurrent">COM8</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasCurrent">COM9</ComboBoxItem>
+                                        <ComboBoxItem Tag="MeasCurrent">Others</ComboBoxItem>
+                                    </ComboBox>
+                                    <TextBlock x:Name="newComPort" Grid.Column="2" Width="50" Height="18" FontSize="13" IsEnabled="False"/>
+                                </Grid>
+                                <Button Grid.Row="1" HorizontalAlignment="Center" Click="ChangePort" Width="150" Height="20" FontSize="12">Change COM Port</Button>
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+                    <Separator Height="15" Background="Transparent"/>
                     <StackPanel HorizontalAlignment="Center"  Orientation="Horizontal">
-                        <Button HorizontalAlignment="Center" Click="ApplyBoardNumber">Apply Changes</Button>
                     </StackPanel>
                     <Separator Height="15" Background="Transparent"/>
                 </StackPanel>
@@ -223,16 +262,16 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <DockPanel Grid.Row="0" LastChildFill="True">
-                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center">Commands:</Label>
+                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">Commands:</Label>
                         <RichTextBox x:Name="CommandInterface" Height="120" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                     </DockPanel>
                     <DockPanel Grid.Row="1" LastChildFill="True">
-                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center">Status:</Label>
-                        <RichTextBox x:Name="Status" Height="275" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
+                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">Status:</Label>
+                        <RichTextBox x:Name="Status" Height="200" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                     </DockPanel>
                     <DockPanel Grid.Row="2" LastChildFill="True">
-                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center">Registers:</Label>
-                        <RichTextBox x:Name="Registers" Height="150" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
+                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">Registers:</Label>
+                        <RichTextBox x:Name="Registers" Height="300" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                     </DockPanel>
                 </Grid>
             </TabItem>

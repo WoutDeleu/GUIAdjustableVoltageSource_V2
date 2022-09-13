@@ -34,17 +34,17 @@ namespace AdjustableVoltageSource
 		// Write the chosen boardNr to the Arduino
 		private void ApplyBoardNumber(object sender, RoutedEventArgs e)
 		{
-			e.Handled = true;
 			String boardNumberStr = NewBoardNumber.Text;
+			if(boardNumberStr == "") { StatusBox_Status = "BoardNumber was not changed"; }
 			// Regex: check if boardNr is valid
-			if (Regex.IsMatch(boardNumberStr, @"^\d+$"))
+			else if (Regex.IsMatch(boardNumberStr, @"^\d+$"))
 			{
 				BoardNumber = Convert.ToInt32(boardNumberStr);
 				communicator.writeSerialPort((int)Communicator.Functions.CHANGE_BOARDNUMBER + "," + BoardNumber + ";");
 			}
 			else
 			{
-				StatusBox_Error = "Fault setting BoardNumber => Fault in format.";
+				StatusBox_Error = "Fault while setting BoardNumber. Fault in format.";
 			}
 		}
 		// Fetch BoardNumber stored on the arduino code to see what boardNr it will to connect to
@@ -146,5 +146,32 @@ namespace AdjustableVoltageSource
 
 			communicator.writeSerialPort((int)Communicator.Functions.MEASURE_VOLTAGE + "," + channel + ";");
 		}
+
+
+
+
+
+
+
+
+		// Change the port used to interact with the Arduino
+		private void ChangePort(object sender, RoutedEventArgs e)
+		{
+			string selectedPort = ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
+            switch (selectedPort)
+            {
+                
+				case "Others":
+					break;
+                case "Auto-detect":
+                    communicator.autoDetectCOM();
+                    StatusBox_Status = "AutoDetect COM-port";
+                    break;
+                default:
+					//communicator.initSerialPort(selectedPort);
+                    StatusBox_Status = "Connect to " + selectedPort;
+                    break;
+            }
+        }
 	}
 }

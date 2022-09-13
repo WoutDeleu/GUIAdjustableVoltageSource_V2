@@ -1,14 +1,8 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO.Ports;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Windows;
-using System.Diagnostics;
+using System.Windows.Controls;
 
 namespace AdjustableVoltageSource
 {
@@ -28,5 +22,36 @@ namespace AdjustableVoltageSource
             }
         }
 
+        
+
+
+
+
+
+
+        private bool handledPort = true;
+        private void selectCom_DropDownClosed(object sender, EventArgs e)
+        {
+            if (handledPort) HandleCom();
+            handledPort = true;
+        }
+        private void selectCom_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+            handledPort = !cmb.IsDropDownOpen;
+            HandleCom();
+        }
+        private void HandleCom()
+        {
+            switch (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
+            {
+                case "Others":
+                    newComPort.IsEnabled = true;
+                    break;
+                default:
+                    newComPort.IsEnabled = false;
+                    break;
+            }
+        }
     }
 }
