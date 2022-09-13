@@ -142,19 +142,22 @@ public class Communicator
                     readSciMessage += serialPort.ReadExisting();
                 } while (serialPort.BytesToRead != 0);
 
-                if (readSciMessage.Contains("||"))
+                string[] strings = readSciMessage.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+                foreach (String str in strings)
                 {
-                    mw.StatusBox_Error = ExtractErrorMessage(readSciMessage, mw);
+                    if (str.Contains("||"))
+                    {
+                        mw.StatusBox_Error = ExtractErrorMessage(str, mw);
+                    }
+                    if (str.Contains("##"))
+                    {
+                        mw.StatusBox_Status = ExtractStatus(str, mw);
+                    }
+                    if (str.Contains("(("))
+                    {
+                        mw.RegisterBox = ExtractRegisters(str, mw);
+                    }
                 }
-                if (readSciMessage.Contains("##"))
-                {
-                    mw.StatusBox_Status = ExtractStatus(readSciMessage, mw);
-                }
-                if (readSciMessage.Contains("(("))
-                {
-                    mw.RegisterBox = ExtractRegisters(readSciMessage, mw);
-                }
-
             }
         }
         catch (IndexOutOfRangeException ex)
@@ -285,7 +288,7 @@ public class Communicator
             if (array[i] == '[') begin = i;
             if (array[i] == ']') end = i;
         }
-        if (end == 0)
+        if (end != 0)
         {
             mainWindow.StatusBox_Error = "FAULT IN COMMUNICATION";
             return "FAULT IN COMMUNICATION";
