@@ -3,6 +3,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Media;
 
 namespace AdjustableVoltageSource
 {
@@ -147,31 +148,43 @@ namespace AdjustableVoltageSource
 			communicator.writeSerialPort((int)Communicator.Functions.MEASURE_VOLTAGE + "," + channel + ";");
 		}
 
-
-
-
-
-
-
-
 		// Change the port used to interact with the Arduino
-		private void ChangePort(object sender, RoutedEventArgs e)
+		private void ChangeCOMPort(object sender, RoutedEventArgs e)
 		{
 			string selectedPort = ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
             switch (selectedPort)
             {
-                
 				case "Others":
+					if (IsValidCOMPort(newComPort.Text))
+					{
+						newComPort.BorderBrush = (Brush)bc.ConvertFrom("#FFABADB3");
+						newComPort.Background = Brushes.White;
+						Reset();
+					}
+					else
+                    {
+                        newComPort.BorderBrush = Brushes.DarkRed;
+                        newComPort.Background = Brushes.LightPink;
+                        StatusBox_Error = "Fault in Format Comport";
+					}
 					break;
-                case "Auto-detect":
-                    communicator.autoDetectCOM();
-                    StatusBox_Status = "AutoDetect COM-port";
-                    break;
                 default:
-					//communicator.initSerialPort(selectedPort);
-                    StatusBox_Status = "Connect to " + selectedPort;
+                    newComPort.BorderBrush = (Brush)bc.ConvertFrom("#FFABADB3");
+                    newComPort.Background = Brushes.White;
+                    Reset();
                     break;
             }
         }
-	}
+
+        private void Reset()
+        {
+            DisconnectAll();
+            VoltageTextBox.Text = "";
+            communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
+
+            stopwatch = Stopwatch.StartNew();
+
+            initializeMainWindow();
+        }
+    }
 }

@@ -87,6 +87,10 @@ namespace AdjustableVoltageSource
 				return false;
 			}
 		}
+        private bool IsValidCOMPort(string s)
+        {
+			return Regex.IsMatch(s, "^COM[0-9][0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?$");
 
-	}
+        }
+    }
 }

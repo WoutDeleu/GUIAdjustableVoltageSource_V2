@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 
@@ -17,8 +19,8 @@ namespace AdjustableVoltageSource
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    if(stopwatch.Elapsed.TotalSeconds>1000) stopwatch.Restart();
-                    CommandInterface.AppendText("[" + stopwatch.Elapsed.TotalSeconds +"] "+ value + "\r");
+                    if (stopwatch.Elapsed.TotalSeconds > 1000) stopwatch.Restart();
+                    CommandInterface.AppendText("[" + stopwatch.Elapsed.TotalSeconds + "] " + value + "\r");
                     CommandInterface.ScrollToEnd();
                 });
             }
@@ -30,7 +32,7 @@ namespace AdjustableVoltageSource
                 this.Dispatcher.Invoke(() =>
                 {
                     if (stopwatch.Elapsed.TotalSeconds > 1000) stopwatch.Restart();
-                    Registers.AppendText("[" + stopwatch.Elapsed.TotalSeconds + "] " + value +"\n");
+                    Registers.AppendText("[" + stopwatch.Elapsed.TotalSeconds + "] " + value + "\n");
                     Registers.ScrollToEnd();
                 });
             }

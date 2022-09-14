@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.ComponentModel;
 using System;
+using System.Diagnostics;
+using System.Windows.Data;
 
 namespace AdjustableVoltageSource
 {
@@ -681,6 +683,7 @@ namespace AdjustableVoltageSource
             if (updatedGnd) updatedGnd = false;
         }
 
+
         // Defintly disconnect all channels to bus and ground as selected
         private void DisconnectAll()
         {
@@ -735,6 +738,23 @@ namespace AdjustableVoltageSource
             ch15.IsEnabled = false;
             ch16.IsEnabled = false;
 
+            ch1.IsChecked = false;
+            ch2.IsChecked = false;
+            ch3.IsChecked = false;
+            ch4.IsChecked = false;
+            ch5.IsChecked = false;
+            ch6.IsChecked = false;
+            ch7.IsChecked = false;
+            ch8.IsChecked = false;
+            ch9.IsChecked = false;
+            ch10.IsChecked = false;
+            ch11.IsChecked = false;
+            ch12.IsChecked = false;
+            ch13.IsChecked = false;
+            ch14.IsChecked = false;
+            ch15.IsChecked = false;
+            ch16.IsChecked = false;
+
             communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
             VoltageTextBox.Text = "";
             StatusBox_Status = "Everything is Disconnected";
@@ -763,5 +783,6 @@ namespace AdjustableVoltageSource
             }
             else StatusBox_Status = "Nothing to update while connecting";
         }
+
     }
 }

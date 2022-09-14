@@ -6,18 +6,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO.Ports;
+using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 public class Communicator
 {
-    private string port = "COM5";
     private int baudrate = 115200;
     public SerialPort serialPort;
     public MainWindow mw;
+    public bool connectionSuccesfull;
     public enum Functions
     {
         PUT_VOLTAGE = 1,
@@ -33,73 +35,8 @@ public class Communicator
     public Communicator()
     {
         serialPort = new SerialPort();
-        serialPort.PortName = port;
         serialPort.BaudRate = baudrate;
         mw = (MainWindow)Application.Current.MainWindow;
-    }
-
-    public void setCom(string port)
-    {
-        this.port = port;
-        serialPort.PortName = port;
-    }
-    public void autoDetectCOM()
-    {
-
-    }
-    public void initSerialPort()
-    {
-        try
-        {
-            if (serialPort.IsOpen)
-            {
-                serialPort.Close();
-
-                if (!serialPort.IsOpen)
-                {
-                    mw.StatusBox_Status = "'" + serialPort.PortName + "' Port Closed\n";
-                }
-            }
-            //if ((string) cmbComPort.SelectedItem != "disconnect")
-            //{
-            //    if ((string) cmbComPort.SelectedItem == "auto")
-            //    {
-            //        if (false)
-            //        { }
-            //        else if (Regex.IsMatch(AutodetectArduinoPort(), @"\bCOM\d+\b"))
-            //        {
-            //            serialPort.PortName = AutodetectArduinoPort();
-            //        }
-            //        else if (Regex.IsMatch(ComPortName("2341", "003D"), @"\bCOM\d+\b"))
-            //        {
-            //            serialPort.PortName = ComPortName("2341", "003D");
-            //        }
-            //        else if (Regex.IsMatch(ComPortName("2A03", "003D"), @"\bCOM\d+\b"))
-            //        {
-            //            serialPort.PortName = ComPortName("2A03", "003D");
-            //        }
-            //        else
-            //        {
-            //            mw.StatusBox_Error = "Communicator Connection Problem!";
-            //        }
-            //    }
-            //    else
-            //    {
-                    serialPort.PortName = port;
-                //}
-                serialPort.DtrEnable = true;
-                serialPort.RtsEnable = true;
-                serialPort.ReceivedBytesThreshold = 1;
-                serialPort.BaudRate = 115200;
-                serialPort.DataReceived += new SerialDataReceivedEventHandler(serialPort_DataReceived);
-                serialPort.Open();
-                Debug.WriteLine("'" + serialPort.PortName + "' Port Opened Succesfully\n");
-            //}
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message + "\n");
-        }
     }
     
     public void closeSerialPort()
@@ -113,7 +50,6 @@ public class Communicator
         serialPort.Dispose();
         serialPort.Close();
     }
-    
     public void writeSerialPort(string data)
     {
         try
@@ -166,7 +102,6 @@ public class Communicator
             Debug.WriteLine(ex.Message);
         }
     }
-    
     public void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
     {
         string readSciMessage = "";
@@ -216,107 +151,165 @@ public class Communicator
         }
     }
 
-    //string ComPortName(String VID, String PID)
-    //{
-    //    String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
-    //    Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);
-    //    List<string> comports = new List<string>();
 
-    //    RegistryKey rk1 = Registry.LocalMachine;
-    //    RegistryKey rk2 = rk1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");
+    public void initSerialPort()
+    {
+        try
+        {
+            // If serialport is open, it needs to be
+            // 
+            if (serialPort.IsOpen)
+            {
+                serialPort.Close();
 
-    //    foreach (String s3 in rk2.GetSubKeyNames())
-    //    {
-    //        RegistryKey rk3 = rk2.OpenSubKey(s3);
-    //        foreach (String s in rk3.GetSubKeyNames())
-    //        {
-    //            //UpdateRichTextBox(s + "\n");
-    //            if (_rx.Match(s).Success)
-    //            {
-    //                RegistryKey rk4 = rk3.OpenSubKey(s);
-    //                foreach (String s2 in rk4.GetSubKeyNames())
-    //                {
-    //                    //UpdateRichTextBox(s2 + "\n");
-    //                    RegistryKey rk5 = rk4.OpenSubKey(s2);
-    //                    RegistryKey rk6 = rk5.OpenSubKey("Device Parameters");
-    //                    comports.Add((string)rk6.GetValue("PortName"));
-    //                }
-    //            }
-    //        }
-    //    }
-    //    if (comports.Count >= 1)
-    //    {
-    //        string[] portNames = SerialPort.GetPortNames();
+                if (!serialPort.IsOpen)
+                {
+                    mw.StatusBox_Status = "'" + serialPort.PortName + "' Port Closed\n";
+                }
+            }
+            // Based on connection method
+            if (mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Auto-detect")
+            {
+                mw.StatusBox_Status = "Auto Detecting Arduino";
+                // Autodetect based on Windows Query
+                if (Regex.IsMatch(AutodetectArduinoPort(), @"\bCOM\d+\b"))
+                {
+                    serialPort.PortName = AutodetectArduinoPort();
+                    Debug.WriteLine("Port found in Win32 Queruy: " + AutodetectArduinoPort());
+                    mw.StatusBox_Status = ("Port found in Win32 Query: " + AutodetectArduinoPort());
+                }
+                // Autodetect based on Windows Registry
+                else 
+                { 
+                    string comportname = ComPortName("2341", "0042"); 
+                    if (Regex.IsMatch(comportname, @"\bCOM\d+\b"))
+                    {
+                        serialPort.PortName = comportname;
+                        mw.StatusBox_Status = ("Port found in Win32 Registery Query : " + serialPort.PortName);
+                        Debug.WriteLine("Port found in Win32 Registery Query : " + serialPort.PortName);
+                    }
+                    else
+                    {
+                        // FOUTMELDING! GEEN PORTNAME GEVONDEN
+                    }
+                }
+            }
+            // Manually input portname
+            else if (mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Others")
+            {
+                serialPort.PortName = mw.newComPort.Text;
+                Debug.WriteLine("Port found based on input User : " + serialPort.PortName);
+            }
+            // Choose portname based on selection in list
+            else
+            {
+                serialPort.PortName = mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
+                Debug.WriteLine("Port selected based on selection in Combobox : " + mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last());
+                mw.StatusBox_Status = ("Port selected based on selection in Combobox : " + mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last());
+            }
+            // Finish setup port
+            serialPort.DtrEnable = true;
+            serialPort.RtsEnable = true;
+            serialPort.ReceivedBytesThreshold = 1;
+            serialPort.BaudRate = 115200;
+            serialPort.DataReceived += new SerialDataReceivedEventHandler(serialPort_DataReceived);
+            serialPort.Open();
+            mw.StatusBox_Status = ("'" + serialPort.PortName + "' Port Opened Succesfully");
+            connectionSuccesfull = true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message + "\n");
+            Debug.WriteLine("Port " + serialPort.PortName + " could not be opened");
+            mw.StatusBox_Error = ("Port " + serialPort.PortName + " could not be opened");
+            connectionSuccesfull = false;
+        }
+    }
 
-    //        foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo())
-    //        {
-    //            Console.WriteLine(string.Format("{0} – {1}", comPort.Name, comPort.Description));
+    // Search registery for Arduino based on VID/PID
+    string ComPortName(String VID, String PID)
+    {
+        // Pattern is the format of the usb registery which contains the arduino
+        String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
+        Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);
+        List<string> comports = new List<string>();
 
-    //            if (comPort.Description.Contains("Arduino Due Programming"))
-    //            {
-    //                return comPort.Name;
-    //            }
-    //            else if (comPort.Description.Contains("Arduino Due ("))
-    //            {
-    //                Debug.WriteLine("Arduino connected to the Wrong Micro USB connector!");
-    //                throw new Exception("Arduino connected to the Wrong Micro USB connector!\n");
-    //            }
-    //            else if (comPort.Description == "")
-    //            {
-    //                foreach (string portName in portNames)
-    //                {
-    //                    if (comports.Contains(portName))
-    //                    {
-    //                        return portName;
-    //                    }
-    //                }
-    //            }
-    //        }
+        // Usb registeries are located here
+        RegistryKey rk1 = Registry.LocalMachine;
+        RegistryKey rk2 = rk1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");
 
-    //        return "COM";
-    //    }
-    //    else if (comports.Count == 1)
-    //    {
-    //        return comports[0].ToString();
-    //    }
-    //    else
-    //    {
-    //        return "COM";
-    //    }
-    //}
-    //private string AutodetectArduinoPort()
-    //{
-    //    ManagementScope connectionScope = new ManagementScope();
-    //    SelectQuery serialQuery = new SelectQuery("SELECT * FROM Win32_SerialPort");
-    //    ManagementObjectSearcher searcher = new ManagementObjectSearcher(connectionScope, serialQuery);
+        // Scan all subregisteries in the location for a match the VID & PID
+        foreach (String s3 in rk2.GetSubKeyNames())
+        {
+            RegistryKey rk3 = rk2.OpenSubKey(s3);
+            foreach (String s in rk3.GetSubKeyNames())
+            {
+                // If the subdirectiry matches the VID & PID
+                if (_rx.Match(s).Success)
+                {
+                    // Open the correct VID & PID directory
+                    RegistryKey rk4 = rk3.OpenSubKey(s);
+                    // Scan this directory again
+                    // This contains all the data regarding the arduino
+                    // if there is more than 1 arduino connected, there will be multiple directories present
+                    foreach (String s2 in rk4.GetSubKeyNames())
+                    {
+                        // Open every registery in this directory (open all arduino data registers) and extract the portname
+                        RegistryKey rk5 = rk4.OpenSubKey(s2);
+                        RegistryKey rk6 = rk5.OpenSubKey("Device Parameters");
+                        // Format: e.g. COM4
+                        comports.Add((string)rk6.GetValue("PortName"));
+                        Debug.WriteLine("Portname found in registery : " + (string)rk6.GetValue("PortName"));
+                    }
+                }
+            }
+        }
+        
+        if (comports.Count >= 1)
+        {
+            // POPUP maken
+            String availableComports = "Available COM ports: ";
+            foreach(String s in comports)
+            {
+                Debug.WriteLine("Selection COMports: " +  s);
+                availableComports += (s)+ ", ";
+            }
+            mw.StatusBox_Status = availableComports.Remove(availableComports.Length - 2);
+            return "COM5";
+        }
+        else if (comports.Count == 1)
+        {
+            return comports[0].ToString();
+        }
+        else
+        {
+            mw.StatusBox_Error = "Fault in autofinding COM ports. No COM found (not in Registery and not in the windowsQuery)";
+            mw.StatusBox_Error = "Fault in connection";
+            return "COM";
+        }
+    }
+    private string AutodetectArduinoPort()
+    {
+        // Query on windows system searching the arduino
+        ManagementScope connectionScope = new ManagementScope();
+        SelectQuery serialQuery = new SelectQuery("SELECT * FROM Win32_SerialPort");
+        ManagementObjectSearcher searcher = new ManagementObjectSearcher(connectionScope, serialQuery);
 
-    //    try
-    //    {
-    //        foreach (ManagementObject item in searcher.Get())
-    //        {
-    //            string desc = item["Description"].ToString();
-    //            string deviceId = item["DeviceID"].ToString();
+        foreach (ManagementObject item in searcher.Get())
+        {
+            string desc = item["Description"].ToString();
+            string deviceId = item["DeviceID"].ToString();
+            if (desc.Contains("Arduino Mega"))
+            {
+                Debug.WriteLine("Device ID " + deviceId);
+                return deviceId;
+            }
+        }
+        return "";
+    }
 
-    //            if (desc == "Arduino Due")
-    //            {
-    //                Debug.WriteLine("Wrong Micro USB connector!");
 
-    //                throw new Exception("Arduino connected to the Wrong Micro USB connector!\n");
-    //            }
-    //            else if (desc.Contains("Arduino Due Programming Port"))
-    //            {
-    //                return deviceId;
-    //            }
-    //        }
-    //        return "";
-    //    }
-    //    catch (ManagementException e)
-    //    {
-    //        /* Do Nothing */
-    //    }
-    //    return "";
-    //}
-
+    // Filter out input. Remove extra identifier characters
     public static string ExtractInput(string input, MainWindow mainWindow)
     {
         char[] inputArray = input.ToCharArray();
