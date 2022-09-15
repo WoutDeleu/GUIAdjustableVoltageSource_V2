@@ -224,7 +224,7 @@ public class Communicator
         }
     }
 
-    // Search registery for Arduino based on VID/PID
+    // Search registery for Arduino based on VID/PID 
     string ComPortName(String VID, String PID)
     {
         // Pattern is the format of the usb registery which contains the arduino
