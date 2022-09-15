@@ -17,7 +17,7 @@ namespace AdjustableVoltageSource
 			if (IsValidVoltage(voltagestr))
 			{
 				voltage = Convert.ToDouble(voltagestr);
-				communicator.writeSerialPort((int)Communicator.Functions.PUT_VOLTAGE + "," + voltage + ";");
+				communicator.WriteSerialPort((int)Communicator.Functions.PUT_VOLTAGE + "," + voltage + ";");
 				StatusBox_Status = "Set Voltage to " + voltage + ".";
 			}
 			else StatusBox_Error = "Invalid Voltage, voltage must be in range [0V...30V] and it must be a number.";
@@ -28,7 +28,7 @@ namespace AdjustableVoltageSource
 		{
 			e.Handled = true;
 			VoltageTextBox.Text = "";
-			communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
+			communicator.WriteSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
 			StatusBox_Status = "Disconnect voltageSource";
 		}
 
@@ -41,7 +41,7 @@ namespace AdjustableVoltageSource
 			else if (Regex.IsMatch(boardNumberStr, @"^\d+$"))
 			{
 				BoardNumber = Convert.ToInt32(boardNumberStr);
-				communicator.writeSerialPort((int)Communicator.Functions.CHANGE_BOARDNUMBER + "," + BoardNumber + ";");
+				communicator.WriteSerialPort((int)Communicator.Functions.CHANGE_BOARDNUMBER + "," + BoardNumber + ";");
 			}
 			else
 			{
@@ -53,7 +53,7 @@ namespace AdjustableVoltageSource
 		{
 			int boardNumber;
 
-			communicator.writeSerialPort((int)Communicator.Functions.GET_BOARDNUMBER + ";");
+			communicator.WriteSerialPort((int)Communicator.Functions.GET_BOARDNUMBER + ";");
 
 			string input = "";
 			while (communicator.serialPort.BytesToRead != 0)
@@ -79,7 +79,7 @@ namespace AdjustableVoltageSource
 			if (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Measure Current")
 			{
 				double current_out;
-				communicator.writeSerialPort((int)Communicator.Functions.MEASURE_CURRENT + ";");
+				communicator.WriteSerialPort((int)Communicator.Functions.MEASURE_CURRENT + ";");
 
 				String input = "";
 
@@ -145,7 +145,7 @@ namespace AdjustableVoltageSource
 			else if (ch15.IsChecked == true) channel = "15";
 			else if (ch16.IsChecked == true) channel = "16";
 
-			communicator.writeSerialPort((int)Communicator.Functions.MEASURE_VOLTAGE + "," + channel + ";");
+			communicator.WriteSerialPort((int)Communicator.Functions.MEASURE_VOLTAGE + "," + channel + ";");
 		}
 
 		// Change the port used to interact with the Arduino
@@ -165,7 +165,7 @@ namespace AdjustableVoltageSource
                     {
                         newComPort.BorderBrush = Brushes.DarkRed;
                         newComPort.Background = Brushes.LightPink;
-                        StatusBox_Error = "Fault in Format Comport";
+                        StatusBox_Error = "Fault in format Comport";
 					}
 					break;
                 default:
@@ -180,11 +180,11 @@ namespace AdjustableVoltageSource
         {
             DisconnectAll();
             VoltageTextBox.Text = "";
-            communicator.writeSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
+            communicator.WriteSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
 
             stopwatch = Stopwatch.StartNew();
 
-            initializeMainWindow();
+            InitializeMainWindow();
         }
     }
 }

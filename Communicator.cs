@@ -18,7 +18,8 @@ public class Communicator
 {
     private int baudrate = 115200;
     public SerialPort serialPort;
-    public MainWindow mw;
+    public MainWindow mw; 
+    public string ret_port;
     public bool connectionSuccesfull;
     public enum Functions
     {
@@ -39,7 +40,7 @@ public class Communicator
         mw = (MainWindow)Application.Current.MainWindow;
     }
     
-    public void closeSerialPort()
+    public void CloseSerialPort()
     {
         if (!serialPort.IsOpen) serialPort.Open();
         serialPort.DiscardOutBuffer();
@@ -50,7 +51,7 @@ public class Communicator
         serialPort.Dispose();
         serialPort.Close();
     }
-    public void writeSerialPort(string data)
+    public void WriteSerialPort(string data)
     {
         try
         {
@@ -102,7 +103,7 @@ public class Communicator
             Debug.WriteLine(ex.Message);
         }
     }
-    public void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+    public void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
     {
         string readSciMessage = "";
         try
@@ -152,7 +153,7 @@ public class Communicator
     }
 
 
-    public void initSerialPort()
+    public void InitSerialPort()
     {
         try
         {
@@ -175,7 +176,6 @@ public class Communicator
                 if (Regex.IsMatch(AutodetectArduinoPort(), @"\bCOM\d+\b"))
                 {
                     serialPort.PortName = AutodetectArduinoPort();
-                    Debug.WriteLine("Port found in Win32 Queruy: " + AutodetectArduinoPort());
                     mw.StatusBox_Status = ("Port found in Win32 Query: " + AutodetectArduinoPort());
                 }
                 // Autodetect based on Windows Registry
@@ -185,12 +185,11 @@ public class Communicator
                     if (Regex.IsMatch(comportname, @"\bCOM\d+\b"))
                     {
                         serialPort.PortName = comportname;
-                        mw.StatusBox_Status = ("Port found in Win32 Registery Query : " + serialPort.PortName);
-                        Debug.WriteLine("Port found in Win32 Registery Query : " + serialPort.PortName);
+                        mw.StatusBox_Status = ("Port found/chosen in Win32 Registery Query : " + serialPort.PortName);
                     }
                     else
                     {
-                        // FOUTMELDING! GEEN PORTNAME GEVONDEN
+                        mw.StatusBox_Error = "No port found while auto detecting";
                     }
                 }
             }
@@ -198,7 +197,7 @@ public class Communicator
             else if (mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Others")
             {
                 serialPort.PortName = mw.newComPort.Text;
-                Debug.WriteLine("Port found based on input User : " + serialPort.PortName);
+                mw.StatusBox_Status = ("Port found based on input User : " + serialPort.PortName);
             }
             // Choose portname based on selection in list
             else
@@ -212,7 +211,7 @@ public class Communicator
             serialPort.RtsEnable = true;
             serialPort.ReceivedBytesThreshold = 1;
             serialPort.BaudRate = 115200;
-            serialPort.DataReceived += new SerialDataReceivedEventHandler(serialPort_DataReceived);
+            serialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
             serialPort.Open();
             mw.StatusBox_Status = ("'" + serialPort.PortName + "' Port Opened Succesfully");
             connectionSuccesfull = true;
@@ -264,18 +263,22 @@ public class Communicator
                 }
             }
         }
-        
+
+        // Multiple (Arduino's) with the correct VID and PID found
         if (comports.Count >= 1)
         {
-            // POPUP maken
-            String availableComports = "Available COM ports: ";
+            String availableComports = "Available COM ports in Windows Registery: ";
             foreach(String s in comports)
             {
-                Debug.WriteLine("Selection COMports: " +  s);
                 availableComports += (s)+ ", ";
             }
             mw.StatusBox_Status = availableComports.Remove(availableComports.Length - 2);
-            return "COM5";
+
+            ret_port = "";
+            COMSelectorWindow ComSelector = new COMSelectorWindow(comports, mw, this);
+            ComSelector.ShowDialog();
+
+            return ret_port;
         }
         else if (comports.Count == 1)
         {
@@ -288,7 +291,7 @@ public class Communicator
             return "COM";
         }
     }
-    private string AutodetectArduinoPort()
+    private static string AutodetectArduinoPort()
     {
         // Query on windows system searching the arduino
         ManagementScope connectionScope = new ManagementScope();

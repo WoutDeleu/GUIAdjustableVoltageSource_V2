@@ -8,11 +8,6 @@
         Title="Adjustable Voltage Source" Height="auto" Width="auto" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Background="#FFE0E0E0">
     <Grid Width="450">
         <StackPanel>
-            <Popup x:Name="ChoseCOM">
-                <StackPanel>
-                    <Label>mwuahahahah</Label>
-                </StackPanel>
-            </Popup>
             <TabControl x:Name="tabcontroller">
                 <TabItem x:Name="Home" Header="Home">
                     <DockPanel>
