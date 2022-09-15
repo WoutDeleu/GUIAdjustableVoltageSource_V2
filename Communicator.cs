@@ -158,7 +158,6 @@ public class Communicator
         try
         {
             // If serialport is open, it needs to be
-            // 
             if (serialPort.IsOpen)
             {
                 serialPort.Close();
@@ -311,8 +310,7 @@ public class Communicator
         return "";
     }
 
-
-    // Filter out input. Remove extra identifier characters
+    // Filter output/input. Remove extra identifier characters
     public static string ExtractInput(string input, MainWindow mainWindow)
     {
         char[] inputArray = input.ToCharArray();
