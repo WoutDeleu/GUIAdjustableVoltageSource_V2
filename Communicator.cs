@@ -195,7 +195,7 @@ public class Communicator
             // Manually input portname
             else if (mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Others")
             {
-                serialPort.PortName = mw.newComPort.Text;
+                serialPort.PortName = mw.newComPortTextBox.Text;
                 mw.StatusBox_Status = ("Port found based on input User : " + serialPort.PortName);
             }
             // Choose portname based on selection in list
