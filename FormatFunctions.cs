@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System;
+using System.Windows.Media;
 
 namespace AdjustableVoltageSource
 {
@@ -92,5 +93,11 @@ namespace AdjustableVoltageSource
 			return Regex.IsMatch(s, "^COM[0-9][0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?$");
 
         }
+
+        public SolidColorBrush BrushFromHex(string hexColorString)
+        {
+            return (SolidColorBrush)(new BrushConverter().ConvertFrom(hexColorString));
+        }
+
     }
 }

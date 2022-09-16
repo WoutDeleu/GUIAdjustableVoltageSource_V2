@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows.Data;
 using System.Windows.Media;
 using System;
+using System.Windows.Threading;
 
 namespace AdjustableVoltageSource
 {
@@ -44,6 +45,12 @@ namespace AdjustableVoltageSource
             communicator = new Communicator();
 
             InitializeMainWindow();
+
+            DispatcherTimer refresh = new DispatcherTimer();
+            refresh.Interval = TimeSpan.FromSeconds(8);
+            refresh.Tick += UpdateArduinoStatus;
+            //refresh.Tick += UpdateArduinoStatus;
+            refresh.Start();
         }
         private void InitializeMainWindow()
         {
@@ -65,6 +72,9 @@ namespace AdjustableVoltageSource
                 tabcontroller.SelectedIndex = 3;
 
                 Current_Com.SetBinding(ContentProperty, new Binding("CurrentComPort"));
+
+                ArduinoStatusLabel.Text = "Not Connected";
+                ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
             }
             else
             {
@@ -109,6 +119,9 @@ namespace AdjustableVoltageSource
 
                     Current_Com.SetBinding(ContentProperty, new Binding("CurrentComPort"));
 
+                    ArduinoStatusLabel.Text = "Connected";
+                    ArduinoStatusBar.Background = Brushes.LightGreen;
+
                     DataContext = this;
                 }                
                 catch (Exception ex)
@@ -125,6 +138,9 @@ namespace AdjustableVoltageSource
                     communicator.connectionSuccesfull = false;
 
                     Current_Com.SetBinding(ContentProperty, new Binding("CurrentComPort"));
+
+                    ArduinoStatusLabel.Text = "Not Connected";
+                    ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
                 }
             }
         }

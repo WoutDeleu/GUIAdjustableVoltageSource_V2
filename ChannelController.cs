@@ -685,7 +685,7 @@ namespace AdjustableVoltageSource
         }
 
 
-        // Defintly disconnect all channels to bus and ground as selected
+        // Disconnect all channels to bus and ground as selected
         private void DisconnectAll()
         {
             ConnectedToBus_1 = false;
@@ -760,7 +760,7 @@ namespace AdjustableVoltageSource
             VoltageTextBox.Text = "";
             StatusBox_Status = "Everything is Disconnected";
         }
-        // Defintly disconnect all channels to bus and ground as selected
+        // Disconnect all channels to bus and ground as selected
         private void DisconnectAllWithClosedPort()
         {
             ConnectedToBus_1 = false;
@@ -834,7 +834,7 @@ namespace AdjustableVoltageSource
             VoltageTextBox.Text = "";
             StatusBox_Status = "Everything is Disconnected";
         }
-        
+            
         
         // Defintly connect all channels to bus and ground as selected
         private void Connect(object sender, RoutedEventArgs e)

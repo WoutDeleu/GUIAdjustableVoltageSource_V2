@@ -19,6 +19,7 @@ public class Communicator
     public bool connectionSuccesfull;
     public enum Functions
     {
+        PING = 0,
         PUT_VOLTAGE = 1,
         CONNECT_TO_GROUND = 2,
         CONNECT_TO_BUS = 3,
@@ -59,6 +60,9 @@ public class Communicator
                 serialPort.WriteLine(data);
                 switch(data[0])
                 {
+                    case '0':
+                        // mw.CommandBox = "PING: \t\t" + data;
+                        break;
                     case '1':
                         mw.CommandBox = "Put Voltage: \t\t" + data;
                         break;
@@ -223,6 +227,8 @@ public class Communicator
             mw.StatusBox_Error = ("Port " + serialPort.PortName + " could not be opened");
             CloseSerialPort();
             connectionSuccesfull = false;
+            mw.ArduinoStatusLabel.Text = "Not Connected";
+            mw.ArduinoStatusBar.Background = mw.BrushFromHex("#FFFBFB7A");
         }
     }
 

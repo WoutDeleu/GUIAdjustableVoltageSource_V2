@@ -7,135 +7,139 @@
         mc:Ignorable="d"
         Title="Adjustable Voltage Source" Height="auto" Width="auto" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Background="#FFE0E0E0">
     <Grid Width="450">
-        <StackPanel>
+        <DockPanel>
+            <StatusBar DockPanel.Dock="Bottom" >
+                <StatusBarItem Background="#FFFBFB7A" x:Name="ArduinoStatusBar">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Bold">Status Arduino: </TextBlock>
+                        <Label> </Label>
+                        <TextBlock x:Name="ArduinoStatusLabel"/>
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
             <TabControl x:Name="tabcontroller">
                 <TabItem x:Name="Home" Header="Home">
-                    <DockPanel>
-                        <!--<StatusBar DockPanel.Dock="Bottom" Background="Yellow">
-                        <TextBlock Name="ArduinoStatus"/>
-                    </StatusBar>-->
+                    <StackPanel>
                         <StackPanel>
-                            <StackPanel>
-                                <Separator Height="15" Background="Transparent"/>
-                                <GroupBox Header="Connect Channel To Ground" Width="auto" HorizontalAlignment="Center" FontSize="20">
-                                    <GroupBox Header="Select Channel" Width="auto" HorizontalAlignment="left" FontSize="10">
-                                        <Grid Width="450">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Grid.Row="0" RenderTransformOrigin="0,1">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                </Grid.RowDefinitions>
-                                                <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding ConnectedToGround_1}" Content="1" Checked="ConnectGnd1"  Unchecked="ConnectGnd1"/>
-                                                <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding ConnectedToGround_2}" Content="2" Checked="ConnectGnd2"  Unchecked="ConnectGnd2"/>
-                                                <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding ConnectedToGround_3}" Content="3" Checked="ConnectGnd3"  Unchecked="ConnectGnd3"/>
-                                                <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding ConnectedToGround_4}" Content="4" Checked="ConnectGnd4"  Unchecked="ConnectGnd4"/>
-                                                <CheckBox Grid.Row="4" Grid.Column="0" IsChecked="{Binding ConnectedToGround_5}" Content="5" Checked="ConnectGnd5"  Unchecked="ConnectGnd5"/>
-                                                <CheckBox Grid.Row="5" Grid.Column="0" IsChecked="{Binding ConnectedToGround_6}" Content="6" Checked="ConnectGnd6"  Unchecked="ConnectGnd6"/>
-                                                <CheckBox Grid.Row="6" Grid.Column="0" IsChecked="{Binding ConnectedToGround_7}" Content="7" Checked="ConnectGnd7"  Unchecked="ConnectGnd7"/>
-                                                <CheckBox Grid.Row="7" Grid.Column="0" IsChecked="{Binding ConnectedToGround_8}" Content="8" Checked="ConnectGnd8"  Unchecked="ConnectGnd8"/>
-                                                <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="{Binding ConnectedToGround_9}" Content="9" Checked="ConnectGnd9"  Unchecked="ConnectGnd9"/>
-                                                <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="{Binding ConnectedToGround_10}" Content="10" Checked="ConnectGnd10"  Unchecked="ConnectGnd10"/>
-                                                <CheckBox Grid.Row="2" Grid.Column="3" IsChecked="{Binding ConnectedToGround_11}" Content="11" Checked="ConnectGnd11"  Unchecked="ConnectGnd11"/>
-                                                <CheckBox Grid.Row="3" Grid.Column="4" IsChecked="{Binding ConnectedToGround_12}" Content="12" Checked="ConnectGnd12"  Unchecked="ConnectGnd12"/>
-                                                <CheckBox Grid.Row="4" Grid.Column="5" IsChecked="{Binding ConnectedToGround_13}" Content="13" Checked="ConnectGnd13"  Unchecked="ConnectGnd13"/>
-                                                <CheckBox Grid.Row="5" Grid.Column="6" IsChecked="{Binding ConnectedToGround_14}" Content="14" Checked="ConnectGnd14"  Unchecked="ConnectGnd14"/>
-                                                <CheckBox Grid.Row="6" Grid.Column="7" IsChecked="{Binding ConnectedToGround_15}" Content="15" Checked="ConnectGnd15"  Unchecked="ConnectGnd15"/>
-                                                <CheckBox Grid.Row="7" Grid.Column="8" IsChecked="{Binding ConnectedToGround_16}" Content="16" Checked="ConnectGnd16"  Unchecked="ConnectBus16"/>
-                                            </Grid>
-                                            <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
-                                                <Button Width="150" Height="auto" Name="ConnectToGround" Click="Connect" Background="#FFEDEDED">
-                                                    <TextBlock TextAlignment="Center" FontSize="15">
-                                                Connect Channels To <LineBreak/> Ground/Bus
-                                                    </TextBlock>
-                                                </Button>
-                                            </StackPanel>
-                                        </Grid>
-                                    </GroupBox>
-                                </GroupBox>
-                                <Separator Height="15" Background="Transparent"/>
-                                <GroupBox Header="Connect To Function Bus" Width="auto" HorizontalAlignment="Center" FontSize="20">
-                                    <GroupBox Header="Select Channel" Width="auto" HorizontalAlignment="left" FontSize="10">
-                                        <Grid Width="450">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Grid.Row="0" RenderTransformOrigin="0,1">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                </Grid.RowDefinitions>
-                                                <CheckBox Grid.Row="0" Grid.Column="0" Content="1" IsChecked="{Binding ConnectedToBus_1, Mode=TwoWay}" Checked="ConnectBus1"  Unchecked="ConnectBus1" />
-                                                <CheckBox Grid.Row="1" Grid.Column="0" Content="2" IsChecked="{Binding ConnectedToBus_2, Mode=TwoWay}" Checked="ConnectBus2"  Unchecked="ConnectBus2"/>
-                                                <CheckBox Grid.Row="2" Grid.Column="0" Content="3" IsChecked="{Binding ConnectedToBus_3, Mode=TwoWay}" Checked="ConnectBus3"  Unchecked="ConnectBus3"/>
-                                                <CheckBox Grid.Row="3" Grid.Column="0" Content="4" IsChecked="{Binding ConnectedToBus_4, Mode=TwoWay}" Checked="ConnectBus4"  Unchecked="ConnectBus4"/>
-                                                <CheckBox Grid.Row="4" Grid.Column="0" Content="5" IsChecked="{Binding ConnectedToBus_5, Mode=TwoWay}" Checked="ConnectBus5"  Unchecked="ConnectBus5"/>
-                                                <CheckBox Grid.Row="5" Grid.Column="0" Content="6" IsChecked="{Binding ConnectedToBus_6, Mode=TwoWay}" Checked="ConnectBus6"  Unchecked="ConnectBus6"/>
-                                                <CheckBox Grid.Row="6" Grid.Column="0" Content="7" IsChecked="{Binding ConnectedToBus_7, Mode=TwoWay}" Checked="ConnectBus7"  Unchecked="ConnectBus7"/>
-                                                <CheckBox Grid.Row="7" Grid.Column="0" Content="8" IsChecked="{Binding ConnectedToBus_8, Mode=TwoWay}" Checked="ConnectBus8"  Unchecked="ConnectBus8"/>
-                                                <CheckBox Grid.Row="0" Grid.Column="1" Content="9" IsChecked="{Binding ConnectedToBus_9, Mode=TwoWay}" Checked="ConnectBus9"  Unchecked="ConnectBus9"/>
-                                                <CheckBox Grid.Row="1" Grid.Column="2" Content="10" IsChecked="{Binding ConnectedToBus_10, Mode=TwoWay}" Checked="ConnectBus10"  Unchecked="ConnectBus10"/>
-                                                <CheckBox Grid.Row="2" Grid.Column="3" Content="11" IsChecked="{Binding ConnectedToBus_11, Mode=TwoWay}" Checked="ConnectBus11"  Unchecked="ConnectBus11"/>
-                                                <CheckBox Grid.Row="3" Grid.Column="4" Content="12" IsChecked="{Binding ConnectedToBus_12, Mode=TwoWay}" Checked="ConnectBus12"  Unchecked="ConnectBus12"/>
-                                                <CheckBox Grid.Row="4" Grid.Column="5" Content="13" IsChecked="{Binding ConnectedToBus_13, Mode=TwoWay}" Checked="ConnectBus13"  Unchecked="ConnectBus13"/>
-                                                <CheckBox Grid.Row="5" Grid.Column="6" Content="14" IsChecked="{Binding ConnectedToBus_14, Mode=TwoWay}" Checked="ConnectBus14"  Unchecked="ConnectBus14"/>
-                                                <CheckBox Grid.Row="6" Grid.Column="7" Content="15" IsChecked="{Binding ConnectedToBus_15, Mode=TwoWay}" Checked="ConnectBus15"  Unchecked="ConnectBus15"/>
-                                                <CheckBox Grid.Row="7" Grid.Column="8" Content="16" IsChecked="{Binding ConnectedToBus_16, Mode=TwoWay}" Checked="ConnectBus16"  Unchecked="ConnectBus16"/>
-                                            </Grid>
-                                            <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
-                                                <Button Width="150" Height="auto" Name="ConnectChannelToBus" Click="Connect" Background="#FFEDEDED">
-                                                    <TextBlock TextAlignment="Center" FontSize="15">
-                                                Connect Channels To <LineBreak/> Ground/Bus
-                                                    </TextBlock>
-                                                </Button>
-                                            </StackPanel>
-                                        </Grid>
-                                    </GroupBox>
-                                </GroupBox>
-                                <Separator Height="15" Background="Transparent"/>
-                                <GroupBox Header="Put Voltage" Width="400" HorizontalAlignment="Center" FontSize="20">
-                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <Separator Width="40" Background="Transparent"/>
-                                            <Label>Voltage:</Label>
-                                            <TextBox x:Name="VoltageTextBox" Width="80" Height="30" Margin="5"/>
-                                            <Label>V</Label>
-                                            <Separator Width="40" Background="Transparent"/>
-                                        </StackPanel>
-                                        <Button Width="270" Height="auto" Name="PutVoltageButton" Click="PutVoltage" Background="#FFEDEDED" FontSize="15">Put Voltage</Button>
-                                    </StackPanel>
-                                </GroupBox>
-                                <Separator Height="15" Background="Transparent"/>
-                                <Button Width="200" Height="40" Name="DisconnectVoltageButton" Click="DisconnectVoltage" FontSize="15" Background="#FFEDEDED">Disconnect Voltage</Button>
-                            </StackPanel>
                             <Separator Height="15" Background="Transparent"/>
-                            <Button Width="auto" Height="auto" Name="resetButton" Click="Reset" FontSize="20" Background="#FFFF3D3D">RESET</Button>
+                            <GroupBox Header="Connect Channel To Ground" Width="auto" HorizontalAlignment="Center" FontSize="20">
+                                <GroupBox Header="Select Channel" Width="auto" HorizontalAlignment="left" FontSize="10">
+                                    <Grid Width="450">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Row="0" RenderTransformOrigin="0,1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding ConnectedToGround_1}" Content="1" Checked="ConnectGnd1"  Unchecked="ConnectGnd1"/>
+                                            <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding ConnectedToGround_2}" Content="2" Checked="ConnectGnd2"  Unchecked="ConnectGnd2"/>
+                                            <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding ConnectedToGround_3}" Content="3" Checked="ConnectGnd3"  Unchecked="ConnectGnd3"/>
+                                            <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding ConnectedToGround_4}" Content="4" Checked="ConnectGnd4"  Unchecked="ConnectGnd4"/>
+                                            <CheckBox Grid.Row="4" Grid.Column="0" IsChecked="{Binding ConnectedToGround_5}" Content="5" Checked="ConnectGnd5"  Unchecked="ConnectGnd5"/>
+                                            <CheckBox Grid.Row="5" Grid.Column="0" IsChecked="{Binding ConnectedToGround_6}" Content="6" Checked="ConnectGnd6"  Unchecked="ConnectGnd6"/>
+                                            <CheckBox Grid.Row="6" Grid.Column="0" IsChecked="{Binding ConnectedToGround_7}" Content="7" Checked="ConnectGnd7"  Unchecked="ConnectGnd7"/>
+                                            <CheckBox Grid.Row="7" Grid.Column="0" IsChecked="{Binding ConnectedToGround_8}" Content="8" Checked="ConnectGnd8"  Unchecked="ConnectGnd8"/>
+                                            <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="{Binding ConnectedToGround_9}" Content="9" Checked="ConnectGnd9"  Unchecked="ConnectGnd9"/>
+                                            <CheckBox Grid.Row="1" Grid.Column="2" IsChecked="{Binding ConnectedToGround_10}" Content="10" Checked="ConnectGnd10"  Unchecked="ConnectGnd10"/>
+                                            <CheckBox Grid.Row="2" Grid.Column="3" IsChecked="{Binding ConnectedToGround_11}" Content="11" Checked="ConnectGnd11"  Unchecked="ConnectGnd11"/>
+                                            <CheckBox Grid.Row="3" Grid.Column="4" IsChecked="{Binding ConnectedToGround_12}" Content="12" Checked="ConnectGnd12"  Unchecked="ConnectGnd12"/>
+                                            <CheckBox Grid.Row="4" Grid.Column="5" IsChecked="{Binding ConnectedToGround_13}" Content="13" Checked="ConnectGnd13"  Unchecked="ConnectGnd13"/>
+                                            <CheckBox Grid.Row="5" Grid.Column="6" IsChecked="{Binding ConnectedToGround_14}" Content="14" Checked="ConnectGnd14"  Unchecked="ConnectGnd14"/>
+                                            <CheckBox Grid.Row="6" Grid.Column="7" IsChecked="{Binding ConnectedToGround_15}" Content="15" Checked="ConnectGnd15"  Unchecked="ConnectGnd15"/>
+                                            <CheckBox Grid.Row="7" Grid.Column="8" IsChecked="{Binding ConnectedToGround_16}" Content="16" Checked="ConnectGnd16"  Unchecked="ConnectBus16"/>
+                                        </Grid>
+                                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                                            <Button Width="150" Height="auto" Name="ConnectToGround" Click="Connect" Background="#FFEDEDED">
+                                                <TextBlock TextAlignment="Center" FontSize="15">
+                                            Connect Channels To <LineBreak/> Ground/Bus
+                                                </TextBlock>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </GroupBox>
+                            </GroupBox>
+                            <Separator Height="15" Background="Transparent"/>
+                            <GroupBox Header="Connect To Function Bus" Width="auto" HorizontalAlignment="Center" FontSize="20">
+                                <GroupBox Header="Select Channel" Width="auto" HorizontalAlignment="left" FontSize="10">
+                                    <Grid Width="450">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Row="0" RenderTransformOrigin="0,1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <CheckBox Grid.Row="0" Grid.Column="0" Content="1" IsChecked="{Binding ConnectedToBus_1, Mode=TwoWay}" Checked="ConnectBus1"  Unchecked="ConnectBus1" />
+                                            <CheckBox Grid.Row="1" Grid.Column="0" Content="2" IsChecked="{Binding ConnectedToBus_2, Mode=TwoWay}" Checked="ConnectBus2"  Unchecked="ConnectBus2"/>
+                                            <CheckBox Grid.Row="2" Grid.Column="0" Content="3" IsChecked="{Binding ConnectedToBus_3, Mode=TwoWay}" Checked="ConnectBus3"  Unchecked="ConnectBus3"/>
+                                            <CheckBox Grid.Row="3" Grid.Column="0" Content="4" IsChecked="{Binding ConnectedToBus_4, Mode=TwoWay}" Checked="ConnectBus4"  Unchecked="ConnectBus4"/>
+                                            <CheckBox Grid.Row="4" Grid.Column="0" Content="5" IsChecked="{Binding ConnectedToBus_5, Mode=TwoWay}" Checked="ConnectBus5"  Unchecked="ConnectBus5"/>
+                                            <CheckBox Grid.Row="5" Grid.Column="0" Content="6" IsChecked="{Binding ConnectedToBus_6, Mode=TwoWay}" Checked="ConnectBus6"  Unchecked="ConnectBus6"/>
+                                            <CheckBox Grid.Row="6" Grid.Column="0" Content="7" IsChecked="{Binding ConnectedToBus_7, Mode=TwoWay}" Checked="ConnectBus7"  Unchecked="ConnectBus7"/>
+                                            <CheckBox Grid.Row="7" Grid.Column="0" Content="8" IsChecked="{Binding ConnectedToBus_8, Mode=TwoWay}" Checked="ConnectBus8"  Unchecked="ConnectBus8"/>
+                                            <CheckBox Grid.Row="0" Grid.Column="1" Content="9" IsChecked="{Binding ConnectedToBus_9, Mode=TwoWay}" Checked="ConnectBus9"  Unchecked="ConnectBus9"/>
+                                            <CheckBox Grid.Row="1" Grid.Column="2" Content="10" IsChecked="{Binding ConnectedToBus_10, Mode=TwoWay}" Checked="ConnectBus10"  Unchecked="ConnectBus10"/>
+                                            <CheckBox Grid.Row="2" Grid.Column="3" Content="11" IsChecked="{Binding ConnectedToBus_11, Mode=TwoWay}" Checked="ConnectBus11"  Unchecked="ConnectBus11"/>
+                                            <CheckBox Grid.Row="3" Grid.Column="4" Content="12" IsChecked="{Binding ConnectedToBus_12, Mode=TwoWay}" Checked="ConnectBus12"  Unchecked="ConnectBus12"/>
+                                            <CheckBox Grid.Row="4" Grid.Column="5" Content="13" IsChecked="{Binding ConnectedToBus_13, Mode=TwoWay}" Checked="ConnectBus13"  Unchecked="ConnectBus13"/>
+                                            <CheckBox Grid.Row="5" Grid.Column="6" Content="14" IsChecked="{Binding ConnectedToBus_14, Mode=TwoWay}" Checked="ConnectBus14"  Unchecked="ConnectBus14"/>
+                                            <CheckBox Grid.Row="6" Grid.Column="7" Content="15" IsChecked="{Binding ConnectedToBus_15, Mode=TwoWay}" Checked="ConnectBus15"  Unchecked="ConnectBus15"/>
+                                            <CheckBox Grid.Row="7" Grid.Column="8" Content="16" IsChecked="{Binding ConnectedToBus_16, Mode=TwoWay}" Checked="ConnectBus16"  Unchecked="ConnectBus16"/>
+                                        </Grid>
+                                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                                            <Button Width="150" Height="auto" Name="ConnectChannelToBus" Click="Connect" Background="#FFEDEDED">
+                                                <TextBlock TextAlignment="Center" FontSize="15">
+                                            Connect Channels To <LineBreak/> Ground/Bus
+                                                </TextBlock>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </GroupBox>
+                            </GroupBox>
+                            <Separator Height="15" Background="Transparent"/>
+                            <GroupBox Header="Put Voltage" Width="400" HorizontalAlignment="Center" FontSize="20">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Separator Width="40" Background="Transparent"/>
+                                        <Label>Voltage:</Label>
+                                        <TextBox x:Name="VoltageTextBox" Width="80" Height="30" Margin="5"/>
+                                        <Label>V</Label>
+                                        <Separator Width="40" Background="Transparent"/>
+                                    </StackPanel>
+                                    <Button Width="270" Height="auto" Name="PutVoltageButton" Click="PutVoltage" Background="#FFEDEDED" FontSize="15">Put Voltage</Button>
+                                </StackPanel>
+                            </GroupBox>
+                            <Separator Height="15" Background="Transparent"/>
+                            <Button Width="200" Height="40" Name="DisconnectVoltageButton" Click="DisconnectVoltage" FontSize="15" Background="#FFEDEDED">Disconnect Voltage</Button>
                         </StackPanel>
-                    </DockPanel>
+                        <Separator Height="15" Background="Transparent"/>
+                        <Button Width="auto" Height="auto" Name="resetButton" Click="Reset" FontSize="20" Background="Salmon">RESET</Button>
+                    </StackPanel>
                 </TabItem>
                 <TabItem x:Name="Measure" Header="Measure">
                     <Grid>
@@ -241,9 +245,11 @@
                                                 <ComboBoxItem Tag="MeasCurrent">Others</ComboBoxItem>
                                             </ComboBox>
                                             <Separator Width="15" Background="Transparent"/>
-                                            <Label x:Name="ManualComport" Foreground="#FFB3B3B3">Manual input:</Label>
-                                            <TextBox x:Name="newComPortTextBox" Grid.Column="2" Width="50" Height="18" FontSize="13" IsEnabled="False" Background="#FFDADADA">
-                                            </TextBox>
+                                            <StackPanel>
+                                                <Label x:Name="ManualComport" Foreground="#FFB3B3B3">Input Port (Format e.g. 'COM54'):</Label>
+                                                <TextBox x:Name="newComPortTextBox" Grid.Column="2" Width="50" Height="18" FontSize="13" IsEnabled="False" Background="#FFDADADA"/>
+                                            </StackPanel>
+
                                         </StackPanel>
                                     </StackPanel>
                                     <Button Grid.Row="1" HorizontalAlignment="Center" Click="ChangeCOMPort" Width="150" Height="20" FontSize="12">Change COM Port</Button>
@@ -278,6 +284,6 @@
                     </Grid>
                 </TabItem>
             </TabControl>
-        </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>

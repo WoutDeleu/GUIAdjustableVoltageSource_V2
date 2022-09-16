@@ -172,7 +172,7 @@ namespace AdjustableVoltageSource
                     {
                         newComPortTextBox.BorderBrush = Brushes.DarkRed;
                         newComPortTextBox.Background = Brushes.LightPink;
-                        StatusBox_Error = "Fault in format Comport";
+                        StatusBox_Error = "Fault in format Comport... Format is e.g. 'COM8'";
 					}
 					break;
                 default:
