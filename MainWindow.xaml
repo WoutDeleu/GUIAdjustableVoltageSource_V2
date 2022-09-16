@@ -9,7 +9,22 @@
     <Grid Width="450">
         <DockPanel>
             <StatusBar DockPanel.Dock="Bottom" >
-                <StatusBarItem Background="#FFFBFB7A" x:Name="ArduinoStatusBar">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+                <StatusBarItem>
+                    <TextBlock x:Name="labelCurrentCOM"/>
+                </StatusBarItem>
+                <Separator Grid.Column="1" />
+                <StatusBarItem Grid.Column="2" Background="#FFFBFB7A" x:Name="ArduinoStatusBar">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontWeight="Bold">Status Arduino: </TextBlock>
                         <Label> </Label>
@@ -134,6 +149,11 @@
                                     <Button Width="270" Height="auto" Name="PutVoltageButton" Click="PutVoltage" Background="#FFEDEDED" FontSize="15">Put Voltage</Button>
                                 </StackPanel>
                             </GroupBox>
+                            <Separator Height="15" Background="Transparent"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock FontSize="20">Current: </TextBlock>
+                                <TextBlock Name="MeasureCurrentPeriodText" FontWeight="Bold" FontSize="14"/>
+                            </StackPanel>
                             <Separator Height="15" Background="Transparent"/>
                             <Button Width="200" Height="40" Name="DisconnectVoltageButton" Click="DisconnectVoltage" FontSize="15" Background="#FFEDEDED">Disconnect Voltage</Button>
                         </StackPanel>

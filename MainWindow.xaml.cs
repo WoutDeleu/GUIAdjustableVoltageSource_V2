@@ -46,11 +46,18 @@ namespace AdjustableVoltageSource
 
             InitializeMainWindow();
 
-            DispatcherTimer refresh = new DispatcherTimer();
-            refresh.Interval = TimeSpan.FromSeconds(8);
-            refresh.Tick += UpdateArduinoStatus;
-            //refresh.Tick += UpdateArduinoStatus;
-            refresh.Start();
+            DispatcherTimer refreshArduinoStatus = new DispatcherTimer();
+            refreshArduinoStatus.Interval = TimeSpan.FromSeconds(8);
+            refreshArduinoStatus.Tick += UpdateArduinoStatus;
+
+
+            DispatcherTimer refreshCurrentMeasure = new DispatcherTimer();
+            refreshCurrentMeasure.Interval = TimeSpan.FromSeconds(30);
+            refreshCurrentMeasure.Tick += MeasureCurrentPeriod;
+            MeasureCurrentPeriodText.Text = "Not Yet Set";
+
+            refreshCurrentMeasure.Start();
+            refreshArduinoStatus.Start();
         }
         private void InitializeMainWindow()
         {
@@ -63,6 +70,7 @@ namespace AdjustableVoltageSource
             Registers.Selection.Text = "";
 
             communicator.InitSerialPort();
+            labelCurrentCOM.Text = CurrentComPort;
 
             if (!communicator.connectionSuccesfull)
             {

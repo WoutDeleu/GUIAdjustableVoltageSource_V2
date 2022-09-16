@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
+using System.IO.Ports;
 
 namespace AdjustableVoltageSource
 {
@@ -85,52 +86,78 @@ namespace AdjustableVoltageSource
 		{
 			if (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Measure Current")
 			{
-				double current_out;
-				communicator.WriteSerialPort((int)Communicator.Functions.MEASURE_CURRENT + ";");
-
-				String input = "";
-
-				while (communicator.serialPort.BytesToRead != 0)
-				{
-					input += communicator.serialPort.ReadExisting();
-				}
-				string current = Communicator.ExtractInput(input, this).Replace(".", ",");
-				if (double.TryParse(current, out current_out))
-				{
-					MeasuredValue = current_out + " A";
-					StatusBox_Status = "Measured Current: " + current_out;
-				}
-				else
-				{
-					StatusBox_Error = "Fault in measure format";
-					MeasuredValue = "FAULT";
-				}
+                MeasuredValue = MeasureCurrent();
 			}
 			else
 			{
-				double voltage_out;
-				MeasureVoltageChannel();
-
-				String input = "";
-
-				while (communicator.serialPort.BytesToRead != 0)
+                MeasuredValue = MeasureVoltage();
+			}
+		}
+		private string MeasureVoltage()
+		{
+			try
+			{
+				if (communicator.serialPort.IsOpen)
 				{
-					input += communicator.serialPort.ReadExisting();
-				}
-				Debug.WriteLine(input);
-				string voltage = Communicator.ExtractInput(input, this).Replace(".", ",");
-				if (double.TryParse(voltage, out voltage_out))
-				{
-					StatusBox_Status = "Measured Voltage: " + voltage_out;
-					MeasuredValue = voltage_out + " V";
+					double voltage_out;
+					MeasureVoltageChannel();
+
+					String input = "";
+
+					while (communicator.serialPort.BytesToRead != 0)
+					{
+						input += communicator.serialPort.ReadExisting();
+					}
+					Debug.WriteLine(input);
+					string voltage = Communicator.ExtractInput(input, this).Replace(".", ",");
+					if (double.TryParse(voltage, out voltage_out))
+					{
+						StatusBox_Status = "Measured Voltage: " + voltage_out;
+						return voltage_out + " V";
+					}
+					else
+					{
+						StatusBox_Error = "Fault in measure format (received)...";
+						return "FAULT";
+					}
 				}
 				else
 				{
-					StatusBox_Error = "Fault in measure format (received)...";
-					MeasuredValue = "FAULT";
+					throw new Exception("FAULT in connection. SerialPort has been closed.");
 				}
 			}
-		}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex.Message);
+				StatusBox_Error = ex.Message;
+				ResetWithClosedPort();
+			}
+			return "";
+        }
+		private string MeasureCurrent()
+		{
+
+            double current_out;
+            communicator.WriteSerialPort((int)Communicator.Functions.MEASURE_CURRENT + ";");
+
+            String input = "";
+
+            while (communicator.serialPort.BytesToRead != 0)
+            {
+                input += communicator.serialPort.ReadExisting();
+            }
+            string current = Communicator.ExtractInput(input, this).Replace(".", ",");
+            if (double.TryParse(current, out current_out))
+            {
+                return current_out + " A";
+                StatusBox_Status = "Measured Current: " + current_out;
+            }
+            else
+            {
+                StatusBox_Error = "Fault in measure format";
+                return "FAULT";
+            }
+        }
 		// Formatting messages based on the selection of the measuring channel
 		private void MeasureVoltageChannel()
 		{
@@ -187,13 +214,15 @@ namespace AdjustableVoltageSource
         {
             DisconnectAll();
             VoltageTextBox.Text = "";
+            MeasureCurrentPeriodText.Text = "Not Yet Set";
             communicator.WriteSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
 
             stopwatch = Stopwatch.StartNew();
 
             InitializeMainWindow();
         }
-
+		// Reset, but when the COM-port is closed
+		// No registers are written
 		public void ResetWithClosedPort()
 		{
             DisconnectAllWithClosedPort();
@@ -203,6 +232,5 @@ namespace AdjustableVoltageSource
 
 			InitializeMainWindow();
 		}
-
 	}
 }

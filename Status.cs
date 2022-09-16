@@ -45,5 +45,12 @@ namespace AdjustableVoltageSource
 				ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
 			}
         }
-    }
+		private void MeasureCurrentPeriod(object sender, EventArgs e)
+		{
+			if (communicator.serialPort.IsOpen)
+			{
+				MeasureCurrentPeriodText.Text = MeasureCurrent();
+			}
+		}
+	}
 }

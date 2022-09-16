@@ -8,7 +8,7 @@
         Title="Select COM port" Height="auto" Width="auto" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight">
     <StackPanel>
         <Label FontSize="15" Name="counter"/>
-        <StackPanel Orientation="Horizontal" >
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Label FontSize="15">Select COM-port:</Label>
             <ComboBox FontSize="15" Width="auto" Name="ComSelector" ItemsSource="{Binding comports}"/>
         </StackPanel>
