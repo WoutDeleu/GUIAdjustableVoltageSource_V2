@@ -183,7 +183,7 @@ namespace AdjustableVoltageSource
             }
         }
 
-        private void Reset()
+        public void Reset()
         {
             DisconnectAll();
             VoltageTextBox.Text = "";
@@ -193,5 +193,16 @@ namespace AdjustableVoltageSource
 
             InitializeMainWindow();
         }
-    }
+
+		public void ResetWithClosedPort()
+		{
+            DisconnectAllWithClosedPort();
+			VoltageTextBox.Text = "";
+
+			stopwatch = Stopwatch.StartNew();
+
+			InitializeMainWindow();
+		}
+
+	}
 }

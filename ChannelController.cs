@@ -760,12 +760,89 @@ namespace AdjustableVoltageSource
             VoltageTextBox.Text = "";
             StatusBox_Status = "Everything is Disconnected";
         }
+        // Defintly disconnect all channels to bus and ground as selected
+        private void DisconnectAllWithClosedPort()
+        {
+            ConnectedToBus_1 = false;
+            ConnectedToBus_2 = false;
+            ConnectedToBus_3 = false;
+            ConnectedToBus_4 = false;
+            ConnectedToBus_5 = false;
+            ConnectedToBus_6 = false;
+            ConnectedToBus_7 = false;
+            ConnectedToBus_8 = false;
+            ConnectedToBus_9 = false;
+            ConnectedToBus_10 = false;
+            ConnectedToBus_11 = false;
+            ConnectedToBus_12 = false;
+            ConnectedToBus_13 = false;
+            ConnectedToBus_14 = false;
+            ConnectedToBus_15 = false;
+            ConnectedToBus_16 = false;
+
+            ConnectedToGround_1 = false;
+            ConnectedToGround_2 = false;
+            ConnectedToGround_3 = false;
+            ConnectedToGround_4 = false;
+            ConnectedToGround_5 = false;
+            ConnectedToGround_6 = false;
+            ConnectedToGround_7 = false;
+            ConnectedToGround_8 = false;
+            ConnectedToGround_9 = false;
+            ConnectedToGround_10 = false;
+            ConnectedToGround_11 = false;
+            ConnectedToGround_12 = false;
+            ConnectedToGround_13 = false;
+            ConnectedToGround_14 = false;
+            ConnectedToGround_15 = false;
+            ConnectedToGround_16 = false;
+
+            ch1_radiobutton.IsEnabled = false;
+            ch2_radiobutton.IsEnabled = false;
+            ch3_radiobutton.IsEnabled = false;
+            ch4_radiobutton.IsEnabled = false;
+            ch5_radiobutton.IsEnabled = false;
+            ch6_radiobutton.IsEnabled = false;
+            ch7_radiobutton.IsEnabled = false;
+            ch8_radiobutton.IsEnabled = false;
+            ch9_radiobutton.IsEnabled = false;
+            ch10_radiobutton.IsEnabled = false;
+            ch11_radiobutton.IsEnabled = false;
+            ch12_radiobutton.IsEnabled = false;
+            ch13_radiobutton.IsEnabled = false;
+            ch14_radiobutton.IsEnabled = false;
+            ch15_radiobutton.IsEnabled = false;
+            ch16_radiobutton.IsEnabled = false;
+
+            ch1_radiobutton.IsChecked = false;
+            ch2_radiobutton.IsChecked = false;
+            ch3_radiobutton.IsChecked = false;
+            ch4_radiobutton.IsChecked = false;
+            ch5_radiobutton.IsChecked = false;
+            ch6_radiobutton.IsChecked = false;
+            ch7_radiobutton.IsChecked = false;
+            ch8_radiobutton.IsChecked = false;
+            ch9_radiobutton.IsChecked = false;
+            ch10_radiobutton.IsChecked = false;
+            ch11_radiobutton.IsChecked = false;
+            ch12_radiobutton.IsChecked = false;
+            ch13_radiobutton.IsChecked = false;
+            ch14_radiobutton.IsChecked = false;
+            ch15_radiobutton.IsChecked = false;
+            ch16_radiobutton.IsChecked = false;
+
+            VoltageTextBox.Text = "";
+            StatusBox_Status = "Everything is Disconnected";
+        }
+        
+        
         // Defintly connect all channels to bus and ground as selected
         private void Connect(object sender, RoutedEventArgs e)
         {
             // if there are no changes being made, there is no need to update the registers
             if (!updatedBus || !updatedGnd)
             {
+                StatusBox_Status = "Connections are established";
                 string data = FormatGrounddata_pt1();
                 communicator.WriteSerialPort(data);
                 data = FormatGrounddata_pt2();
@@ -780,10 +857,8 @@ namespace AdjustableVoltageSource
 
                 updatedBus = true;
                 updatedGnd = true;
-                StatusBox_Status = "Connections are established";
             }
             else StatusBox_Status = "Nothing to update while connecting";
         }
-
     }
 }

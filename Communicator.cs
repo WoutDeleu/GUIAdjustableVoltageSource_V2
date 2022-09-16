@@ -93,12 +93,14 @@ public class Communicator
             }
             else
             {
-                mw.StatusBox_Error = "FAULT in connection. SerialPort is closed.";
+                throw new Exception("FAULT in connection. SerialPort has been closed.");
             }
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
+            mw.StatusBox_Error = ex.Message;
+            mw.ResetWithClosedPort();
         }
     }
     public void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
