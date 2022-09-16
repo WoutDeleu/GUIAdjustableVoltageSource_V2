@@ -42,14 +42,16 @@ public class Communicator
     
     public void CloseSerialPort()
     {
-        if (!serialPort.IsOpen) serialPort.Open();
-        serialPort.DiscardOutBuffer();
-        serialPort.DiscardInBuffer();
+        if (serialPort.IsOpen)
+        {
+            serialPort.DiscardOutBuffer();
+            serialPort.DiscardInBuffer();
 
-        Thread.Sleep(500);
+            Thread.Sleep(500);
 
-        serialPort.Dispose();
-        serialPort.Close();
+            serialPort.Dispose();
+            serialPort.Close();
+        }
     }
     public void WriteSerialPort(string data)
     {
@@ -165,6 +167,7 @@ public class Communicator
                 if (!serialPort.IsOpen)
                 {
                     mw.StatusBox_Status = "'" + serialPort.PortName + "' Port Closed\n";
+                    Debug.WriteLine("'" + serialPort.PortName + "' Port Closed\n");
                 }
             }
             // Based on connection method
@@ -220,6 +223,7 @@ public class Communicator
             Debug.WriteLine(ex.Message + "\n");
             Debug.WriteLine("Port " + serialPort.PortName + " could not be opened");
             mw.StatusBox_Error = ("Port " + serialPort.PortName + " could not be opened");
+            CloseSerialPort();
             connectionSuccesfull = false;
         }
     }
@@ -310,6 +314,7 @@ public class Communicator
         return "";
     }
 
+    
     // Filter output/input. Remove extra identifier characters
     public static string ExtractInput(string input, MainWindow mainWindow)
     {

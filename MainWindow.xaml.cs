@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows.Data;
 using System.Windows.Media;
 using System;
+using System.IO.Ports;
 
 namespace AdjustableVoltageSource
 {
@@ -119,6 +120,10 @@ namespace AdjustableVoltageSource
                     Measure.IsEnabled = false;
                     BoardNumberSettings.IsEnabled = false;
                     tabcontroller.SelectedIndex = 3;
+
+                    StatusBox_Error = ("Port " + communicator.serialPort.PortName + " could not be opened");
+                    communicator.CloseSerialPort();
+                    communicator.connectionSuccesfull = false;
 
                     Current_Com.SetBinding(ContentProperty, new Binding("CurrentComPort"));
                 }
