@@ -57,6 +57,7 @@ namespace AdjustableVoltageSource
             {
                 this.Dispatcher.Invoke(() =>
                 {
+                    tabcontroller.SelectedIndex = 3;
                     if (stopwatch.Elapsed.TotalSeconds > 1000) stopwatch.Restart();
                     TextRange tr = new TextRange(Status.Document.ContentEnd, Status.Document.ContentEnd);
                     tr.Text = "[" + stopwatch.Elapsed.TotalSeconds + "] " + value + "\r";

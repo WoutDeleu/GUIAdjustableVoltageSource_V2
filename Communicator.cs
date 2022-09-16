@@ -1,18 +1,14 @@
 ﻿using AdjustableVoltageSource;
-using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
 using System.Management;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 
 public class Communicator
 {
@@ -42,14 +38,16 @@ public class Communicator
     
     public void CloseSerialPort()
     {
-        if (!serialPort.IsOpen) serialPort.Open();
-        serialPort.DiscardOutBuffer();
-        serialPort.DiscardInBuffer();
+        if (serialPort.IsOpen)
+        {
+            serialPort.DiscardOutBuffer();
+            serialPort.DiscardInBuffer();
 
-        Thread.Sleep(500);
+            Thread.Sleep(500);
 
-        serialPort.Dispose();
-        serialPort.Close();
+            serialPort.Dispose();
+            serialPort.Close();
+        }
     }
     public void WriteSerialPort(string data)
     {
@@ -165,6 +163,7 @@ public class Communicator
                 if (!serialPort.IsOpen)
                 {
                     mw.StatusBox_Status = "'" + serialPort.PortName + "' Port Closed\n";
+                    Debug.WriteLine("'" + serialPort.PortName + "' Port Closed\n");
                 }
             }
             // Based on connection method
@@ -195,7 +194,7 @@ public class Communicator
             // Manually input portname
             else if (mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Others")
             {
-                serialPort.PortName = mw.newComPort.Text;
+                serialPort.PortName = mw.newComPortTextBox.Text;
                 mw.StatusBox_Status = ("Port found based on input User : " + serialPort.PortName);
             }
             // Choose portname based on selection in list
@@ -220,6 +219,7 @@ public class Communicator
             Debug.WriteLine(ex.Message + "\n");
             Debug.WriteLine("Port " + serialPort.PortName + " could not be opened");
             mw.StatusBox_Error = ("Port " + serialPort.PortName + " could not be opened");
+            CloseSerialPort();
             connectionSuccesfull = false;
         }
     }
@@ -310,6 +310,7 @@ public class Communicator
         return "";
     }
 
+    
     // Filter output/input. Remove extra identifier characters
     public static string ExtractInput(string input, MainWindow mainWindow)
     {

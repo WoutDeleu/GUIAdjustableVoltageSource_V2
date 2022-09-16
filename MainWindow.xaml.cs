@@ -120,6 +120,10 @@ namespace AdjustableVoltageSource
                     BoardNumberSettings.IsEnabled = false;
                     tabcontroller.SelectedIndex = 3;
 
+                    StatusBox_Error = ("Port " + communicator.serialPort.PortName + " could not be opened");
+                    communicator.CloseSerialPort();
+                    communicator.connectionSuccesfull = false;
+
                     Current_Com.SetBinding(ContentProperty, new Binding("CurrentComPort"));
                 }
             }

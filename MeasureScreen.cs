@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace AdjustableVoltageSource
 {
@@ -72,22 +69,22 @@ namespace AdjustableVoltageSource
         // Sync values selected on the HomeScreen with the ones on the MeasureScreen (enable/disable radiobuttons)
         private void UpdateMeasureBoxes()
         {
-            ch1.IsEnabled = ConnectedToBus_1;
-            ch2.IsEnabled = ConnectedToBus_2;
-            ch3.IsEnabled = ConnectedToBus_3;
-            ch4.IsEnabled = ConnectedToBus_4;
-            ch5.IsEnabled = ConnectedToBus_5;
-            ch6.IsEnabled = ConnectedToBus_6;
-            ch7.IsEnabled = ConnectedToBus_7;
-            ch8.IsEnabled = ConnectedToBus_8;
-            ch9.IsEnabled = ConnectedToBus_9;
-            ch10.IsEnabled = ConnectedToBus_10;
-            ch11.IsEnabled = ConnectedToBus_11;
-            ch12.IsEnabled = ConnectedToBus_12;
-            ch13.IsEnabled = ConnectedToBus_13;
-            ch14.IsEnabled = ConnectedToBus_14;
-            ch15.IsEnabled = ConnectedToBus_15;
-            ch16.IsEnabled = ConnectedToBus_16;
+            ch1_radiobutton.IsEnabled = ConnectedToBus_1;
+            ch2_radiobutton.IsEnabled = ConnectedToBus_2;
+            ch3_radiobutton.IsEnabled = ConnectedToBus_3;
+            ch4_radiobutton.IsEnabled = ConnectedToBus_4;
+            ch5_radiobutton.IsEnabled = ConnectedToBus_5;
+            ch6_radiobutton.IsEnabled = ConnectedToBus_6;
+            ch7_radiobutton.IsEnabled = ConnectedToBus_7;
+            ch8_radiobutton.IsEnabled = ConnectedToBus_8;
+            ch9_radiobutton.IsEnabled = ConnectedToBus_9;
+            ch10_radiobutton.IsEnabled = ConnectedToBus_10;
+            ch11_radiobutton.IsEnabled = ConnectedToBus_11;
+            ch12_radiobutton.IsEnabled = ConnectedToBus_12;
+            ch13_radiobutton.IsEnabled = ConnectedToBus_13;
+            ch14_radiobutton.IsEnabled = ConnectedToBus_14;
+            ch15_radiobutton.IsEnabled = ConnectedToBus_15;
+            ch16_radiobutton.IsEnabled = ConnectedToBus_16;
         }
     }
 }

@@ -15,12 +15,19 @@ namespace AdjustableVoltageSource
 			e.Handled = true;
 			string voltagestr = VoltageTextBox.Text.Replace(".", ",");
 			if (IsValidVoltage(voltagestr))
-			{
-				voltage = Convert.ToDouble(voltagestr);
+            {
+                VoltageTextBox.BorderBrush = (Brush)bc.ConvertFrom("#FFABADB3");
+                VoltageTextBox.Background = Brushes.White;
+                voltage = Convert.ToDouble(voltagestr);
 				communicator.WriteSerialPort((int)Communicator.Functions.PUT_VOLTAGE + "," + voltage + ";");
 				StatusBox_Status = "Set Voltage to " + voltage + ".";
 			}
-			else StatusBox_Error = "Invalid Voltage, voltage must be in range [0V...30V] and it must be a number.";
+			else
+            {
+                VoltageTextBox.BorderBrush = Brushes.DarkRed;
+                VoltageTextBox.Background = Brushes.LightPink;
+                StatusBox_Error = "Invalid Voltage, voltage must be in range [0V...30V] and it must be a number.";
+			}
 		}
 
 		// disconnect voltage source on arduino
@@ -128,22 +135,22 @@ namespace AdjustableVoltageSource
 		private void MeasureVoltageChannel()
 		{
 			string channel = "";
-			if (ch1.IsChecked == true) channel = "1";
-			else if (ch2.IsChecked == true) channel = "2";
-			else if (ch3.IsChecked == true) channel = "3";
-			else if (ch4.IsChecked == true) channel = "4";
-			else if (ch5.IsChecked == true) channel = "5";
-			else if (ch6.IsChecked == true) channel = "6";
-			else if (ch7.IsChecked == true) channel = "7";
-			else if (ch8.IsChecked == true) channel = "8";
-			else if (ch9.IsChecked == true) channel = "9";
-			else if (ch10.IsChecked == true) channel = "10";
-			else if (ch11.IsChecked == true) channel = "11";
-			else if (ch12.IsChecked == true) channel = "12";
-			else if (ch13.IsChecked == true) channel = "13";
-			else if (ch14.IsChecked == true) channel = "14";
-			else if (ch15.IsChecked == true) channel = "15";
-			else if (ch16.IsChecked == true) channel = "16";
+			if (ch1_radiobutton.IsChecked == true) channel = "1";
+			else if (ch2_radiobutton.IsChecked == true) channel = "2";
+			else if (ch3_radiobutton.IsChecked == true) channel = "3";
+			else if (ch4_radiobutton.IsChecked == true) channel = "4";
+			else if (ch5_radiobutton.IsChecked == true) channel = "5";
+			else if (ch6_radiobutton.IsChecked == true) channel = "6";
+			else if (ch7_radiobutton.IsChecked == true) channel = "7";
+			else if (ch8_radiobutton.IsChecked == true) channel = "8";
+			else if (ch9_radiobutton.IsChecked == true) channel = "9";
+			else if (ch10_radiobutton.IsChecked == true) channel = "10";
+			else if (ch11_radiobutton.IsChecked == true) channel = "11";
+			else if (ch12_radiobutton.IsChecked == true) channel = "12";
+			else if (ch13_radiobutton.IsChecked == true) channel = "13";
+			else if (ch14_radiobutton.IsChecked == true) channel = "14";
+			else if (ch15_radiobutton.IsChecked == true) channel = "15";
+			else if (ch16_radiobutton.IsChecked == true) channel = "16";
 
 			communicator.WriteSerialPort((int)Communicator.Functions.MEASURE_VOLTAGE + "," + channel + ";");
 		}
@@ -155,22 +162,22 @@ namespace AdjustableVoltageSource
             switch (selectedPort)
             {
 				case "Others":
-					if (IsValidCOMPort(newComPort.Text))
+					if (IsValidCOMPort(newComPortTextBox.Text))
 					{
-						newComPort.BorderBrush = (Brush)bc.ConvertFrom("#FFABADB3");
-						newComPort.Background = Brushes.White;
+						newComPortTextBox.BorderBrush = (Brush)bc.ConvertFrom("#FFABADB3");
+						newComPortTextBox.Background = Brushes.White;
 						Reset();
 					}
 					else
                     {
-                        newComPort.BorderBrush = Brushes.DarkRed;
-                        newComPort.Background = Brushes.LightPink;
+                        newComPortTextBox.BorderBrush = Brushes.DarkRed;
+                        newComPortTextBox.Background = Brushes.LightPink;
                         StatusBox_Error = "Fault in format Comport";
 					}
 					break;
                 default:
-                    newComPort.BorderBrush = (Brush)bc.ConvertFrom("#FFABADB3");
-                    newComPort.Background = Brushes.White;
+                    newComPortTextBox.BorderBrush = (Brush)bc.ConvertFrom("#FFABADB3");
+                    newComPortTextBox.Background = Brushes.White;
                     Reset();
                     break;
             }
