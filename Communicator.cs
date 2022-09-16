@@ -195,7 +195,7 @@ public class Communicator
             // Manually input portname
             else if (mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Others")
             {
-                serialPort.PortName = mw.newComPort.Text;
+                serialPort.PortName = mw.newComPortTextBox.Text;
                 mw.StatusBox_Status = ("Port found based on input User : " + serialPort.PortName);
             }
             // Choose portname based on selection in list
@@ -224,7 +224,7 @@ public class Communicator
         }
     }
 
-    // Search registery for Arduino based on VID/PID
+    // Search registery for Arduino based on VID/PID 
     string ComPortName(String VID, String PID)
     {
         // Pattern is the format of the usb registery which contains the arduino

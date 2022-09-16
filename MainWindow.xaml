@@ -167,22 +167,22 @@
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
-                                    <RadioButton x:Name="ch1" Grid.Row="0" Grid.Column="0" Content="1" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch2" Grid.Row="1" Grid.Column="0" Content="2" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch3" Grid.Row="2" Grid.Column="0" Content="3" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch4" Grid.Row="3" Grid.Column="0" Content="4" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch5" Grid.Row="4" Grid.Column="0" Content="5" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch6" Grid.Row="5" Grid.Column="0" Content="6" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch7" Grid.Row="6" Grid.Column="0" Content="7" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch8" Grid.Row="7" Grid.Column="0" Content="8" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch9" Grid.Row="0" Grid.Column="1" Content="9" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch10" Grid.Row="1" Grid.Column="2" Content="10" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch11" Grid.Row="2" Grid.Column="3" Content="11" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch12" Grid.Row="3" Grid.Column="4" Content="12" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch13" Grid.Row="4" Grid.Column="5" Content="13" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch14" Grid.Row="5" Grid.Column="6" Content="14" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch15" Grid.Row="6" Grid.Column="7" Content="15" IsEnabled="False"/>
-                                    <RadioButton x:Name="ch16" Grid.Row="7" Grid.Column="8" Content="16" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch1_radiobutton" Grid.Row="0" Grid.Column="0" Content="1" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch2_radiobutton" Grid.Row="1" Grid.Column="0" Content="2" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch3_radiobutton" Grid.Row="2" Grid.Column="0" Content="3" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch4_radiobutton" Grid.Row="3" Grid.Column="0" Content="4" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch5_radiobutton" Grid.Row="4" Grid.Column="0" Content="5" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch6_radiobutton" Grid.Row="5" Grid.Column="0" Content="6" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch7_radiobutton" Grid.Row="6" Grid.Column="0" Content="7" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch8_radiobutton" Grid.Row="7" Grid.Column="0" Content="8" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch9_radiobutton" Grid.Row="0" Grid.Column="1" Content="9" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch10_radiobutton" Grid.Row="1" Grid.Column="2" Content="10" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch11_radiobutton" Grid.Row="2" Grid.Column="3" Content="11" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch12_radiobutton" Grid.Row="3" Grid.Column="4" Content="12" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch13_radiobutton" Grid.Row="4" Grid.Column="5" Content="13" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch14_radiobutton" Grid.Row="5" Grid.Column="6" Content="14" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch15_radiobutton" Grid.Row="6" Grid.Column="7" Content="15" IsEnabled="False"/>
+                                    <RadioButton x:Name="ch16_radiobutton" Grid.Row="7" Grid.Column="8" Content="16" IsEnabled="False"/>
                                 </Grid>
                             </GroupBox>
                             <Separator Height="15" Background="Transparent"/>
@@ -242,7 +242,7 @@
                                             </ComboBox>
                                             <Separator Width="15" Background="Transparent"/>
                                             <Label x:Name="ManualComport" Foreground="#FFB3B3B3">Manual input:</Label>
-                                            <TextBox x:Name="newComPort" Grid.Column="2" Width="50" Height="18" FontSize="13" IsEnabled="False" Background="#FFDADADA">
+                                            <TextBox x:Name="newComPortTextBox" Grid.Column="2" Width="50" Height="18" FontSize="13" IsEnabled="False" Background="#FFDADADA">
                                             </TextBox>
                                         </StackPanel>
                                     </StackPanel>
