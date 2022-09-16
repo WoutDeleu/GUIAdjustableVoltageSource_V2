@@ -47,13 +47,13 @@ namespace AdjustableVoltageSource
             switch (ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
             {
                 case "Others":
-                    newComPort.IsEnabled = true;
-                    newComPort.Background = Brushes.White;
+                    newComPortTextBox.IsEnabled = true;
+                    newComPortTextBox.Background = Brushes.White;
                     ManualComport.Foreground = Brushes.Black;
                     break;
                 default:
-                    newComPort.IsEnabled = false;
-                    newComPort.Background = Brushes.Gray;
+                    newComPortTextBox.IsEnabled = false;
+                    newComPortTextBox.Background = Brushes.Gray;
                     ManualComport.Foreground = Brushes.Gray;
                     break;
             }
