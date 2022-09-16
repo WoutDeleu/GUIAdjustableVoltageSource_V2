@@ -55,7 +55,6 @@ namespace AdjustableVoltageSource
             Registers.SelectAll();
             Registers.Selection.Text = "";
 
-            StatusBox_Status = "Git gelukt";
             communicator.InitSerialPort();
 
             if (!communicator.connectionSuccesfull)
