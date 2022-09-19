@@ -31,12 +31,12 @@ namespace AdjustableVoltageSource
         // Handles enabling/disabling textbox to select comport
         // Based on closing dropdown menu
         private bool handledPort = true;
-        private void selectCOM_DropDownClosed(object sender, EventArgs e)
+        private void SelectCOM_DropDownClosed(object sender, EventArgs e)
         {
             if (handledPort) HandleCom();
             handledPort = true;
         }
-        private void selectCOM_Changed(object sender, SelectionChangedEventArgs e)
+        private void SelectCOM_Changed(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cmb = sender as ComboBox;
             handledPort = !cmb.IsDropDownOpen;
