@@ -5,6 +5,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System;
 using System.Windows.Threading;
+using System.IO.Ports;
 
 namespace AdjustableVoltageSource
 {
@@ -23,13 +24,8 @@ namespace AdjustableVoltageSource
             }
         }
 
-        // Communicator with the arduino
-        Communicator Communicator;
-        BrushConverter Bc = new();
         // Keep track of time which app is opened
         Stopwatch AppTimer;
-        DispatcherTimer RefreshArduinoStatus;
-        DispatcherTimer RefreshCurrentMeasure;
 
         private bool IsGndUpdated { get; set; }
         private bool IsBusUpdated { get; set; }
@@ -44,38 +40,80 @@ namespace AdjustableVoltageSource
             DataContext = this;
 
             AppTimer = Stopwatch.StartNew();
-
-            Communicator = new();
+            serialPort = new()
+            {
+                BaudRate = baudrate
+            };
 
             InitializeCommunication();
 
-            RefreshArduinoStatus = new()
-            {
-                Interval = TimeSpan.FromSeconds(8)
-            };
-            RefreshArduinoStatus.Tick += UpdateArduinoStatus;
+            SetupPeriodicStatusses();
 
-
-            DispatcherTimer RefreshCurrentMeasure = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(30)
-            };
-            RefreshCurrentMeasure.Tick += UpdateMeasuredCurrent;
-            MeasuredCurrentPeriodResult.Text = "Not Yet Set";
-
-            RefreshCurrentMeasure.Start();
-            RefreshArduinoStatus.Start();
-
+            SetUpBindings();
             SelectionVisible = Visibility.Visible;
+        }
+
+        // Establish communication with the arduino
+        private void InitializeCommunication()
+        {
+            ClearTextboxes();
+
+            InitSerialPort();
+            labelCurrentCOM.Text = CurrentCOMPort;
+            if (!isConnectionSuccesfull)
+            {
+                UpdateArduinoStatus(false);
+            }
+            else
+            {
+                try
+                {
+                    // Loop until communication is established
+                    string message = "";
+                    bool started = false, finished = false;
+                    Stopwatch startupTimer = new();
+                    startupTimer.Start();
+                    while (!started)
+                    {
+                        if (startupTimer.ElapsedMilliseconds >= 5000) throw new Exception("TIMEOUT: can't START setup communication Arduino.");
+                        message += serialPort.ReadExisting();
+                        if (message.Contains("##Setup Arduino##")) started = true;
+                    }
+                    StatusBox_Status = "Setup Arduino started";
+                    while (!finished && startupTimer.ElapsedMilliseconds < 5000)
+                    {
+                        if (startupTimer.ElapsedMilliseconds >= 10000) throw new Exception("TIMEOUT: can't FINISH setup communication Arduino.");
+                        message += serialPort.ReadExisting();
+                        if (message.Contains("##Setup Complete##")) finished = true;
+                    }
+                    StatusBox_Status = "Setup Arduino finished";
+
+                    // Enable correct tabs/update statusses
+                    UpdateArduinoStatus(true);
+
+                    UpdateBoardNumber();
+                    DataContext = this;
+                }
+                catch (Exception ex)
+                {
+                    StatusBox_Error = ex.Message.ToString() + " Check if communication is correct and if Arduino is available.";
+                    StatusBox_Error = "Port " + serialPort.PortName + " could not be opened";
+
+                    CloseSerialPort();
+                    UpdateArduinoStatus(false);
+                }
+            }
+        }
+
+        public void SetUpBindings()
+        {
             MeasuredResult.SetBinding(ContentProperty, new Binding("MeasuredValue"));
-
             CurrentBoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
-
             currentCOM.SetBinding(ContentProperty, new Binding("currentCOMPort"));
         }
         public void CloseMainWindow()
         {
-            Communicator.CloseSerialPort();
+            CloseSerialPort();
             Close();
         }
         public void Reset(object sender, RoutedEventArgs e)

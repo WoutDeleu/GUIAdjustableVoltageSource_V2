@@ -17,12 +17,10 @@ namespace AdjustableVoltageSource
 	public partial class COMSelectorWindow : Window
 	{
 		readonly MainWindow mw;
-		readonly Communicator cm;
 		bool applied;
 
-		public COMSelectorWindow(List<string> comports, MainWindow mw, Communicator cm)
+		public COMSelectorWindow(List<string> comports, MainWindow mw)
         {
-            this.cm = cm;
             this.mw = mw;
 
 			applied = false;
@@ -40,7 +38,7 @@ namespace AdjustableVoltageSource
 			if(COMSelector.SelectedItem != null)
 			{
 				mw.StatusBox_Status = "Selected COM port : " + COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
-				cm.ret_port = COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
+				mw.ret_port = COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
 				applied = true;
 
                 Close();
@@ -58,8 +56,10 @@ namespace AdjustableVoltageSource
 			{
 				e.Cancel = false;
 			}
-			else mw.Close();
+			else
+			{
+				mw.Close();
+			}
         }
-
     }
 }

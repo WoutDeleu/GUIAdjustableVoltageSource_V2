@@ -4,78 +4,12 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
-using System.IO.Ports;
 using System.Windows.Data;
 
 namespace AdjustableVoltageSource
 {
 	public partial class MainWindow
 	{
-		// Establish communication with the arduino
-        private void InitializeCommunication()
-        {
-            ClearTextboxes();
-
-            Communicator.InitSerialPort();
-            labelCurrentCOM.Text = CurrentCOMPort;
-
-            if (!Communicator.isConnectionSuccesfull)
-            {
-
-                currentCOM.SetBinding(ContentProperty, new Binding("currentCOMPort"));
-
-                ArduinoStatusLabel.Text = "Not Connected";
-                ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
-                UnSuccesfullCommunication();
-
-            }
-            else
-            {
-                try
-                {
-                    // Loop until communication is established
-                    string message = "";
-                    bool started = false, finished = false;
-                    Stopwatch startupTimer = new();
-                    startupTimer.Start();
-                    while (!started)
-                    {
-                        if (startupTimer.ElapsedMilliseconds >= 5000) throw new Exception("TIMEOUT: can't START setup communication Arduino.");
-                        message += Communicator.serialPort.ReadExisting();
-                        if (message.Contains("##Setup Arduino##")) started = true;
-                    }
-                    StatusBox_Status = "Setup Arduino started";
-                    while (!finished && startupTimer.ElapsedMilliseconds < 5000)
-                    {
-                        if (startupTimer.ElapsedMilliseconds >= 10000) throw new Exception("TIMEOUT: can't FINISH setup communication Arduino.");
-                        message += Communicator.serialPort.ReadExisting();
-                        if (message.Contains("##Setup Complete##")) finished = true;
-                    }
-                    StatusBox_Status = "Setup Arduino finished";
-                    SuccesfullCommunication();
-
-                    ArduinoStatusLabel.Text = "Connected";
-                    ArduinoStatusBar.Background = Brushes.LightGreen;
-
-                    GetBoardNumberArduino();
-                    DataContext = this;
-                }
-                catch (Exception ex)
-                {
-                    StatusBox_Error = ex.Message.ToString() + " Check if communication is correct and if Arduino is available.";
-
-                    UnSuccesfullCommunication();
-
-                    StatusBox_Error = ("Port " + Communicator.serialPort.PortName + " could not be opened");
-                    Communicator.CloseSerialPort();
-                    Communicator.isConnectionSuccesfull = false;
-
-                    ArduinoStatusLabel.Text = "Not Connected";
-                    ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
-                }
-            }
-        }
-        
 		// Set correct voltage on arduino
         private void PutVoltage(object sender, RoutedEventArgs e)
 		{
@@ -86,8 +20,8 @@ namespace AdjustableVoltageSource
                 SetVoltageTextBox.BorderBrush = (Brush)Bc.ConvertFrom("#FFABADB3");
                 SetVoltageTextBox.Background = Brushes.White;
                 Voltage = Convert.ToDouble(voltagestr);
-				Communicator.WriteSerialPort((int)Communicator.Functions.PUT_VOLTAGE + "," + Voltage + ";");
-				StatusBox_Status = "Set Voltage to " + Voltage + ".";
+				WriteSerialPort((int)BoardFunctions.PUT_VOLTAGE + "," + Voltage + ";");
+				// StatusBox_Status = "Set Voltage to " + Voltage + ".";
 			}
 			else
             {
@@ -102,7 +36,7 @@ namespace AdjustableVoltageSource
 		{
 			e.Handled = true;
 			SetVoltageTextBox.Text = "";
-			Communicator.WriteSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
+			WriteSerialPort((int)BoardFunctions.DISCONNECT_VOLTAGE + ";");
 			StatusBox_Status = "Disconnect voltageSource";
 		}
 
@@ -114,7 +48,7 @@ namespace AdjustableVoltageSource
 			if (Regex.IsMatch(boardNumberStr, @"^\d+$"))
 			{
 				BoardNumber = Convert.ToInt32(boardNumberStr);
-				Communicator.WriteSerialPort((int)Communicator.Functions.CHANGE_BOARDNUMBER + "," + BoardNumber + ";");
+				WriteSerialPort((int)BoardFunctions.CHANGE_BOARDNUMBER + "," + BoardNumber + ";");
 			}
 			else
 			{
@@ -122,17 +56,17 @@ namespace AdjustableVoltageSource
 			}
 		}
 		// Fetch BoardNumber stored on the arduino code to see what boardNr it will to connect to
-		private void GetBoardNumberArduino()
+		private void UpdateBoardNumber()
 		{
 
-			Communicator.WriteSerialPort((int)Communicator.Functions.GET_BOARDNUMBER + ";");
+			WriteSerialPort((int)BoardFunctions.GET_BOARDNUMBER + ";");
 
 			string input = "";
-			while (Communicator.serialPort.BytesToRead != 0)
+			while (serialPort.BytesToRead != 0)
 			{
-				input += Communicator.serialPort.ReadExisting();
+				input += serialPort.ReadExisting();
 			}
-			string nr = Communicator.ExtractInput(input, this);
+			string nr = ExtractInput(input);
 			if (int.TryParse(nr, out int boardNumber)) 
 			{
 				StatusBox_Status = "Boardnumber received: " + boardNumber;
@@ -155,18 +89,18 @@ namespace AdjustableVoltageSource
 		{
 			try
 			{
-				if (Communicator.serialPort.IsOpen)
+				if (serialPort.IsOpen)
 				{
 					MeasureVoltageChannel();
 
 					String input = "";
 
-					while (Communicator.serialPort.BytesToRead != 0)
+					while (serialPort.BytesToRead != 0)
 					{
-						input += Communicator.serialPort.ReadExisting();
+						input += serialPort.ReadExisting();
 					}
 					Debug.WriteLine(input);
-					string voltage = Communicator.ExtractInput(input, this).Replace(".", ",");
+					string voltage = ExtractInput(input).Replace(".", ",");
 					if (double.TryParse(voltage, out double voltage_out))
 					{
 						StatusBox_Status = "Measured Voltage: " + voltage_out;
@@ -194,17 +128,16 @@ namespace AdjustableVoltageSource
 		private string MeasureCurrent()
 		{
 
-            double current_out;
-            Communicator.WriteSerialPort((int)Communicator.Functions.MEASURE_CURRENT + ";");
+			WriteSerialPort((int)BoardFunctions.MEASURE_CURRENT + ";");
 
-            String input = "";
+			String input = "";
 
-            while (Communicator.serialPort.BytesToRead != 0)
+            while (serialPort.BytesToRead != 0)
             {
-                input += Communicator.serialPort.ReadExisting();
+                input += serialPort.ReadExisting();
             }
-            string current = Communicator.ExtractInput(input, this).Replace(".", ",");
-            if (double.TryParse(current, out current_out))
+            string current = ExtractInput(input).Replace(".", ",");
+            if (double.TryParse(current, out double current_out))
             {
                 return current_out + " A";
                 StatusBox_Status = "Measured Current: " + current_out;
@@ -236,7 +169,7 @@ namespace AdjustableVoltageSource
 			else if (MeasureVoltageCh15.IsChecked == true) channel = "15";
 			else if (MeasureVoltageCh16.IsChecked == true) channel = "16";
 
-			Communicator.WriteSerialPort((int)Communicator.Functions.MEASURE_VOLTAGE + "," + channel + ";");
+			WriteSerialPort((int)BoardFunctions.MEASURE_VOLTAGE + "," + channel + ";");
 		}
 
 		// Change the port used to interact with the Arduino
@@ -272,7 +205,7 @@ namespace AdjustableVoltageSource
             DisconnectAll();
             SetVoltageTextBox.Text = "";
             MeasuredCurrentPeriodResult.Text = "Not Yet Set";
-            Communicator.WriteSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
+            WriteSerialPort((int)BoardFunctions.DISCONNECT_VOLTAGE + ";");
 
             AppTimer = Stopwatch.StartNew();
 

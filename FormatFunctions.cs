@@ -8,10 +8,11 @@ using System.Windows.Media;
 namespace AdjustableVoltageSource
 {
 	public partial class MainWindow
-	{
-		private string FormatBusdata_pt1()
+    {
+        readonly BrushConverter Bc = new();
+        private string FormatBusdata_pt1()
 		{
-			string data = (int)Communicator.Functions.CONNECT_TO_BUS + ",";
+			string data = (int)BoardFunctions.CONNECT_TO_BUS + ",";
 			data = data + 1 + "," + BoolToInt(IsConnectedToBus_1) + ",";
 			data = data + 2 + "," + BoolToInt(IsConnectedToBus_2) + ",";
 			data = data + 3 + "," + BoolToInt(IsConnectedToBus_3) + ",";
@@ -25,7 +26,7 @@ namespace AdjustableVoltageSource
 		}
 		private string FormatBusdata_pt2()
 		{
-			string data = (int)Communicator.Functions.CONNECT_TO_BUS + ",";
+			string data = (int)BoardFunctions.CONNECT_TO_BUS + ",";
 			data = data + 9 + "," + BoolToInt(IsConnectedToBus_9) + ",";
 			data = data + 10 + "," + BoolToInt(IsConnectedToBus_10) + ",";
 			data = data + 11 + "," + BoolToInt(IsConnectedToBus_11) + ",";
@@ -39,7 +40,7 @@ namespace AdjustableVoltageSource
 		}
 		private string FormatGrounddata_pt1()
 		{
-			string data = (int)Communicator.Functions.CONNECT_TO_GROUND + ",";
+			string data = (int)BoardFunctions.CONNECT_TO_GROUND + ",";
 			data = data + 1 + "," + BoolToInt(IsConnectedToGround_1) + ",";
 			data = data + 2 + "," + BoolToInt(IsConnectedToGround_2) + ",";
 			data = data + 3 + "," + BoolToInt(IsConnectedToGround_3) + ",";
@@ -53,7 +54,7 @@ namespace AdjustableVoltageSource
 		}
 		private string FormatGrounddata_pt2()
 		{
-			string data = (int)Communicator.Functions.CONNECT_TO_GROUND + ",";
+			string data = (int)BoardFunctions.CONNECT_TO_GROUND + ",";
 			data = data + 9 + "," + BoolToInt(IsConnectedToGround_9) + ",";
 			data = data + 10 + "," + BoolToInt(IsConnectedToGround_10) + ",";
 			data = data + 11 + "," + BoolToInt(IsConnectedToGround_11) + ",";
@@ -73,8 +74,7 @@ namespace AdjustableVoltageSource
 		}
 		private static bool IsValidVoltage(string s)
 		{
-			double voltage;
-			bool isNumeric = double.TryParse(s, out voltage);
+			bool isNumeric = double.TryParse(s, out double voltage);
 			if (isNumeric)
 			{
 				if (voltage > 0.0 && voltage < 30.0)
@@ -88,7 +88,7 @@ namespace AdjustableVoltageSource
 				return false;
 			}
 		}
-        private bool IsValidCOMPort(string s)
+        private static bool IsValidCOMPort(string s)
         {
 			return Regex.IsMatch(s, "^COM[0-9][0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?$");
 

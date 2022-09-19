@@ -756,7 +756,7 @@ namespace AdjustableVoltageSource
             MeasureVoltageCh15.IsChecked = false;
             MeasureVoltageCh16.IsChecked = false;
 
-            Communicator.WriteSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
+            WriteSerialPort((int)BoardFunctions.DISCONNECT_VOLTAGE + ";");
             SetVoltageTextBox.Text = "";
             StatusBox_Status = "Everything is Disconnected";
         }
@@ -843,14 +843,14 @@ namespace AdjustableVoltageSource
             if (!IsBusUpdated || !IsGndUpdated)
             {
                 string data = FormatGrounddata_pt1();
-                Communicator.WriteSerialPort(data);
+                WriteSerialPort(data);
                 data = FormatGrounddata_pt2();
-                Communicator.WriteSerialPort(data);
+                WriteSerialPort(data);
 
                 data = FormatBusdata_pt1();
-                Communicator.WriteSerialPort(data);
+                WriteSerialPort(data);
                 data = FormatBusdata_pt2();
-                Communicator.WriteSerialPort(data);
+                WriteSerialPort(data);
 
                 UpdateMeasureBoxes();
 

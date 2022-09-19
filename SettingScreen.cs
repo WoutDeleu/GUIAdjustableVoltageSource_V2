@@ -24,7 +24,7 @@ namespace AdjustableVoltageSource
         }
         public string CurrentCOMPort
         {
-            get { return Communicator.serialPort.PortName; }
+            get { return serialPort.PortName; }
         }
         
         // Handles enabling/disabling textbox to select comport
