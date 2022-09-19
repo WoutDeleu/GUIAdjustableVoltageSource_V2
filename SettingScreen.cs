@@ -3,7 +3,6 @@ using System.Linq;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Diagnostics;
 using System.Windows.Media;
 
 namespace AdjustableVoltageSource

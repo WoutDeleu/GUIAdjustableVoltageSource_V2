@@ -70,7 +70,6 @@ namespace AdjustableVoltageSource
             MeasuredResult.SetBinding(ContentProperty, new Binding("MeasuredValue"));
 
             CurrentBoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
-            GetBoardNumberArduino();
 
             currentCOM.SetBinding(ContentProperty, new Binding("currentCOMPort"));
         }

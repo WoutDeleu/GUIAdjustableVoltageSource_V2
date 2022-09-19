@@ -26,6 +26,8 @@ namespace AdjustableVoltageSource
 
                 ArduinoStatusLabel.Text = "Not Connected";
                 ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
+                UnSuccesfullCommunication();
+
             }
             else
             {
@@ -55,6 +57,7 @@ namespace AdjustableVoltageSource
                     ArduinoStatusLabel.Text = "Connected";
                     ArduinoStatusBar.Background = Brushes.LightGreen;
 
+                    GetBoardNumberArduino();
                     DataContext = this;
                 }
                 catch (Exception ex)
