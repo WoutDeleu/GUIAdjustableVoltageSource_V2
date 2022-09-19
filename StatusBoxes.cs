@@ -10,6 +10,19 @@ namespace AdjustableVoltageSource
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public void ClearTextboxes()
+        {
+            // Clear textboxes logs
+            CommandStatusBox.SelectAll();
+            CommandStatusBox.Selection.Text = "";
+
+            Status.SelectAll();
+            Status.Selection.Text = "";
+
+            RegistersTextBox.SelectAll();
+            RegistersTextBox.Selection.Text = "";
+        }
+
         // Controllers for statusboxes
         // Remark: first element in boxes are timestamps since start application
         // After 1000 seconds, the timer resets
@@ -19,9 +32,9 @@ namespace AdjustableVoltageSource
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    if (stopwatch.Elapsed.TotalSeconds > 1000) stopwatch.Restart();
-                    CommandInterface.AppendText("[" + stopwatch.Elapsed.TotalSeconds + "] " + value + "\r");
-                    CommandInterface.ScrollToEnd();
+                    if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
+                    CommandStatusBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r");
+                    CommandStatusBox.ScrollToEnd();
                 });
             }
         }
@@ -31,9 +44,9 @@ namespace AdjustableVoltageSource
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    if (stopwatch.Elapsed.TotalSeconds > 1000) stopwatch.Restart();
-                    Registers.AppendText("[" + stopwatch.Elapsed.TotalSeconds + "] " + value + "\n");
-                    Registers.ScrollToEnd();
+                    if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
+                    RegistersTextBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\n");
+                    RegistersTextBox.ScrollToEnd();
                 });
             }
         }
@@ -43,9 +56,9 @@ namespace AdjustableVoltageSource
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    if (stopwatch.Elapsed.TotalSeconds > 1000) stopwatch.Restart();
+                    if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
                     TextRange tr = new TextRange(Status.Document.ContentEnd, Status.Document.ContentEnd);
-                    tr.Text = "[" + stopwatch.Elapsed.TotalSeconds + "] " + value + "\r";
+                    tr.Text = "[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
                     Status.ScrollToEnd();
                 });
@@ -57,14 +70,33 @@ namespace AdjustableVoltageSource
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    tabcontroller.SelectedIndex = 3;
-                    if (stopwatch.Elapsed.TotalSeconds > 1000) stopwatch.Restart();
+                    TabController.SelectedIndex = 3;
+                    if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
                     TextRange tr = new TextRange(Status.Document.ContentEnd, Status.Document.ContentEnd);
-                    tr.Text = "[" + stopwatch.Elapsed.TotalSeconds + "] " + value + "\r";
+                    tr.Text = "[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
                     Status.ScrollToEnd();
                 });
             }
+        }
+
+        // Update Statusboxes and disable functions based on connectionstatus
+        private void SuccesfullCommunication()
+        {
+            HomeTab.IsEnabled = true;
+            MeasureTab.IsEnabled = true;
+            BoardNumberSettings.IsEnabled = true;
+
+            // Bindings and default values
+            IsGndUpdated = true;
+            IsBusUpdated = true;
+        }
+        private void UnSuccesfullCommunication()
+        {
+            HomeTab.IsEnabled = false;
+            MeasureTab.IsEnabled = false;
+            BoardNumberSettings.IsEnabled = false;
+            TabController.SelectedIndex = 3;
         }
     }
 }

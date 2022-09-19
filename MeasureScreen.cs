@@ -39,12 +39,12 @@ namespace AdjustableVoltageSource
 
         private bool handledMeasureSelection = true;
 
-        private void selectMeasureFunction_DropDownClosed(object sender, EventArgs e)
+        private void SelectMeasureFunction_DropDownClosed(object sender, EventArgs e)
         {
             if (handledMeasureSelection) HandleSelectMeasure();
             handledMeasureSelection = true;
         }
-        private void selectMeasureFunction_Changed(object sender, SelectionChangedEventArgs e)
+        private void SelectMeasureFunction_Changed(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cmb = sender as ComboBox;
             handledMeasureSelection = !cmb.IsDropDownOpen;
@@ -69,22 +69,22 @@ namespace AdjustableVoltageSource
         // Sync values selected on the HomeScreen with the ones on the MeasureScreen (enable/disable radiobuttons)
         private void UpdateMeasureBoxes()
         {
-            ch1_radiobutton.IsEnabled = ConnectedToBus_1;
-            ch2_radiobutton.IsEnabled = ConnectedToBus_2;
-            ch3_radiobutton.IsEnabled = ConnectedToBus_3;
-            ch4_radiobutton.IsEnabled = ConnectedToBus_4;
-            ch5_radiobutton.IsEnabled = ConnectedToBus_5;
-            ch6_radiobutton.IsEnabled = ConnectedToBus_6;
-            ch7_radiobutton.IsEnabled = ConnectedToBus_7;
-            ch8_radiobutton.IsEnabled = ConnectedToBus_8;
-            ch9_radiobutton.IsEnabled = ConnectedToBus_9;
-            ch10_radiobutton.IsEnabled = ConnectedToBus_10;
-            ch11_radiobutton.IsEnabled = ConnectedToBus_11;
-            ch12_radiobutton.IsEnabled = ConnectedToBus_12;
-            ch13_radiobutton.IsEnabled = ConnectedToBus_13;
-            ch14_radiobutton.IsEnabled = ConnectedToBus_14;
-            ch15_radiobutton.IsEnabled = ConnectedToBus_15;
-            ch16_radiobutton.IsEnabled = ConnectedToBus_16;
+            MeasureVoltageCh1.IsEnabled = IsConnectedToBus_1;
+            MeasureVoltageCh2.IsEnabled = IsConnectedToBus_2;
+            MeasureVoltageCh3.IsEnabled = IsConnectedToBus_3;
+            MeasureVoltageCh4.IsEnabled = IsConnectedToBus_4;
+            MeasureVoltageCh5.IsEnabled = IsConnectedToBus_5;
+            MeasureVoltageCh6.IsEnabled = IsConnectedToBus_6;
+            MeasureVoltageCh7.IsEnabled = IsConnectedToBus_7;
+            MeasureVoltageCh8.IsEnabled = IsConnectedToBus_8;
+            MeasureVoltageCh9.IsEnabled = IsConnectedToBus_9;
+            MeasureVoltageCh10.IsEnabled = IsConnectedToBus_10;
+            MeasureVoltageCh11.IsEnabled = IsConnectedToBus_11;
+            MeasureVoltageCh12.IsEnabled = IsConnectedToBus_12;
+            MeasureVoltageCh13.IsEnabled = IsConnectedToBus_13;
+            MeasureVoltageCh14.IsEnabled = IsConnectedToBus_14;
+            MeasureVoltageCh15.IsEnabled = IsConnectedToBus_15;
+            MeasureVoltageCh16.IsEnabled = IsConnectedToBus_16;
         }
     }
 }

@@ -12,11 +12,11 @@ using System.Windows;
 
 public class Communicator
 {
-    private int baudrate = 115200;
+    private readonly int baudrate = 115200;
     public SerialPort serialPort;
     public MainWindow mw; 
     public string ret_port;
-    public bool connectionSuccesfull;
+    public bool isConnectionSuccesfull;
     public enum Functions
     {
         PING = 0,
@@ -48,6 +48,8 @@ public class Communicator
 
             serialPort.Dispose();
             serialPort.Close();
+
+            isConnectionSuccesfull = false;
         }
     }
     public void WriteSerialPort(string data)
@@ -104,6 +106,13 @@ public class Communicator
         {
             Debug.WriteLine(ex.Message);
             mw.StatusBox_Error = ex.Message;
+
+            CloseSerialPort();
+            isConnectionSuccesfull = false;
+
+            mw.ArduinoStatusLabel.Text = "Not Connected";
+            mw.ArduinoStatusBar.Background = MainWindow.BrushFromHex("#FFFBFB7A");
+
             mw.ResetWithClosedPort();
         }
     }
@@ -130,13 +139,17 @@ public class Communicator
                     }
                     if (str.Contains("##"))
                     {
-                        mw.StatusBox_Status = ExtractStatus(str, mw);
+                        mw.StatusBox_Status = ExtractStatusMessage(str, mw);
                     }
                     if (str.Contains("(("))
                     {
-                        mw.RegisterBox = ExtractRegisters(str, mw);
+                        mw.RegisterBox = ExtractRegistersMessage(str, mw);
                     }
                 }
+            }
+            else
+            {
+                throw new Exception("FAULT in connection. SerialPort has been closed.");
             }
         }
         catch (IndexOutOfRangeException ex)
@@ -151,8 +164,16 @@ public class Communicator
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(readSciMessage + "\n");
-            Debug.WriteLine(ex.ToString() + "\n");
+            Debug.WriteLine(ex.Message);
+            mw.StatusBox_Error = ex.Message;
+
+            CloseSerialPort();
+            isConnectionSuccesfull = false;
+
+            mw.ArduinoStatusLabel.Text = "Not Connected";
+            mw.ArduinoStatusBar.Background = MainWindow.BrushFromHex("#FFFBFB7A");
+
+            mw.ResetWithClosedPort();
         }
     }
 
@@ -173,7 +194,7 @@ public class Communicator
                 }
             }
             // Based on connection method
-            if (mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Auto-detect")
+            if (mw.COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Auto-detect")
             {
                 mw.StatusBox_Status = "Auto Detecting Arduino";
                 // Autodetect based on Windows Query
@@ -198,17 +219,17 @@ public class Communicator
                 }
             }
             // Manually input portname
-            else if (mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Others")
+            else if (mw.COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Others")
             {
-                serialPort.PortName = mw.newComPortTextBox.Text;
+                serialPort.PortName = mw.newCOMPortTextBox.Text;
                 mw.StatusBox_Status = ("Port found based on input User : " + serialPort.PortName);
             }
             // Choose portname based on selection in list
             else
             {
-                serialPort.PortName = mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
-                Debug.WriteLine("Port selected based on selection in Combobox : " + mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last());
-                mw.StatusBox_Status = ("Port selected based on selection in Combobox : " + mw.ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last());
+                serialPort.PortName = mw.COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
+                Debug.WriteLine("Port selected based on selection in Combobox : " + mw.COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last());
+                mw.StatusBox_Status = ("Port selected based on selection in Combobox : " + mw.COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last());
             }
             // Finish setup port
             serialPort.DtrEnable = true;
@@ -218,7 +239,7 @@ public class Communicator
             serialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
             serialPort.Open();
             mw.StatusBox_Status = ("'" + serialPort.PortName + "' Port Opened Succesfully");
-            connectionSuccesfull = true;
+            isConnectionSuccesfull = true;
         }
         catch (Exception ex)
         {
@@ -226,9 +247,9 @@ public class Communicator
             Debug.WriteLine("Port " + serialPort.PortName + " could not be opened");
             mw.StatusBox_Error = ("Port " + serialPort.PortName + " could not be opened");
             CloseSerialPort();
-            connectionSuccesfull = false;
+            isConnectionSuccesfull = false;
             mw.ArduinoStatusLabel.Text = "Not Connected";
-            mw.ArduinoStatusBar.Background = mw.BrushFromHex("#FFFBFB7A");
+            mw.ArduinoStatusBar.Background = MainWindow.BrushFromHex("#FFFBFB7A");
         }
     }
 
@@ -282,8 +303,8 @@ public class Communicator
             mw.StatusBox_Status = availableComports.Remove(availableComports.Length - 2);
 
             ret_port = "";
-            COMSelectorWindow ComSelector = new COMSelectorWindow(comports, mw, this);
-            ComSelector.ShowDialog();
+            COMSelectorWindow COMSelector = new COMSelectorWindow(comports, mw, this);
+            COMSelector.ShowDialog();
 
             return ret_port;
         }
@@ -366,7 +387,7 @@ public class Communicator
             return null;
         }
     }   
-    public static string ExtractStatus(string status, MainWindow mainWindow)
+    public static string ExtractStatusMessage(string status, MainWindow mainWindow)
     {
         char[] inputArray = status.ToCharArray();
         int begin = 0, end = 0;
@@ -393,7 +414,7 @@ public class Communicator
             return null;
         }
     }   
-    public static string ExtractRegisters(string registersMessage, MainWindow mainWindow)
+    public static string ExtractRegistersMessage(string registersMessage, MainWindow mainWindow)
     {
         char[] registerArray = registersMessage.ToCharArray();
         int begin = 0, end = 0;
@@ -420,9 +441,9 @@ public class Communicator
             registersMessage = registersMessage.Substring(begin+1, (end - begin - 1));
             if (registersMessage.Contains("::"))
             {
-                string[] splitUpRegisters = registersMessage.Split("_");
+                string[] splitUpRegistersTextBox = registersMessage.Split("_");
                 string output = "";
-                foreach (String str in splitUpRegisters)
+                foreach (String str in splitUpRegistersTextBox)
                 {
                     output += str + "\r";
                 }

@@ -11,7 +11,6 @@ namespace AdjustableVoltageSource
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         delegate void serialCalback(string val);
-        BrushConverter bc = new BrushConverter();
 
         // Create the OnPropertyChanged method to raise the event 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -25,136 +24,59 @@ namespace AdjustableVoltageSource
         }
 
         // Communicator with the arduino
-        Communicator communicator;
+        Communicator Communicator;
+        BrushConverter Bc = new();
         // Keep track of time which app is opened
-        Stopwatch stopwatch;
+        Stopwatch AppTimer;
+        DispatcherTimer RefreshArduinoStatus;
+        DispatcherTimer RefreshCurrentMeasure;
 
-        private bool updatedGnd { get; set; }
-        private bool updatedBus { get; set; }
-        private double voltage { get; set; }
+        private bool IsGndUpdated { get; set; }
+        private bool IsBusUpdated { get; set; }
+        private double Voltage { get; set; }
+
 
         // Start app
         public MainWindow()
         {
             InitializeComponent();
-            ComSelector.SelectedIndex = 0;
+            COMSelector.SelectedIndex = 0;
             DataContext = this;
 
-            stopwatch = Stopwatch.StartNew();
+            AppTimer = Stopwatch.StartNew();
 
-            communicator = new Communicator();
+            Communicator = new();
 
-            InitializeMainWindow();
+            InitializeCommunication();
 
-            DispatcherTimer refreshArduinoStatus = new DispatcherTimer();
-            refreshArduinoStatus.Interval = TimeSpan.FromSeconds(8);
-            refreshArduinoStatus.Tick += UpdateArduinoStatus;
-
-
-            DispatcherTimer refreshCurrentMeasure = new DispatcherTimer();
-            refreshCurrentMeasure.Interval = TimeSpan.FromSeconds(30);
-            refreshCurrentMeasure.Tick += MeasureCurrentPeriod;
-            MeasureCurrentPeriodText.Text = "Not Yet Set";
-
-            refreshCurrentMeasure.Start();
-            refreshArduinoStatus.Start();
-        }
-        private void InitializeMainWindow()
-        {
-            // Clear textboxes logs
-            CommandInterface.SelectAll();
-            CommandInterface.Selection.Text = "";
-            Status.SelectAll();
-            Status.Selection.Text = "";
-            Registers.SelectAll();
-            Registers.Selection.Text = "";
-
-            communicator.InitSerialPort();
-            labelCurrentCOM.Text = CurrentComPort;
-
-            if (!communicator.connectionSuccesfull)
+            RefreshArduinoStatus = new()
             {
-                Home.IsEnabled = false;
-                Measure.IsEnabled = false;
-                BoardNumberSettings.IsEnabled = false;
-                tabcontroller.SelectedIndex = 3;
+                Interval = TimeSpan.FromSeconds(8)
+            };
+            RefreshArduinoStatus.Tick += UpdateArduinoStatus;
 
-                Current_Com.SetBinding(ContentProperty, new Binding("CurrentComPort"));
 
-                ArduinoStatusLabel.Text = "Not Connected";
-                ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
-            }
-            else
+            DispatcherTimer RefreshCurrentMeasure = new DispatcherTimer
             {
-                try
-                {
-                    // Loop until communication is established
-                    string message = "";
-                    bool started = false, finished = false;
-                    Stopwatch startupTimer = new Stopwatch();
-                    startupTimer.Start();
-                    while (!started)
-                    {
-                        if (startupTimer.ElapsedMilliseconds >= 5000) throw new Exception("TIMEOUT: can't START setup communication Arduino.");
-                        message += communicator.serialPort.ReadExisting();
-                        if (message.Contains("##Setup Arduino##")) started = true;
-                    }
-                    StatusBox_Status = "Setup Arduino started";
-                    while (!finished && startupTimer.ElapsedMilliseconds < 5000)
-                    {
-                        if (startupTimer.ElapsedMilliseconds >= 10000) throw new Exception("TIMEOUT: can't FINISH setup communication Arduino.");
-                        message += communicator.serialPort.ReadExisting();
-                        if (message.Contains("##Setup Complete##")) finished = true;
-                    }
-                    StatusBox_Status = "Setup Arduino finished";
-                    Home.IsEnabled = true;
-                    Measure.IsEnabled = true;
-                    BoardNumberSettings.IsEnabled = true;
+                Interval = TimeSpan.FromSeconds(30)
+            };
+            RefreshCurrentMeasure.Tick += UpdateMeasuredCurrent;
+            MeasuredCurrentPeriodResult.Text = "Not Yet Set";
 
-                    Home.IsEnabled = true;
-                    Measure.IsEnabled = true;
-                    BoardNumberSettings.IsEnabled = true;
+            RefreshCurrentMeasure.Start();
+            RefreshArduinoStatus.Start();
 
-                    // Bindings and default values
-                    updatedGnd = true;
-                    updatedBus = true;
+            SelectionVisible = Visibility.Visible;
+            MeasuredResult.SetBinding(ContentProperty, new Binding("MeasuredValue"));
 
-                    SelectionVisible = Visibility.Visible;
-                    Current_MeasuredValue.SetBinding(ContentProperty, new Binding("MeasuredValue"));
+            CurrentBoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
+            GetBoardNumberArduino();
 
-                    Current_BoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
-                    GetBoardNumberArduino();
-
-                    Current_Com.SetBinding(ContentProperty, new Binding("CurrentComPort"));
-
-                    ArduinoStatusLabel.Text = "Connected";
-                    ArduinoStatusBar.Background = Brushes.LightGreen;
-
-                    DataContext = this;
-                }                
-                catch (Exception ex)
-                {
-                    StatusBox_Error = ex.Message.ToString() + " Check if communication is correct and if Arduino is available.";
-
-                    Home.IsEnabled = false;
-                    Measure.IsEnabled = false;
-                    BoardNumberSettings.IsEnabled = false;
-                    tabcontroller.SelectedIndex = 3;
-
-                    StatusBox_Error = ("Port " + communicator.serialPort.PortName + " could not be opened");
-                    communicator.CloseSerialPort();
-                    communicator.connectionSuccesfull = false;
-
-                    Current_Com.SetBinding(ContentProperty, new Binding("CurrentComPort"));
-
-                    ArduinoStatusLabel.Text = "Not Connected";
-                    ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
-                }
-            }
+            currentCOM.SetBinding(ContentProperty, new Binding("currentCOMPort"));
         }
         public void CloseMainWindow()
         {
-            communicator.CloseSerialPort();
+            Communicator.CloseSerialPort();
             Close();
         }
         public void Reset(object sender, RoutedEventArgs e)

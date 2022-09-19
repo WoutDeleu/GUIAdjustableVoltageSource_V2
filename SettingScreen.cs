@@ -23,20 +23,20 @@ namespace AdjustableVoltageSource
                 }
             }
         }
-        public string CurrentComPort
+        public string CurrentCOMPort
         {
-            get { return communicator.serialPort.PortName; }
+            get { return Communicator.serialPort.PortName; }
         }
         
         // Handles enabling/disabling textbox to select comport
         // Based on closing dropdown menu
         private bool handledPort = true;
-        private void selectCom_DropDownClosed(object sender, EventArgs e)
+        private void selectCOM_DropDownClosed(object sender, EventArgs e)
         {
             if (handledPort) HandleCom();
             handledPort = true;
         }
-        private void selectCom_Changed(object sender, SelectionChangedEventArgs e)
+        private void selectCOM_Changed(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cmb = sender as ComboBox;
             handledPort = !cmb.IsDropDownOpen;
@@ -44,16 +44,16 @@ namespace AdjustableVoltageSource
         }
         private void HandleCom()
         {
-            switch (ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
+            switch (COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
             {
                 case "Others":
-                    newComPortTextBox.IsEnabled = true;
-                    newComPortTextBox.Background = Brushes.White;
+                    newCOMPortTextBox.IsEnabled = true;
+                    newCOMPortTextBox.Background = Brushes.White;
                     ManualComport.Foreground = Brushes.Black;
                     break;
                 default:
-                    newComPortTextBox.IsEnabled = false;
-                    newComPortTextBox.Background = Brushes.Gray;
+                    newCOMPortTextBox.IsEnabled = false;
+                    newCOMPortTextBox.Background = Brushes.Gray;
                     ManualComport.Foreground = Brushes.Gray;
                     break;
             }

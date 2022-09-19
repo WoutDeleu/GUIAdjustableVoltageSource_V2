@@ -16,8 +16,8 @@ namespace AdjustableVoltageSource
 {
 	public partial class COMSelectorWindow : Window
 	{
-		MainWindow mw;
-		Communicator cm;
+		readonly MainWindow mw;
+		readonly Communicator cm;
 		bool applied;
 
 		public COMSelectorWindow(List<string> comports, MainWindow mw, Communicator cm)
@@ -29,22 +29,18 @@ namespace AdjustableVoltageSource
 
             InitializeComponent();
 
-            //WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            //Owner = Application.Current.MainWindow;
-
             counter.Content = comports.Count + " COM ports were automatically found in Win32 Registery.";
-            ComSelector.ItemsSource = comports;
-
+            COMSelector.ItemsSource = comports;
 
             DataContext = this;
 		}
 
-		private void Apply(object sender, RoutedEventArgs e)
+		private void ApplyCOMPort(object sender, RoutedEventArgs e)
 		{
-			if(ComSelector.SelectedItem != null)
+			if(COMSelector.SelectedItem != null)
 			{
-				mw.StatusBox_Status = ("Selected COM port : " + ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last());
-				cm.ret_port = ComSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
+				mw.StatusBox_Status = "Selected COM port : " + COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
+				cm.ret_port = COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last();
 				applied = true;
 
                 Close();
@@ -54,15 +50,16 @@ namespace AdjustableVoltageSource
 				MessageBox.Show("Select a COM-port", "", MessageBoxButton.OK, MessageBoxImage.Warning);
 			}
 		}
-		// Disable close-button
+		
+		// Configure close-button-action
         protected override void OnClosing(CancelEventArgs e)
 		{
-			e.Cancel = true;
 			if (applied)
 			{
 				e.Cancel = false;
 			}
-		}
+			else mw.Close();
+        }
 
     }
 }

@@ -13,19 +13,19 @@ namespace AdjustableVoltageSource
 		// Consistently check the connection with the Arduino
         private void UpdateArduinoStatus(object sender, EventArgs e)
         {
-			if (communicator.serialPort.IsOpen)
+			if (Communicator.serialPort.IsOpen)
 			{
 				string message = "";
-				Stopwatch pingTimer = new Stopwatch();
+				Stopwatch pingTimer = new();
 				pingTimer.Start();
 				bool connected = false;
 
-				communicator.WriteSerialPort((int)Communicator.Functions.PING + ";");
+				Communicator.WriteSerialPort((int)Communicator.Functions.PING + ";");
 				while (!connected)
 				{
 					if (pingTimer.ElapsedMilliseconds >= 1000) break;
-					message += communicator.serialPort.ReadExisting();
-					if (message.Contains("PING_PING_PING")) connected = true;
+					message += Communicator.serialPort.ReadExisting();
+					if (message.Contains("8888")) connected = true;
 				}
 				if (connected)
 				{
@@ -45,11 +45,12 @@ namespace AdjustableVoltageSource
 				ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
 			}
         }
-		private void MeasureCurrentPeriod(object sender, EventArgs e)
+		// Current is updated every 30s (based on the DispatchTimer)
+		private void UpdateMeasuredCurrent(object sender, EventArgs e)
 		{
-			if (communicator.serialPort.IsOpen)
+			if (Communicator.serialPort.IsOpen)
 			{
-				MeasureCurrentPeriodText.Text = MeasureCurrent();
+				MeasuredCurrentPeriodResult.Text = MeasureCurrent();
 			}
 		}
 	}

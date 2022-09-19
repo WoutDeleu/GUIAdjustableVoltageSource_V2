@@ -9,829 +9,829 @@ namespace AdjustableVoltageSource
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private bool _ConnectedToGround_1;
-        private bool _ConnectedToBus_1;
-        public bool ConnectedToGround_1
+        private bool _IsConnectedToGround_1;
+        private bool _IsConnectedToBus_1;
+        public bool IsConnectedToGround_1
         {
             get
             {
-                return _ConnectedToGround_1;
+                return _IsConnectedToGround_1;
             }
             set
             {
-                if (value) ConnectedToBus_1 = false;
-                _ConnectedToGround_1 = value;
-                OnPropertyChanged("ConnectedToGround_1");
+                if (value) IsConnectedToBus_1 = false;
+                _IsConnectedToGround_1 = value;
+                OnPropertyChanged("IsConnectedToGround_1");
             }
         }
-        public bool ConnectedToBus_1
+        public bool IsConnectedToBus_1
         {
             get
             {
-                return _ConnectedToBus_1;
+                return _IsConnectedToBus_1;
             }
             set
             {
-                if (value) ConnectedToGround_1 = false;
-                _ConnectedToBus_1 = value;
-                OnPropertyChanged("ConnectedToBus_1");
-            }
-        }
-
-
-        private bool _ConnectedToGround_2;
-        private bool _ConnectedToBus_2;
-        public bool ConnectedToGround_2
-        {
-            get
-            {
-                return _ConnectedToGround_2;
-            }
-            set
-            {
-                if (value) ConnectedToBus_2 = false;
-                _ConnectedToGround_2 = value;
-                OnPropertyChanged("ConnectedToGround_2");
-            }
-        }
-        public bool ConnectedToBus_2
-        {
-            get
-            {
-                return _ConnectedToBus_2;
-            }
-            set
-            {
-                if (value) ConnectedToGround_2 = false;
-                _ConnectedToBus_2 = value;
-                OnPropertyChanged("ConnectedToBus_2");
+                if (value) IsConnectedToGround_1 = false;
+                _IsConnectedToBus_1 = value;
+                OnPropertyChanged("IsConnectedToBus_1");
             }
         }
 
 
-        private bool _ConnectedToGround_3;
-        private bool _ConnectedToBus_3;
-        public bool ConnectedToGround_3
+        private bool _IsConnectedToGround_2;
+        private bool _IsConnectedToBus_2;
+        public bool IsConnectedToGround_2
         {
             get
             {
-                return _ConnectedToGround_3;
+                return _IsConnectedToGround_2;
             }
             set
             {
-                if (value) ConnectedToBus_3 = false;
-                _ConnectedToGround_3 = value;
-                OnPropertyChanged("ConnectedToGround_3");
+                if (value) IsConnectedToBus_2 = false;
+                _IsConnectedToGround_2 = value;
+                OnPropertyChanged("IsConnectedToGround_2");
             }
         }
-        public bool ConnectedToBus_3
+        public bool IsConnectedToBus_2
         {
             get
             {
-                return _ConnectedToBus_3;
+                return _IsConnectedToBus_2;
             }
             set
             {
-                if (value) ConnectedToGround_3 = false;
-                _ConnectedToBus_3 = value;
-                OnPropertyChanged("ConnectedToBus_3");
-            }
-        }
-
-
-        private bool _ConnectedToGround_4;
-        private bool _ConnectedToBus_4;
-        public bool ConnectedToGround_4
-        {
-            get
-            {
-                return _ConnectedToGround_4;
-            }
-            set
-            {
-                if (value) ConnectedToBus_4 = false;
-                _ConnectedToGround_4 = value;
-                OnPropertyChanged("ConnectedToGround_4");
-            }
-        }
-        public bool ConnectedToBus_4
-        {
-            get
-            {
-                return _ConnectedToBus_4;
-            }
-            set
-            {
-                if (value) ConnectedToGround_4 = false;
-                _ConnectedToBus_4 = value;
-                OnPropertyChanged("ConnectedToBus_4");
+                if (value) IsConnectedToGround_2 = false;
+                _IsConnectedToBus_2 = value;
+                OnPropertyChanged("IsConnectedToBus_2");
             }
         }
 
 
-        private bool _ConnectedToGround_5;
-        private bool _ConnectedToBus_5;
-        public bool ConnectedToGround_5
+        private bool _IsConnectedToGround_3;
+        private bool _IsConnectedToBus_3;
+        public bool IsConnectedToGround_3
         {
             get
             {
-                return _ConnectedToGround_5;
+                return _IsConnectedToGround_3;
             }
             set
             {
-                if (value) ConnectedToBus_5 = false;
-                _ConnectedToGround_5 = value;
-                OnPropertyChanged("ConnectedToGround_5");
+                if (value) IsConnectedToBus_3 = false;
+                _IsConnectedToGround_3 = value;
+                OnPropertyChanged("IsConnectedToGround_3");
             }
         }
-        public bool ConnectedToBus_5
+        public bool IsConnectedToBus_3
         {
             get
             {
-                return _ConnectedToBus_5;
+                return _IsConnectedToBus_3;
             }
             set
             {
-                if (value) ConnectedToGround_5 = false;
-                _ConnectedToBus_5 = value;
-                OnPropertyChanged("ConnectedToBus_5");
-            }
-        }
-
-
-        private bool _ConnectedToGround_6;
-        private bool _ConnectedToBus_6;
-        public bool ConnectedToGround_6
-        {
-            get
-            {
-                return _ConnectedToGround_6;
-            }
-            set
-            {
-                if (value) ConnectedToBus_6 = false;
-                _ConnectedToGround_6 = value;
-                OnPropertyChanged("ConnectedToGround_6");
-            }
-        }
-        public bool ConnectedToBus_6
-        {
-            get
-            {
-                return _ConnectedToBus_6;
-            }
-            set
-            {
-                if (value) ConnectedToGround_6 = false;
-                _ConnectedToBus_6 = value;
-                OnPropertyChanged("ConnectedToBus_6");
+                if (value) IsConnectedToGround_3 = false;
+                _IsConnectedToBus_3 = value;
+                OnPropertyChanged("IsConnectedToBus_3");
             }
         }
 
 
-        private bool _ConnectedToGround_7;
-        private bool _ConnectedToBus_7;
-        public bool ConnectedToGround_7
+        private bool _IsConnectedToGround_4;
+        private bool _IsConnectedToBus_4;
+        public bool IsConnectedToGround_4
         {
             get
             {
-                return _ConnectedToGround_7;
+                return _IsConnectedToGround_4;
             }
             set
             {
-                if (value) ConnectedToBus_7 = false;
-                _ConnectedToGround_7 = value;
-                OnPropertyChanged("ConnectedToGround_7");
+                if (value) IsConnectedToBus_4 = false;
+                _IsConnectedToGround_4 = value;
+                OnPropertyChanged("IsConnectedToGround_4");
             }
         }
-        public bool ConnectedToBus_7
+        public bool IsConnectedToBus_4
         {
             get
             {
-                return _ConnectedToBus_7;
+                return _IsConnectedToBus_4;
             }
             set
             {
-                if (value) ConnectedToGround_7 = false;
-                _ConnectedToBus_7 = value;
-                OnPropertyChanged("ConnectedToBus_7");
-            }
-        }
-
-
-        private bool _ConnectedToGround_8;
-        private bool _ConnectedToBus_8;
-        public bool ConnectedToGround_8
-        {
-            get
-            {
-                return _ConnectedToGround_8;
-            }
-            set
-            {
-                if (value) ConnectedToBus_8 = false;
-                _ConnectedToGround_8 = value;
-                OnPropertyChanged("ConnectedToGround_8");
-            }
-        }
-        public bool ConnectedToBus_8
-        {
-            get
-            {
-                return _ConnectedToBus_8;
-            }
-            set
-            {
-                if (value) ConnectedToGround_8 = false;
-                _ConnectedToBus_8 = value;
-                OnPropertyChanged("ConnectedToBus_8");
+                if (value) IsConnectedToGround_4 = false;
+                _IsConnectedToBus_4 = value;
+                OnPropertyChanged("IsConnectedToBus_4");
             }
         }
 
 
-        private bool _ConnectedToGround_9;
-        private bool _ConnectedToBus_9;
-        public bool ConnectedToGround_9
+        private bool _IsConnectedToGround_5;
+        private bool _IsConnectedToBus_5;
+        public bool IsConnectedToGround_5
         {
             get
             {
-                return _ConnectedToGround_9;
+                return _IsConnectedToGround_5;
             }
             set
             {
-                if (value) ConnectedToBus_9 = false;
-                _ConnectedToGround_9 = value;
-                OnPropertyChanged("ConnectedToGround_9");
+                if (value) IsConnectedToBus_5 = false;
+                _IsConnectedToGround_5 = value;
+                OnPropertyChanged("IsConnectedToGround_5");
             }
         }
-        public bool ConnectedToBus_9
+        public bool IsConnectedToBus_5
         {
             get
             {
-                return _ConnectedToBus_9;
+                return _IsConnectedToBus_5;
             }
             set
             {
-                if (value) ConnectedToGround_9 = false;
-                _ConnectedToBus_9 = value;
-                OnPropertyChanged("ConnectedToBus_9");
-            }
-        }
-
-
-        private bool _ConnectedToGround_10;
-        private bool _ConnectedToBus_10;
-        public bool ConnectedToGround_10
-        {
-            get
-            {
-                return _ConnectedToGround_10;
-            }
-            set
-            {
-                if (value) ConnectedToBus_10 = false;
-                _ConnectedToGround_10 = value;
-                OnPropertyChanged("ConnectedToGround_10");
-            }
-        }
-        public bool ConnectedToBus_10
-        {
-            get
-            {
-                return _ConnectedToBus_10;
-            }
-            set
-            {
-                if (value) ConnectedToGround_10 = false;
-                _ConnectedToBus_10 = value;
-                OnPropertyChanged("ConnectedToBus_10");
+                if (value) IsConnectedToGround_5 = false;
+                _IsConnectedToBus_5 = value;
+                OnPropertyChanged("IsConnectedToBus_5");
             }
         }
 
 
-        private bool _ConnectedToGround_11;
-        private bool _ConnectedToBus_11;
-        public bool ConnectedToGround_11
+        private bool _IsConnectedToGround_6;
+        private bool _IsConnectedToBus_6;
+        public bool IsConnectedToGround_6
         {
             get
             {
-                return _ConnectedToGround_11;
+                return _IsConnectedToGround_6;
             }
             set
             {
-                if (value) ConnectedToBus_11 = false;
-                _ConnectedToGround_11 = value;
-                OnPropertyChanged("ConnectedToGround_11");
+                if (value) IsConnectedToBus_6 = false;
+                _IsConnectedToGround_6 = value;
+                OnPropertyChanged("IsConnectedToGround_6");
             }
         }
-        public bool ConnectedToBus_11
+        public bool IsConnectedToBus_6
         {
             get
             {
-                return _ConnectedToBus_11;
+                return _IsConnectedToBus_6;
             }
             set
             {
-                if (value) ConnectedToGround_11 = false;
-                _ConnectedToBus_11 = value;
-                OnPropertyChanged("ConnectedToBus_11");
-            }
-        }
-
-
-        private bool _ConnectedToGround_12;
-        private bool _ConnectedToBus_12;
-        public bool ConnectedToGround_12
-        {
-            get
-            {
-                return _ConnectedToGround_12;
-            }
-            set
-            {
-                if (value) ConnectedToBus_12 = false;
-                _ConnectedToGround_12 = value;
-                OnPropertyChanged("ConnectedToGround_12");
-            }
-        }
-        public bool ConnectedToBus_12
-        {
-            get
-            {
-                return _ConnectedToBus_12;
-            }
-            set
-            {
-                if (value) ConnectedToGround_12 = false;
-                _ConnectedToBus_12 = value;
-                OnPropertyChanged("ConnectedToBus_12");
+                if (value) IsConnectedToGround_6 = false;
+                _IsConnectedToBus_6 = value;
+                OnPropertyChanged("IsConnectedToBus_6");
             }
         }
 
 
-        private bool _ConnectedToGround_13;
-        private bool _ConnectedToBus_13;
-        public bool ConnectedToGround_13
+        private bool _IsConnectedToGround_7;
+        private bool _IsConnectedToBus_7;
+        public bool IsConnectedToGround_7
         {
             get
             {
-                return _ConnectedToGround_13;
+                return _IsConnectedToGround_7;
             }
             set
             {
-                if (value) ConnectedToBus_13 = false;
-                _ConnectedToGround_13 = value;
-                OnPropertyChanged("ConnectedToGround_13");
+                if (value) IsConnectedToBus_7 = false;
+                _IsConnectedToGround_7 = value;
+                OnPropertyChanged("IsConnectedToGround_7");
             }
         }
-        public bool ConnectedToBus_13
+        public bool IsConnectedToBus_7
         {
             get
             {
-                return _ConnectedToBus_13;
+                return _IsConnectedToBus_7;
             }
             set
             {
-                if (value) ConnectedToGround_13 = false;
-                _ConnectedToBus_13 = value;
-                OnPropertyChanged("ConnectedToBus_13");
-            }
-        }
-
-
-        private bool _ConnectedToGround_14;
-        private bool _ConnectedToBus_14;
-        public bool ConnectedToGround_14
-        {
-            get
-            {
-                return _ConnectedToGround_14;
-            }
-            set
-            {
-                if (value) ConnectedToBus_14 = false;
-                _ConnectedToGround_14 = value;
-                OnPropertyChanged("ConnectedToGround_14");
-            }
-        }
-        public bool ConnectedToBus_14
-        {
-            get
-            {
-                return _ConnectedToBus_14;
-            }
-            set
-            {
-                if (value) ConnectedToGround_14 = false;
-                _ConnectedToBus_14 = value;
-                OnPropertyChanged("ConnectedToBus_14");
+                if (value) IsConnectedToGround_7 = false;
+                _IsConnectedToBus_7 = value;
+                OnPropertyChanged("IsConnectedToBus_7");
             }
         }
 
 
-        private bool _ConnectedToGround_15;
-        private bool _ConnectedToBus_15;
-        public bool ConnectedToGround_15
+        private bool _IsConnectedToGround_8;
+        private bool _IsConnectedToBus_8;
+        public bool IsConnectedToGround_8
         {
             get
             {
-                return _ConnectedToGround_15;
+                return _IsConnectedToGround_8;
             }
             set
             {
-                if (value) ConnectedToBus_15 = false;
-                _ConnectedToGround_15 = value;
-                OnPropertyChanged("ConnectedToGround_15");
+                if (value) IsConnectedToBus_8 = false;
+                _IsConnectedToGround_8 = value;
+                OnPropertyChanged("IsConnectedToGround_8");
             }
         }
-        public bool ConnectedToBus_15
+        public bool IsConnectedToBus_8
         {
             get
             {
-                return _ConnectedToBus_15;
+                return _IsConnectedToBus_8;
             }
             set
             {
-                if (value) ConnectedToGround_15 = false;
-                _ConnectedToBus_15 = value;
-                OnPropertyChanged("ConnectedToBus_15");
+                if (value) IsConnectedToGround_8 = false;
+                _IsConnectedToBus_8 = value;
+                OnPropertyChanged("IsConnectedToBus_8");
             }
         }
 
 
-        private bool _ConnectedToGround_16;
-        private bool _ConnectedToBus_16;
-        public bool ConnectedToGround_16
+        private bool _IsConnectedToGround_9;
+        private bool _IsConnectedToBus_9;
+        public bool IsConnectedToGround_9
         {
             get
             {
-                return _ConnectedToGround_16;
+                return _IsConnectedToGround_9;
             }
             set
             {
-                if (value) ConnectedToBus_16 = false;
-                _ConnectedToGround_16 = value;
-                OnPropertyChanged("ConnectedToGround_16");
+                if (value) IsConnectedToBus_9 = false;
+                _IsConnectedToGround_9 = value;
+                OnPropertyChanged("IsConnectedToGround_9");
             }
         }
-        public bool ConnectedToBus_16
+        public bool IsConnectedToBus_9
         {
             get
             {
-                return _ConnectedToBus_16;
+                return _IsConnectedToBus_9;
             }
             set
             {
-                if (value) ConnectedToGround_16 = false;
-                _ConnectedToBus_16 = value;
-                OnPropertyChanged("ConnectedToBus_16");
+                if (value) IsConnectedToGround_9 = false;
+                _IsConnectedToBus_9 = value;
+                OnPropertyChanged("IsConnectedToBus_9");
+            }
+        }
+
+
+        private bool _IsConnectedToGround_10;
+        private bool _IsConnectedToBus_10;
+        public bool IsConnectedToGround_10
+        {
+            get
+            {
+                return _IsConnectedToGround_10;
+            }
+            set
+            {
+                if (value) IsConnectedToBus_10 = false;
+                _IsConnectedToGround_10 = value;
+                OnPropertyChanged("IsConnectedToGround_10");
+            }
+        }
+        public bool IsConnectedToBus_10
+        {
+            get
+            {
+                return _IsConnectedToBus_10;
+            }
+            set
+            {
+                if (value) IsConnectedToGround_10 = false;
+                _IsConnectedToBus_10 = value;
+                OnPropertyChanged("IsConnectedToBus_10");
+            }
+        }
+
+
+        private bool _IsConnectedToGround_11;
+        private bool _IsConnectedToBus_11;
+        public bool IsConnectedToGround_11
+        {
+            get
+            {
+                return _IsConnectedToGround_11;
+            }
+            set
+            {
+                if (value) IsConnectedToBus_11 = false;
+                _IsConnectedToGround_11 = value;
+                OnPropertyChanged("IsConnectedToGround_11");
+            }
+        }
+        public bool IsConnectedToBus_11
+        {
+            get
+            {
+                return _IsConnectedToBus_11;
+            }
+            set
+            {
+                if (value) IsConnectedToGround_11 = false;
+                _IsConnectedToBus_11 = value;
+                OnPropertyChanged("IsConnectedToBus_11");
+            }
+        }
+
+
+        private bool _IsConnectedToGround_12;
+        private bool _IsConnectedToBus_12;
+        public bool IsConnectedToGround_12
+        {
+            get
+            {
+                return _IsConnectedToGround_12;
+            }
+            set
+            {
+                if (value) IsConnectedToBus_12 = false;
+                _IsConnectedToGround_12 = value;
+                OnPropertyChanged("IsConnectedToGround_12");
+            }
+        }
+        public bool IsConnectedToBus_12
+        {
+            get
+            {
+                return _IsConnectedToBus_12;
+            }
+            set
+            {
+                if (value) IsConnectedToGround_12 = false;
+                _IsConnectedToBus_12 = value;
+                OnPropertyChanged("IsConnectedToBus_12");
+            }
+        }
+
+
+        private bool _IsConnectedToGround_13;
+        private bool _IsConnectedToBus_13;
+        public bool IsConnectedToGround_13
+        {
+            get
+            {
+                return _IsConnectedToGround_13;
+            }
+            set
+            {
+                if (value) IsConnectedToBus_13 = false;
+                _IsConnectedToGround_13 = value;
+                OnPropertyChanged("IsConnectedToGround_13");
+            }
+        }
+        public bool IsConnectedToBus_13
+        {
+            get
+            {
+                return _IsConnectedToBus_13;
+            }
+            set
+            {
+                if (value) IsConnectedToGround_13 = false;
+                _IsConnectedToBus_13 = value;
+                OnPropertyChanged("IsConnectedToBus_13");
+            }
+        }
+        
+
+        private bool _IsConnectedToGround_14;
+        private bool _IsConnectedToBus_14;
+        public bool IsConnectedToGround_14
+        {
+            get
+            {
+                return _IsConnectedToGround_14;
+            }
+            set
+            {
+                if (value) IsConnectedToBus_14 = false;
+                _IsConnectedToGround_14 = value;
+                OnPropertyChanged("IsConnectedToGround_14");
+            }
+        }
+        public bool IsConnectedToBus_14
+        {
+            get
+            {
+                return _IsConnectedToBus_14;
+            }
+            set
+            {
+                if (value) IsConnectedToGround_14 = false;
+                _IsConnectedToBus_14 = value;
+                OnPropertyChanged("IsConnectedToBus_14");
+            }
+        }
+
+
+        private bool _IsConnectedToGround_15;
+        private bool _IsConnectedToBus_15;
+        public bool IsConnectedToGround_15
+        {
+            get
+            {
+                return _IsConnectedToGround_15;
+            }
+            set
+            {
+                if (value) IsConnectedToBus_15 = false;
+                _IsConnectedToGround_15 = value;
+                OnPropertyChanged("IsConnectedToGround_15");
+            }
+        }
+        public bool IsConnectedToBus_15
+        {
+            get
+            {
+                return _IsConnectedToBus_15;
+            }
+            set
+            {
+                if (value) IsConnectedToGround_15 = false;
+                _IsConnectedToBus_15 = value;
+                OnPropertyChanged("IsConnectedToBus_15");
+            }
+        }
+
+
+        private bool _IsConnectedToGround_16;
+        private bool _IsConnectedToBus_16;
+        public bool IsConnectedToGround_16
+        {
+            get
+            {
+                return _IsConnectedToGround_16;
+            }
+            set
+            {
+                if (value) IsConnectedToBus_16 = false;
+                _IsConnectedToGround_16 = value;
+                OnPropertyChanged("IsConnectedToGround_16");
+            }
+        }
+        public bool IsConnectedToBus_16
+        {
+            get
+            {
+                return _IsConnectedToBus_16;
+            }
+            set
+            {
+                if (value) IsConnectedToGround_16 = false;
+                _IsConnectedToBus_16 = value;
+                OnPropertyChanged("IsConnectedToBus_16");
             }
         }
 
 
         private void ConnectBus1(object sender, RoutedEventArgs e)
         {
-            // ConnectedToBus_1 = !ConnectedToBus_1;
-            ConnectedToGround_1 = false;
-            if (updatedBus) updatedBus = false;
+            // IsConnectedToBus_1 = !IsConnectedToBus_1;
+            IsConnectedToGround_1 = false;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus2(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_2 = false;
-            // ConnectedToBus_2 = !ConnectedToBus_2;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_2 = false;
+            // IsConnectedToBus_2 = !IsConnectedToBus_2;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus3(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_3 = false;
-            // ConnectedToBus_3 = !ConnectedToBus_3;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_3 = false;
+            // IsConnectedToBus_3 = !IsConnectedToBus_3;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus4(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_4 = false;
-            // ConnectedToBus_4 = !ConnectedToBus_4;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_4 = false;
+            // IsConnectedToBus_4 = !IsConnectedToBus_4;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus5(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_5 = false;
-            // ConnectedToBus_5 = !ConnectedToBus_5;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_5 = false;
+            // IsConnectedToBus_5 = !IsConnectedToBus_5;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus6(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_6 = false;
-            // ConnectedToBus_6 = !ConnectedToBus_6;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_6 = false;
+            // IsConnectedToBus_6 = !IsConnectedToBus_6;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus7(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_7 = false;
-            // ConnectedToBus_7 = !ConnectedToBus_7;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_7 = false;
+            // IsConnectedToBus_7 = !IsConnectedToBus_7;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus8(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_8 = false;
-            // ConnectedToBus_8 = !ConnectedToBus_8;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_8 = false;
+            // IsConnectedToBus_8 = !IsConnectedToBus_8;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus9(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_9 = false;
-            // ConnectedToBus_9 = !ConnectedToBus_9;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_9 = false;
+            // IsConnectedToBus_9 = !IsConnectedToBus_9;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus10(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_10 = false;
-            // ConnectedToBus_10 = !ConnectedToBus_10;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_10 = false;
+            // IsConnectedToBus_10 = !IsConnectedToBus_10;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus11(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_11 = false;
-            // ConnectedToBus_11 = !ConnectedToBus_11;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_11 = false;
+            // IsConnectedToBus_11 = !IsConnectedToBus_11;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus12(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_12 = false;
-            // ConnectedToBus_12 = !ConnectedToBus_12;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_12 = false;
+            // IsConnectedToBus_12 = !IsConnectedToBus_12;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus13(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_13 = false;
-            // ConnectedToBus_13 = !ConnectedToBus_13;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_13 = false;
+            // IsConnectedToBus_13 = !IsConnectedToBus_13;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus14(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_14 = false;
-            // ConnectedToBus_14 = !ConnectedToBus_14;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_14 = false;
+            // IsConnectedToBus_14 = !IsConnectedToBus_14;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus15(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_15 = false;
-            // ConnectedToBus_15 = !ConnectedToBus_15;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_15 = false;
+            // IsConnectedToBus_15 = !IsConnectedToBus_15;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
         private void ConnectBus16(object sender, RoutedEventArgs e)
         {
-            ConnectedToGround_16 = false;
-            // ConnectedToBus_16 = !ConnectedToBus_16;
-            if (updatedBus) updatedBus = false;
+            IsConnectedToGround_16 = false;
+            // IsConnectedToBus_16 = !IsConnectedToBus_16;
+            if (IsBusUpdated) IsBusUpdated = false;
         }
 
 
         private void ConnectGnd1(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_1 = false;
-            // ConnectedToGround_1 = !ConnectedToGround_1;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_1 = false;
+            // IsConnectedToGround_1 = !IsConnectedToGround_1;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd2(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_2 = false;
-            // ConnectedToGround_2 = !ConnectedToGround_2;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_2 = false;
+            // IsConnectedToGround_2 = !IsConnectedToGround_2;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd3(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_3 = false;
-            // ConnectedToGround_3 = !ConnectedToGround_3;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_3 = false;
+            // IsConnectedToGround_3 = !IsConnectedToGround_3;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd4(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_4 = false;
-            // ConnectedToGround_4 = !ConnectedToGround_4;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_4 = false;
+            // IsConnectedToGround_4 = !IsConnectedToGround_4;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd5(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_5 = false;
-            // ConnectedToGround_5 = !ConnectedToGround_5;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_5 = false;
+            // IsConnectedToGround_5 = !IsConnectedToGround_5;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd6(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_6 = false;
-            // ConnectedToGround_6 = !ConnectedToGround_6;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_6 = false;
+            // IsConnectedToGround_6 = !IsConnectedToGround_6;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd7(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_7 = false;
-            // ConnectedToGround_7 = !ConnectedToGround_7;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_7 = false;
+            // IsConnectedToGround_7 = !IsConnectedToGround_7;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd8(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_8 = false;
-            // ConnectedToGround_8 = !ConnectedToGround_8;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_8 = false;
+            // IsConnectedToGround_8 = !IsConnectedToGround_8;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd9(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_9 = false;
-            // ConnectedToGround_9 = !ConnectedToGround_9;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_9 = false;
+            // IsConnectedToGround_9 = !IsConnectedToGround_9;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd10(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_10 = false;
-            // ConnectedToGround_10 = !ConnectedToGround_10;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_10 = false;
+            // IsConnectedToGround_10 = !IsConnectedToGround_10;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd11(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_11 = false;
-            // ConnectedToGround_11 = !ConnectedToGround_11;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_11 = false;
+            // IsConnectedToGround_11 = !IsConnectedToGround_11;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd12(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_12 = false;
-            // ConnectedToGround_12 = !ConnectedToGround_12;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_12 = false;
+            // IsConnectedToGround_12 = !IsConnectedToGround_12;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd13(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_13 = false;
-            // ConnectedToGround_13 = !ConnectedToGround_13;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_13 = false;
+            // IsConnectedToGround_13 = !IsConnectedToGround_13;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd14(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_14 = false;
-            // ConnectedToGround_14 = !ConnectedToGround_14;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_14 = false;
+            // IsConnectedToGround_14 = !IsConnectedToGround_14;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd15(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_15 = false;
-            // ConnectedToGround_15 = !ConnectedToGround_15;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_15 = false;
+            // IsConnectedToGround_15 = !IsConnectedToGround_15;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
         private void ConnectGnd16(object sender, RoutedEventArgs e)
         {
-            ConnectedToBus_16 = false;
-            // ConnectedToGround_16 = !ConnectedToGround_16;
-            if (updatedGnd) updatedGnd = false;
+            IsConnectedToBus_16 = false;
+            // IsConnectedToGround_16 = !IsConnectedToGround_16;
+            if (IsGndUpdated) IsGndUpdated = false;
         }
 
 
         // Disconnect all channels to bus and ground as selected
         private void DisconnectAll()
         {
-            ConnectedToBus_1 = false;
-            ConnectedToBus_2 = false;
-            ConnectedToBus_3 = false;
-            ConnectedToBus_4 = false;
-            ConnectedToBus_5 = false;
-            ConnectedToBus_6 = false;
-            ConnectedToBus_7 = false;
-            ConnectedToBus_8 = false;
-            ConnectedToBus_9 = false;
-            ConnectedToBus_10 = false;
-            ConnectedToBus_11 = false;
-            ConnectedToBus_12 = false;
-            ConnectedToBus_13 = false;
-            ConnectedToBus_14 = false;
-            ConnectedToBus_15 = false;
-            ConnectedToBus_16 = false;
+            IsConnectedToBus_1 = false;
+            IsConnectedToBus_2 = false;
+            IsConnectedToBus_3 = false;
+            IsConnectedToBus_4 = false;
+            IsConnectedToBus_5 = false;
+            IsConnectedToBus_6 = false;
+            IsConnectedToBus_7 = false;
+            IsConnectedToBus_8 = false;
+            IsConnectedToBus_9 = false;
+            IsConnectedToBus_10 = false;
+            IsConnectedToBus_11 = false;
+            IsConnectedToBus_12 = false;
+            IsConnectedToBus_13 = false;
+            IsConnectedToBus_14 = false;
+            IsConnectedToBus_15 = false;
+            IsConnectedToBus_16 = false;
 
-            ConnectedToGround_1 = false;
-            ConnectedToGround_2 = false;
-            ConnectedToGround_3 = false;
-            ConnectedToGround_4 = false;
-            ConnectedToGround_5 = false;
-            ConnectedToGround_6 = false;
-            ConnectedToGround_7 = false;
-            ConnectedToGround_8 = false;
-            ConnectedToGround_9 = false;
-            ConnectedToGround_10 = false;
-            ConnectedToGround_11 = false;
-            ConnectedToGround_12 = false;
-            ConnectedToGround_13 = false;
-            ConnectedToGround_14 = false;
-            ConnectedToGround_15 = false;
-            ConnectedToGround_16 = false;
+            IsConnectedToGround_1 = false;
+            IsConnectedToGround_2 = false;
+            IsConnectedToGround_3 = false;
+            IsConnectedToGround_4 = false;
+            IsConnectedToGround_5 = false;
+            IsConnectedToGround_6 = false;
+            IsConnectedToGround_7 = false;
+            IsConnectedToGround_8 = false;
+            IsConnectedToGround_9 = false;
+            IsConnectedToGround_10 = false;
+            IsConnectedToGround_11 = false;
+            IsConnectedToGround_12 = false;
+            IsConnectedToGround_13 = false;
+            IsConnectedToGround_14 = false;
+            IsConnectedToGround_15 = false;
+            IsConnectedToGround_16 = false;
 
-            ch1_radiobutton.IsEnabled = false;
-            ch2_radiobutton.IsEnabled = false;
-            ch3_radiobutton.IsEnabled = false;
-            ch4_radiobutton.IsEnabled = false;
-            ch5_radiobutton.IsEnabled = false;
-            ch6_radiobutton.IsEnabled = false;
-            ch7_radiobutton.IsEnabled = false;
-            ch8_radiobutton.IsEnabled = false;
-            ch9_radiobutton.IsEnabled = false;
-            ch10_radiobutton.IsEnabled = false;
-            ch11_radiobutton.IsEnabled = false;
-            ch12_radiobutton.IsEnabled = false;
-            ch13_radiobutton.IsEnabled = false;
-            ch14_radiobutton.IsEnabled = false;
-            ch15_radiobutton.IsEnabled = false;
-            ch16_radiobutton.IsEnabled = false;
+            MeasureVoltageCh1.IsEnabled = false;
+            MeasureVoltageCh2.IsEnabled = false;
+            MeasureVoltageCh3.IsEnabled = false;
+            MeasureVoltageCh4.IsEnabled = false;
+            MeasureVoltageCh5.IsEnabled = false;
+            MeasureVoltageCh6.IsEnabled = false;
+            MeasureVoltageCh7.IsEnabled = false;
+            MeasureVoltageCh8.IsEnabled = false;
+            MeasureVoltageCh9.IsEnabled = false;
+            MeasureVoltageCh10.IsEnabled = false;
+            MeasureVoltageCh11.IsEnabled = false;
+            MeasureVoltageCh12.IsEnabled = false;
+            MeasureVoltageCh13.IsEnabled = false;
+            MeasureVoltageCh14.IsEnabled = false;
+            MeasureVoltageCh15.IsEnabled = false;
+            MeasureVoltageCh16.IsEnabled = false;
 
-            ch1_radiobutton.IsChecked = false;
-            ch2_radiobutton.IsChecked = false;
-            ch3_radiobutton.IsChecked = false;
-            ch4_radiobutton.IsChecked = false;
-            ch5_radiobutton.IsChecked = false;
-            ch6_radiobutton.IsChecked = false;
-            ch7_radiobutton.IsChecked = false;
-            ch8_radiobutton.IsChecked = false;
-            ch9_radiobutton.IsChecked = false;
-            ch10_radiobutton.IsChecked = false;
-            ch11_radiobutton.IsChecked = false;
-            ch12_radiobutton.IsChecked = false;
-            ch13_radiobutton.IsChecked = false;
-            ch14_radiobutton.IsChecked = false;
-            ch15_radiobutton.IsChecked = false;
-            ch16_radiobutton.IsChecked = false;
+            MeasureVoltageCh1.IsChecked = false;
+            MeasureVoltageCh2.IsChecked = false;
+            MeasureVoltageCh3.IsChecked = false;
+            MeasureVoltageCh4.IsChecked = false;
+            MeasureVoltageCh5.IsChecked = false;
+            MeasureVoltageCh6.IsChecked = false;
+            MeasureVoltageCh7.IsChecked = false;
+            MeasureVoltageCh8.IsChecked = false;
+            MeasureVoltageCh9.IsChecked = false;
+            MeasureVoltageCh10.IsChecked = false;
+            MeasureVoltageCh11.IsChecked = false;
+            MeasureVoltageCh12.IsChecked = false;
+            MeasureVoltageCh13.IsChecked = false;
+            MeasureVoltageCh14.IsChecked = false;
+            MeasureVoltageCh15.IsChecked = false;
+            MeasureVoltageCh16.IsChecked = false;
 
-            communicator.WriteSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
-            VoltageTextBox.Text = "";
+            Communicator.WriteSerialPort((int)Communicator.Functions.DISCONNECT_VOLTAGE + ";");
+            SetVoltageTextBox.Text = "";
             StatusBox_Status = "Everything is Disconnected";
         }
         // Disconnect all channels to bus and ground as selected
         private void DisconnectAllWithClosedPort()
         {
-            ConnectedToBus_1 = false;
-            ConnectedToBus_2 = false;
-            ConnectedToBus_3 = false;
-            ConnectedToBus_4 = false;
-            ConnectedToBus_5 = false;
-            ConnectedToBus_6 = false;
-            ConnectedToBus_7 = false;
-            ConnectedToBus_8 = false;
-            ConnectedToBus_9 = false;
-            ConnectedToBus_10 = false;
-            ConnectedToBus_11 = false;
-            ConnectedToBus_12 = false;
-            ConnectedToBus_13 = false;
-            ConnectedToBus_14 = false;
-            ConnectedToBus_15 = false;
-            ConnectedToBus_16 = false;
+            IsConnectedToBus_1 = false;
+            IsConnectedToBus_2 = false;
+            IsConnectedToBus_3 = false;
+            IsConnectedToBus_4 = false;
+            IsConnectedToBus_5 = false;
+            IsConnectedToBus_6 = false;
+            IsConnectedToBus_7 = false;
+            IsConnectedToBus_8 = false;
+            IsConnectedToBus_9 = false;
+            IsConnectedToBus_10 = false;
+            IsConnectedToBus_11 = false;
+            IsConnectedToBus_12 = false;
+            IsConnectedToBus_13 = false;
+            IsConnectedToBus_14 = false;
+            IsConnectedToBus_15 = false;
+            IsConnectedToBus_16 = false;
 
-            ConnectedToGround_1 = false;
-            ConnectedToGround_2 = false;
-            ConnectedToGround_3 = false;
-            ConnectedToGround_4 = false;
-            ConnectedToGround_5 = false;
-            ConnectedToGround_6 = false;
-            ConnectedToGround_7 = false;
-            ConnectedToGround_8 = false;
-            ConnectedToGround_9 = false;
-            ConnectedToGround_10 = false;
-            ConnectedToGround_11 = false;
-            ConnectedToGround_12 = false;
-            ConnectedToGround_13 = false;
-            ConnectedToGround_14 = false;
-            ConnectedToGround_15 = false;
-            ConnectedToGround_16 = false;
+            IsConnectedToGround_1 = false;
+            IsConnectedToGround_2 = false;
+            IsConnectedToGround_3 = false;
+            IsConnectedToGround_4 = false;
+            IsConnectedToGround_5 = false;
+            IsConnectedToGround_6 = false;
+            IsConnectedToGround_7 = false;
+            IsConnectedToGround_8 = false;
+            IsConnectedToGround_9 = false;
+            IsConnectedToGround_10 = false;
+            IsConnectedToGround_11 = false;
+            IsConnectedToGround_12 = false;
+            IsConnectedToGround_13 = false;
+            IsConnectedToGround_14 = false;
+            IsConnectedToGround_15 = false;
+            IsConnectedToGround_16 = false;
 
-            ch1_radiobutton.IsEnabled = false;
-            ch2_radiobutton.IsEnabled = false;
-            ch3_radiobutton.IsEnabled = false;
-            ch4_radiobutton.IsEnabled = false;
-            ch5_radiobutton.IsEnabled = false;
-            ch6_radiobutton.IsEnabled = false;
-            ch7_radiobutton.IsEnabled = false;
-            ch8_radiobutton.IsEnabled = false;
-            ch9_radiobutton.IsEnabled = false;
-            ch10_radiobutton.IsEnabled = false;
-            ch11_radiobutton.IsEnabled = false;
-            ch12_radiobutton.IsEnabled = false;
-            ch13_radiobutton.IsEnabled = false;
-            ch14_radiobutton.IsEnabled = false;
-            ch15_radiobutton.IsEnabled = false;
-            ch16_radiobutton.IsEnabled = false;
+            MeasureVoltageCh1.IsEnabled = false;
+            MeasureVoltageCh2.IsEnabled = false;
+            MeasureVoltageCh3.IsEnabled = false;
+            MeasureVoltageCh4.IsEnabled = false;
+            MeasureVoltageCh5.IsEnabled = false;
+            MeasureVoltageCh6.IsEnabled = false;
+            MeasureVoltageCh7.IsEnabled = false;
+            MeasureVoltageCh8.IsEnabled = false;
+            MeasureVoltageCh9.IsEnabled = false;
+            MeasureVoltageCh10.IsEnabled = false;
+            MeasureVoltageCh11.IsEnabled = false;
+            MeasureVoltageCh12.IsEnabled = false;
+            MeasureVoltageCh13.IsEnabled = false;
+            MeasureVoltageCh14.IsEnabled = false;
+            MeasureVoltageCh15.IsEnabled = false;
+            MeasureVoltageCh16.IsEnabled = false;
 
-            ch1_radiobutton.IsChecked = false;
-            ch2_radiobutton.IsChecked = false;
-            ch3_radiobutton.IsChecked = false;
-            ch4_radiobutton.IsChecked = false;
-            ch5_radiobutton.IsChecked = false;
-            ch6_radiobutton.IsChecked = false;
-            ch7_radiobutton.IsChecked = false;
-            ch8_radiobutton.IsChecked = false;
-            ch9_radiobutton.IsChecked = false;
-            ch10_radiobutton.IsChecked = false;
-            ch11_radiobutton.IsChecked = false;
-            ch12_radiobutton.IsChecked = false;
-            ch13_radiobutton.IsChecked = false;
-            ch14_radiobutton.IsChecked = false;
-            ch15_radiobutton.IsChecked = false;
-            ch16_radiobutton.IsChecked = false;
+            MeasureVoltageCh1.IsChecked = false;
+            MeasureVoltageCh2.IsChecked = false;
+            MeasureVoltageCh3.IsChecked = false;
+            MeasureVoltageCh4.IsChecked = false;
+            MeasureVoltageCh5.IsChecked = false;
+            MeasureVoltageCh6.IsChecked = false;
+            MeasureVoltageCh7.IsChecked = false;
+            MeasureVoltageCh8.IsChecked = false;
+            MeasureVoltageCh9.IsChecked = false;
+            MeasureVoltageCh10.IsChecked = false;
+            MeasureVoltageCh11.IsChecked = false;
+            MeasureVoltageCh12.IsChecked = false;
+            MeasureVoltageCh13.IsChecked = false;
+            MeasureVoltageCh14.IsChecked = false;
+            MeasureVoltageCh15.IsChecked = false;
+            MeasureVoltageCh16.IsChecked = false;
 
-            VoltageTextBox.Text = "";
+            SetVoltageTextBox.Text = "";
             StatusBox_Status = "Everything is Disconnected";
         }
             
@@ -840,23 +840,23 @@ namespace AdjustableVoltageSource
         private void Connect(object sender, RoutedEventArgs e)
         {
             // if there are no changes being made, there is no need to update the registers
-            if (!updatedBus || !updatedGnd)
+            if (!IsBusUpdated || !IsGndUpdated)
             {
-                StatusBox_Status = "Connections are established";
                 string data = FormatGrounddata_pt1();
-                communicator.WriteSerialPort(data);
+                Communicator.WriteSerialPort(data);
                 data = FormatGrounddata_pt2();
-                communicator.WriteSerialPort(data);
+                Communicator.WriteSerialPort(data);
 
                 data = FormatBusdata_pt1();
-                communicator.WriteSerialPort(data);
+                Communicator.WriteSerialPort(data);
                 data = FormatBusdata_pt2();
-                communicator.WriteSerialPort(data);
+                Communicator.WriteSerialPort(data);
 
                 UpdateMeasureBoxes();
 
-                updatedBus = true;
-                updatedGnd = true;
+                StatusBox_Status = "Connections are established";
+                IsBusUpdated = true;
+                IsGndUpdated = true;
             }
             else StatusBox_Status = "Nothing to update while connecting";
         }

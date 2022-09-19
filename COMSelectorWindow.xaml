@@ -10,10 +10,10 @@
         <Label FontSize="15" Name="counter"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Label FontSize="15">Select COM-port:</Label>
-            <ComboBox FontSize="15" Width="auto" Name="ComSelector" ItemsSource="{Binding comports}"/>
+            <ComboBox FontSize="15" Width="auto" Name="COMSelector" ItemsSource="{Binding comports}"/>
         </StackPanel>
         <Separator Background="Transparent" Height="10"/>
-        <Button FontSize="15" Width="175" Click="Apply">Apply</Button>
+        <Button FontSize="15" Width="175" Click="ApplyCOMPort">Apply</Button>
         <Separator Background="Transparent" Height="10"/>
     </StackPanel>
 	
