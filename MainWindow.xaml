@@ -151,8 +151,9 @@
                             </GroupBox>
                             <Separator Height="15" Background="Transparent"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock FontSize="20">Current: </TextBlock>
-                                <TextBlock Name="MeasuredCurrentPeriodResult" FontWeight="Bold" FontSize="14"/>
+                                <TextBlock VerticalAlignment="Center" FontSize="20">Current: </TextBlock>
+                                <Separator Width="10" Background="Transparent"/>
+                                <TextBlock Name="MeasuredCurrentPeriodResult" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
                             </StackPanel>
                             <Separator Height="15" Background="Transparent"/>
                             <Button Width="200" Height="40" Name="DisconnectVoltageButton" Click="DisconnectVoltage" FontSize="15" Background="#FFEDEDED">Disconnect Voltage</Button>

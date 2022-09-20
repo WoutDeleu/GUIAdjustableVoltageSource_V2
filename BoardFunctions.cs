@@ -208,7 +208,7 @@ namespace AdjustableVoltageSource
         {
             DisconnectAll();
             SetVoltageTextBox.Text = "";
-            MeasuredCurrentPeriodResult.Text = "Not Yet Set";
+            MeasuredCurrentPeriodResult.Text = "Not Yet Measured";
             WriteSerialPort((int)BoardFunctions.DISCONNECT_VOLTAGE + ";");
 
             AppTimer = Stopwatch.StartNew();

@@ -79,7 +79,7 @@ namespace AdjustableVoltageSource
                     switch (data[0])
                     {
                         case '0':
-                            CommandBox = "Ping: \t\t\t" + data;
+                            CommandBox = "Ping: \t\t" + data;
                             break;
                         case '1':
                             CommandBox = "Put Voltage: \t\t" + data;

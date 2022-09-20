@@ -49,6 +49,8 @@ namespace AdjustableVoltageSource
 
             SetupPeriodicStatusses();
 
+            MeasuredCurrentPeriodResult.Text = MeasureCurrent();
+
             SetUpBindings();
             SelectionVisible = Visibility.Visible;
         }
