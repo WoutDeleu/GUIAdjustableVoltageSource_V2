@@ -15,6 +15,19 @@ using System.ComponentModel;
 
 namespace AdjustableVoltageSource
 {
+    public enum BoardFunctions
+    {
+        PING = 0,
+        PUT_VOLTAGE = 1,
+        CONNECT_TO_GROUND = 2,
+        CONNECT_TO_BUS = 3,
+        MEASURE_VOLTAGE = 4,
+        MEASURE_CURRENT = 5,
+        CHANGE_BOARDNUMBER = 6,
+        GET_BOARDNUMBER = 7,
+        DISCONNECT_VOLTAGE = 8,
+        RESET = 9
+    }
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private readonly int baudrate = 115200;
@@ -30,19 +43,6 @@ namespace AdjustableVoltageSource
                 _isConnectionSuccesfull = value;
                 UpdateArduinoStatus(value);
             }
-        }
-        public enum BoardFunctions
-        {
-            PING = 0,
-            PUT_VOLTAGE = 1,
-            CONNECT_TO_GROUND = 2,
-            CONNECT_TO_BUS = 3,
-            MEASURE_VOLTAGE = 4,
-            MEASURE_CURRENT = 5,
-            CHANGE_BOARDNUMBER = 6,
-            GET_BOARDNUMBER = 7,
-            DISCONNECT_VOLTAGE = 8,
-            RESET = 9
         }
 
         public void CloseSerialPort()
