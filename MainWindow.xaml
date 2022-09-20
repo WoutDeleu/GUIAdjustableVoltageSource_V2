@@ -158,7 +158,7 @@
                             <Button Width="200" Height="40" Name="DisconnectVoltageButton" Click="DisconnectVoltage" FontSize="15" Background="#FFEDEDED">Disconnect Voltage</Button>
                         </StackPanel>
                         <Separator Height="15" Background="Transparent"/>
-                        <Button Width="auto" Height="auto" Name="ResetButton" Click="Reset" FontSize="20" Background="Salmon">RESET</Button>
+                        <Button Width="auto" Height="auto" Name="Reset_Button" Click="ResetButton" FontSize="20" Background="Salmon">RESET</Button>
                     </StackPanel>
                 </TabItem>
                 <TabItem x:Name="MeasureTab" Header="Measure">

@@ -57,20 +57,17 @@ namespace AdjustableVoltageSource
         private void InitializeCommunication()
         {
             ClearTextboxes();
-
             InitSerialPort();
-            labelCurrentCOM.Text = CurrentCOMPort;
-            if (!isConnectionSuccesfull)
-            {
-                UpdateArduinoStatus(false);
-            }
-            else
+
+            if(IsConnectionSuccesfull)
             {
                 try
                 {
                     // Loop until communication is established
                     string message = "";
                     bool started = false, finished = false;
+
+                    // Setup Arduino, and wait for correct response
                     Stopwatch startupTimer = new();
                     startupTimer.Start();
                     while (!started)
@@ -88,19 +85,17 @@ namespace AdjustableVoltageSource
                     }
                     StatusBox_Status = "Setup Arduino finished";
 
-                    // Enable correct tabs/update statusses
-                    UpdateArduinoStatus(true);
-
                     UpdateBoardNumber();
                     DataContext = this;
                 }
+                // Time Out Exception
                 catch (Exception ex)
                 {
                     StatusBox_Error = ex.Message.ToString() + " Check if communication is correct and if Arduino is available.";
                     StatusBox_Error = "Port " + serialPort.PortName + " could not be opened";
 
                     CloseSerialPort();
-                    UpdateArduinoStatus(false);
+                    IsConnectionSuccesfull = false;
                 }
             }
         }
@@ -111,14 +106,15 @@ namespace AdjustableVoltageSource
             CurrentBoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
             currentCOM.SetBinding(ContentProperty, new Binding("currentCOMPort"));
         }
+        
         public void CloseMainWindow()
         {
             CloseSerialPort();
             Close();
         }
-        public void Reset(object sender, RoutedEventArgs e)
+        public void ResetButton(object sender, RoutedEventArgs e)
         {
-            Reset();
+            ResetBasedOnCOM();
             e.Handled = true;
         }
     }

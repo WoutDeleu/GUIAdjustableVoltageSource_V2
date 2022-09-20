@@ -20,7 +20,17 @@ namespace AdjustableVoltageSource
         private readonly int baudrate = 115200;
         public SerialPort serialPort;
         public string ret_port;
-        public bool isConnectionSuccesfull;
+        public bool isClosing;
+        private bool _isConnectionSuccesfull;
+        public bool IsConnectionSuccesfull
+        {
+            get { return _isConnectionSuccesfull; }
+            set
+            {
+                _isConnectionSuccesfull = value;
+                UpdateArduinoStatus(value);
+            }
+        }
         public enum BoardFunctions
         {
             PING = 0,
@@ -39,6 +49,7 @@ namespace AdjustableVoltageSource
         {
             if (serialPort.IsOpen)
             {
+                isClosing = true;
                 serialPort.DiscardOutBuffer();
                 serialPort.DiscardInBuffer();
 
@@ -47,9 +58,15 @@ namespace AdjustableVoltageSource
                 serialPort.Dispose();
                 serialPort.Close();
 
-                isConnectionSuccesfull = false;
+                IsConnectionSuccesfull = false;
+                StatusBox_Status = "'" + serialPort.PortName + "' Port Closed Succesfully";
+                isClosing = false;
             }
+            else
+            {
 
+                StatusBox_Status = "'" + serialPort.PortName + "' was already Closed";
+            }
         }
         public void WriteSerialPort(string data)
         {
@@ -62,7 +79,7 @@ namespace AdjustableVoltageSource
                     switch (data[0])
                     {
                         case '0':
-                            // CommandBox = "PING: \t\t" + data;
+                            CommandBox = "Ping: \t\t\t" + data;
                             break;
                         case '1':
                             CommandBox = "Put Voltage: \t\t" + data;
@@ -107,10 +124,7 @@ namespace AdjustableVoltageSource
                 StatusBox_Error = ex.Message;
 
                 CloseSerialPort();
-                isConnectionSuccesfull = false;
-
-                ArduinoStatusLabel.Text = "Not Connected";
-                ArduinoStatusBar.Background = MainWindow.BrushFromHex("#FFFBFB7A");
+                IsConnectionSuccesfull = false;
 
                 ResetWithClosedPort();
             }
@@ -122,27 +136,30 @@ namespace AdjustableVoltageSource
             {
                 if (serialPort.IsOpen)
                 {
-                    Thread.Sleep(200);
-                    do
+                    if (!isClosing)
                     {
-                        readSciMessage += serialPort.ReadExisting();
-                    } while (serialPort.BytesToRead != 0);
+                        Thread.Sleep(200);
+                        do
+                        {
+                            if (serialPort.IsOpen) readSciMessage += serialPort.ReadExisting();
+                        } while (serialPort.BytesToRead != 0);
 
-                    Debug.WriteLine(readSciMessage);
-                    string[] strings = readSciMessage.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (String str in strings)
-                    {
-                        if (str.Contains("||"))
+                        Debug.WriteLine(readSciMessage);
+                        string[] strings = readSciMessage.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (String str in strings)
                         {
-                            StatusBox_Error = ExtractErrorMessage(str);
-                        }
-                        if (str.Contains("##"))
-                        {
-                            StatusBox_Status = ExtractStatusMessage(str);
-                        }
-                        if (str.Contains("(("))
-                        {
-                            RegisterBox = ExtractRegistersMessage(str);
+                            if (str.Contains("||"))
+                            {
+                                StatusBox_Error = ExtractErrorMessage(str);
+                            }
+                            if (str.Contains("##"))
+                            {
+                                StatusBox_Status = ExtractStatusMessage(str);
+                            }
+                            if (str.Contains("(("))
+                            {
+                                RegisterBox = ExtractRegistersMessage(str);
+                            }
                         }
                     }
                 }
@@ -158,8 +175,13 @@ namespace AdjustableVoltageSource
             }
             catch (FormatException ex)
             {
-                Debug.WriteLine(readSciMessage + "\n");
-                Debug.WriteLine(ex.ToString() + "\n");
+                Debug.WriteLine(ex.Message);
+                StatusBox_Error = ex.Message;
+
+                CloseSerialPort();
+                IsConnectionSuccesfull = false;
+
+                ResetWithClosedPort();
             }
         }
 
@@ -175,11 +197,10 @@ namespace AdjustableVoltageSource
 
                     if (!serialPort.IsOpen)
                     {
-                        StatusBox_Status = "'" + serialPort.PortName + "' Port Closed\n";
-                        Debug.WriteLine("'" + serialPort.PortName + "' Port Closed\n");
+                        StatusBox_Status = "'" + serialPort.PortName + "' Port Closed Succesfully";
                     }
                 }
-                // Based on connection method
+                // Choose portname based on connection method
                 if (COMSelector.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Auto-detect")
                 {
                     StatusBox_Status = "Auto Detecting Arduino";
@@ -224,17 +245,17 @@ namespace AdjustableVoltageSource
                 serialPort.BaudRate = baudrate;
                 serialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
                 serialPort.Open();
-                StatusBox_Status = ("'" + serialPort.PortName + "' Port Opened Succesfully");
-                isConnectionSuccesfull = true;
+                StatusBox_Status = "'" + serialPort.PortName + "' Port Opened Succesfully";
+                IsConnectionSuccesfull = true;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message + "\n");
                 Debug.WriteLine("Port " + serialPort.PortName + " could not be opened");
-                StatusBox_Error = ("Port " + serialPort.PortName + " could not be opened");
+                StatusBox_Error = "Port " + serialPort.PortName + " could not be opened";
+
                 CloseSerialPort();
-                isConnectionSuccesfull = false;
-                UpdateArduinoStatus(false);
+                IsConnectionSuccesfull = false;
             }
         }
 

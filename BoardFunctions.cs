@@ -17,7 +17,7 @@ namespace AdjustableVoltageSource
 			string voltagestr = SetVoltageTextBox.Text.Replace(".", ",");
 			if (IsValidVoltage(voltagestr))
             {
-                SetVoltageTextBox.BorderBrush = (Brush)Bc.ConvertFrom("#FFABADB3");
+                SetVoltageTextBox.BorderBrush = BrushFromHex("#FFABADB3");
                 SetVoltageTextBox.Background = Brushes.White;
                 Voltage = Convert.ToDouble(voltagestr);
 				WriteSerialPort((int)BoardFunctions.PUT_VOLTAGE + "," + Voltage + ";");
@@ -139,8 +139,8 @@ namespace AdjustableVoltageSource
             string current = ExtractInput(input).Replace(".", ",");
             if (double.TryParse(current, out double current_out))
             {
-                return current_out + " A";
                 StatusBox_Status = "Measured Current: " + current_out;
+                return current_out + " A";
             }
             else
             {
@@ -181,9 +181,9 @@ namespace AdjustableVoltageSource
 				case "Others":
 					if (IsValidCOMPort(newCOMPortTextBox.Text))
 					{
-						newCOMPortTextBox.BorderBrush = (Brush)Bc.ConvertFrom("#FFABADB3");
+						newCOMPortTextBox.BorderBrush = BrushFromHex("#FFABADB3");
 						newCOMPortTextBox.Background = Brushes.White;
-						Reset();
+						ResetBasedOnCOM();
 					}
 					else
                     {
@@ -193,13 +193,17 @@ namespace AdjustableVoltageSource
 					}
 					break;
                 default:
-                    newCOMPortTextBox.BorderBrush = (Brush)Bc.ConvertFrom("#FFABADB3");
+                    newCOMPortTextBox.BorderBrush = BrushFromHex("#FFABADB3");
                     newCOMPortTextBox.Background = Brushes.White;
-                    Reset();
+                    ResetBasedOnCOM();
                     break;
             }
         }
-
+		public void ResetBasedOnCOM()
+		{
+            if (IsConnectionSuccesfull) Reset();
+            else ResetWithClosedPort();
+        }
         public void Reset()
         {
             DisconnectAll();

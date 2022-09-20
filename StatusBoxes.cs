@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -15,13 +14,14 @@ namespace AdjustableVoltageSource
         DispatcherTimer RefreshCurrentMeasure;
         public void SetupPeriodicStatusses()
         {
+            // Every 8s - Measure Current
             RefreshArduinoStatus = new()
             {
                 Interval = TimeSpan.FromSeconds(8)
             };
             RefreshArduinoStatus.Tick += PingArduino;
 
-
+            // Every 30s - Measure Current
             RefreshCurrentMeasure = new()
             {
                 Interval = TimeSpan.FromSeconds(30)
@@ -48,11 +48,14 @@ namespace AdjustableVoltageSource
                 {
                     if (pingTimer.ElapsedMilliseconds >= 3000) break;
                     message += serialPort.ReadExisting();
-                    if (message.Contains("PING_PING_PING")) connected = true;
+                    if (message.Contains("PING_PING_PING"))
+                    {
+                        IsConnectionSuccesfull = true;
+                        connected = true;
+                    }
                 }
-                UpdateArduinoStatus(connected);
             }
-            else UpdateArduinoStatus(false);
+            else if(IsConnectionSuccesfull) IsConnectionSuccesfull = false; ;
         }
         
         // Current is updated every 30s (based on the DispatchTimer)
@@ -73,8 +76,7 @@ namespace AdjustableVoltageSource
             IsGndUpdated = isConnected;
             IsBusUpdated = isConnected;
 
-            if (isConnected) TabController.SelectedIndex = 0;
-            else TabController.SelectedIndex = 3;
+            labelCurrentCOM.Text = CurrentCOMPort;
 
             if (isConnected)
             {
@@ -83,6 +85,7 @@ namespace AdjustableVoltageSource
             }
             else
             {
+                TabController.SelectedIndex = 3;
                 ArduinoStatusLabel.Text = "Not Connected";
                 ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
             }
