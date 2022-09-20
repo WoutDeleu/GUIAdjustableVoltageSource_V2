@@ -80,7 +80,8 @@ namespace AdjustableVoltageSource
                     switch (data[0])
                     {
                         case '0':
-                            CommandBox = "Ping: \t\t" + data;
+                            if(AppTimer.Elapsed.TotalSeconds.ToString().Length>=10) CommandBox = "Ping: \t\t" + data;
+                            else CommandBox = "Ping: \t\t\t" + data; ;
                             break;
                         case '1':
                             CommandBox = "Put Voltage: \t\t" + data;
