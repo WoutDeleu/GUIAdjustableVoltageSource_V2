@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System;
 using System.Windows.Threading;
 using System.IO.Ports;
+using System.Threading;
 
 namespace AdjustableVoltageSource
 {
@@ -48,7 +49,7 @@ namespace AdjustableVoltageSource
             InitializeCommunication();
 
             SetupPeriodicStatusses();
-
+            Thread.Sleep(50);
             MeasuredCurrentPeriodResult.Text = MeasureCurrent();
 
             SetUpBindings();

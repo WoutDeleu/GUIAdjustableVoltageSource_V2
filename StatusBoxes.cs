@@ -113,7 +113,7 @@ namespace AdjustableVoltageSource
                 this.Dispatcher.BeginInvoke(() =>
                 {
                     if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
-                    RegistersTextBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\n");
+                    RegistersTextBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r");
                     RegistersTextBox.ScrollToEnd();
                 });
             }
@@ -158,6 +158,8 @@ namespace AdjustableVoltageSource
 
             RegistersTextBox.SelectAll();
             RegistersTextBox.Selection.Text = "";
+
+            MeasuredValue = "";
         }
     }
 }

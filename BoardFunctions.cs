@@ -83,7 +83,12 @@ namespace AdjustableVoltageSource
 		// Measure the current/voltage (based on the selection in the combobox) from the Arduino
 		private void MeasureValue(object sender, RoutedEventArgs e)
 		{
-			if (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Measure Current") MeasuredValue = MeasureCurrent();
+			if (SelectMeasureFunction.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last() == "Measure Current")
+			{
+				MeasuredValue = MeasureCurrent();
+                MeasuredCurrentPeriodResult.Text = MeasuredValue;
+
+            }
 			else MeasuredValue = MeasureVoltage();
 		}
 		private string MeasureVoltage()
@@ -138,8 +143,9 @@ namespace AdjustableVoltageSource
             {
                 input += serialPort.ReadExisting();
             }
+			Debug.WriteLine(input);
 			string current = "";
-            if (input !=null) current = ExtractInput(input).Replace(".", ",");
+            if (input != "") current = ExtractInput(input).Replace(".", ",");
             if (double.TryParse(current, out double current_out))
             {
                 StatusBox_Status = "Measured Current: " + current_out;

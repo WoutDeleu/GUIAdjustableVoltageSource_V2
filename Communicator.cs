@@ -74,6 +74,7 @@ namespace AdjustableVoltageSource
             {
                 if (serialPort.IsOpen)
                 {
+                    isClosing = true;
                     Thread.Sleep(50);
                     serialPort.WriteLine(data);
                     switch (data[0])
@@ -112,6 +113,7 @@ namespace AdjustableVoltageSource
                             break;
                     }
                     Thread.Sleep(50);
+                    isClosing = true;
                 }
                 else
                 {
