@@ -98,6 +98,25 @@ namespace AdjustableVoltageSource
         {
             return (SolidColorBrush)(new BrushConverter().ConvertFrom(hexColorString));
         }
-
+		
+		public void FilterInput(string readSciMessage)
+		{
+            string[] strings = readSciMessage.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            foreach (String str in strings)
+            {
+                if (str.Contains("||"))
+                {
+                    StatusBox_Error = ExtractErrorMessage(str);
+                }
+                if (str.Contains("##"))
+                {
+                    StatusBox_Status = ExtractStatusMessage(str);
+                }
+                if (str.Contains("(("))
+                {
+                    RegisterBox = ExtractRegistersMessage(str);
+                }
+            }
+        }
     }
 }

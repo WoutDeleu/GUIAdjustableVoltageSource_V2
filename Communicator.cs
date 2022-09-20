@@ -81,7 +81,7 @@ namespace AdjustableVoltageSource
                     {
                         case '0':
                             if(AppTimer.Elapsed.TotalSeconds.ToString().Length>=10) CommandBox = "Ping: \t\t" + data;
-                            else CommandBox = "Ping: \t\t\t" + data; ;
+                            else CommandBox = "Ping: \t" + data; ;
                             break;
                         case '1':
                             CommandBox = "Put Voltage: \t\t" + data;
@@ -148,22 +148,7 @@ namespace AdjustableVoltageSource
                         } while (serialPort.BytesToRead != 0);
 
                         Debug.WriteLine(readSciMessage);
-                        string[] strings = readSciMessage.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (String str in strings)
-                        {
-                            if (str.Contains("||"))
-                            {
-                                StatusBox_Error = ExtractErrorMessage(str);
-                            }
-                            if (str.Contains("##"))
-                            {
-                                StatusBox_Status = ExtractStatusMessage(str);
-                            }
-                            if (str.Contains("(("))
-                            {
-                                RegisterBox = ExtractRegistersMessage(str);
-                            }
-                        }
+                        FilterInput(readSciMessage);
                     }
                 }
                 else

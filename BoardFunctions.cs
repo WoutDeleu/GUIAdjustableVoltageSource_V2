@@ -66,8 +66,9 @@ namespace AdjustableVoltageSource
 			while (serialPort.BytesToRead != 0)
 			{
 				input += serialPort.ReadExisting();
-			}
-			string nr = ExtractInput(input);
+            }
+            FilterInput(input);
+            string nr = ExtractInput(input);
 			if (int.TryParse(nr, out int boardNumber)) 
 			{
 				StatusBox_Status = "Boardnumber received: " + boardNumber;
@@ -105,8 +106,8 @@ namespace AdjustableVoltageSource
 					{
 						input += serialPort.ReadExisting();
 					}
-					Debug.WriteLine(input);
-					string voltage = ExtractInput(input).Replace(".", ",");
+                    FilterInput(input);
+                    string voltage = ExtractInput(input).Replace(".", ",");
 					if (double.TryParse(voltage, out double voltage_out))
 					{
 						StatusBox_Status = "Measured Voltage: " + voltage_out;
@@ -143,8 +144,8 @@ namespace AdjustableVoltageSource
             {
                 input += serialPort.ReadExisting();
             }
-			Debug.WriteLine(input);
-			string current = "";
+            FilterInput(input);
+            string current = "";
             if (input != "") current = ExtractInput(input).Replace(".", ",");
             if (double.TryParse(current, out double current_out))
             {
