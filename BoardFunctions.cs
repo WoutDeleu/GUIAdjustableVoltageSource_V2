@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Data;
+using System.Threading;
 
 namespace AdjustableVoltageSource
 {
@@ -131,12 +132,14 @@ namespace AdjustableVoltageSource
 			WriteSerialPort((int)BoardFunctions.MEASURE_CURRENT + ";");
 
 			String input = "";
+            Thread.Sleep(200);
 
             while (serialPort.BytesToRead != 0)
             {
                 input += serialPort.ReadExisting();
             }
-            string current = ExtractInput(input).Replace(".", ",");
+			string current = "";
+            if (input !=null) current = ExtractInput(input).Replace(".", ",");
             if (double.TryParse(current, out double current_out))
             {
                 StatusBox_Status = "Measured Current: " + current_out;
