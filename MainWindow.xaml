@@ -1,4 +1,5 @@
-﻿    <Window x:Class="AdjustableVoltageSource.MainWindow"
+﻿<Window
+        x:Class="AdjustableVoltageSource.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -225,6 +226,17 @@
                 </TabItem>
                 <TabItem x:Name="SettingsTab" Header="Settings">
                     <StackPanel Orientation="Vertical">
+                        <GroupBox>
+                            <StackPanel>
+                                <Separator Height="6" Background="Transparent"></Separator>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <CheckBox Content="Save Settings permanent on Disconnect" x:Name="SaveSettingsPermanentBox"/>
+                                    <Separator Width="25" Background="Transparent"></Separator>
+                                    <Button Content="  Save Changes  " Click="WritePermanent"/>
+                                </StackPanel>
+                                <Separator Height="1" Background="Transparent"></Separator>
+                            </StackPanel>
+                        </GroupBox>
                         <GroupBox x:Name="BoardNumberSettings" Header="BoardNumber" Width="425" HorizontalAlignment="left" FontSize="10">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">

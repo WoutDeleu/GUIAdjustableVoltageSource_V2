@@ -49,10 +49,11 @@ namespace AdjustableVoltageSource
             InitializeCommunication();
 
             SetupPeriodicStatusses();
-            Thread.Sleep(50);
-            MeasuredCurrentPeriodResult.Text = MeasureCurrent();
 
             SetUpBindings();
+
+            RestoreSession();
+
             SelectionVisible = Visibility.Visible;
         }
 
@@ -89,6 +90,7 @@ namespace AdjustableVoltageSource
                     StatusBox_Status = "Setup Arduino finished";
 
                     UpdateBoardNumber();
+
                     DataContext = this;
                 }
                 // Time Out Exception
@@ -119,6 +121,39 @@ namespace AdjustableVoltageSource
         {
             ResetBasedOnCOM();
             e.Handled = true;
+        }
+        
+        // Retrieve previous settings
+        public void RestoreSession()
+        {
+            Thread.Sleep(100);
+            MeasuredCurrentPeriodResult.Text = MeasureCurrent();
+            Thread.Sleep(50);
+
+            WriteSerialPort((int)BoardFunctions.GET_PEVIOUS_STATE + ";");
+
+            string input = "";
+            while (serialPort.BytesToRead != 0)
+            {
+                input += serialPort.ReadExisting();
+            }
+            FilterInput(input);
+            string [] inputArr = ExtractPreviousState(input);
+            if(inputArr == null) StatusBox_Error = "Fault in retreiving restore flag";
+            else if (int.TryParse(inputArr[0], out int restoreFlag))
+            {
+                if (restoreFlag == 0) StatusBox_Status = "Session not restored. Flag is false";
+                else if (restoreFlag == 1)
+                {
+                    StatusBox_Status = "Session is restored. Flag is true";
+                    IsConnectedToBus_1 = true;
+                    SetVoltageTextBox.Text = inputArr[1];
+                    Voltage = int.Parse(inputArr[1]);
+                    CurrentBoardNumber.Content = inputArr[2];
+                    BoardNumber = int.Parse(inputArr[2]);
+                }
+                else StatusBox_Error = "Fault in retreiving restore flag";
+            }
         }
     }
 }

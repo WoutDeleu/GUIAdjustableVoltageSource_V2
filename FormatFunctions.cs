@@ -9,61 +9,60 @@ namespace AdjustableVoltageSource
 {
 	public partial class MainWindow
     {
-        readonly BrushConverter Bc = new();
         private string FormatBusdata_pt1()
 		{
 			string data = (int)BoardFunctions.CONNECT_TO_BUS + ",";
-			data = data + 1 + "," + BoolToInt(IsConnectedToBus_1) + ",";
-			data = data + 2 + "," + BoolToInt(IsConnectedToBus_2) + ",";
-			data = data + 3 + "," + BoolToInt(IsConnectedToBus_3) + ",";
-			data = data + 4 + "," + BoolToInt(IsConnectedToBus_4) + ",";
-			data = data + 5 + "," + BoolToInt(IsConnectedToBus_5) + ",";
-			data = data + 6 + "," + BoolToInt(IsConnectedToBus_6) + ",";
-			data = data + 7 + "," + BoolToInt(IsConnectedToBus_7) + ",";
-			data = data + 8 + "," + BoolToInt(IsConnectedToBus_8) + ",";
-			data = data + ";";
+			data += 1 + "," + BoolToInt(IsConnectedToBus_1) + ",";
+			data += 2 + "," + BoolToInt(IsConnectedToBus_2) + ",";
+			data += 3 + "," + BoolToInt(IsConnectedToBus_3) + ",";
+			data += 4 + "," + BoolToInt(IsConnectedToBus_4) + ",";
+			data += 5 + "," + BoolToInt(IsConnectedToBus_5) + ",";
+			data += 6 + "," + BoolToInt(IsConnectedToBus_6) + ",";
+			data += 7 + "," + BoolToInt(IsConnectedToBus_7) + ",";
+			data += 8 + "," + BoolToInt(IsConnectedToBus_8);
+			data += ";";
 			return data;
 		}
 		private string FormatBusdata_pt2()
 		{
 			string data = (int)BoardFunctions.CONNECT_TO_BUS + ",";
-			data = data + 9 + "," + BoolToInt(IsConnectedToBus_9) + ",";
-			data = data + 10 + "," + BoolToInt(IsConnectedToBus_10) + ",";
-			data = data + 11 + "," + BoolToInt(IsConnectedToBus_11) + ",";
-			data = data + 12 + "," + BoolToInt(IsConnectedToBus_12) + ",";
-			data = data + 13 + "," + BoolToInt(IsConnectedToBus_13) + ",";
-			data = data + 14 + "," + BoolToInt(IsConnectedToBus_14) + ",";
-			data = data + 15 + "," + BoolToInt(IsConnectedToBus_15) + ",";
-			data = data + 16 + "," + BoolToInt(IsConnectedToBus_16);
-			data = data + ";";
+			data += 9 + "," + BoolToInt(IsConnectedToBus_9) + ",";
+			data += 10 + "," + BoolToInt(IsConnectedToBus_10) + ",";
+			data += 11 + "," + BoolToInt(IsConnectedToBus_11) + ",";
+			data += 12 + "," + BoolToInt(IsConnectedToBus_12) + ",";
+			data += 13 + "," + BoolToInt(IsConnectedToBus_13) + ",";
+			data += 14 + "," + BoolToInt(IsConnectedToBus_14) + ",";
+			data += 15 + "," + BoolToInt(IsConnectedToBus_15) + ",";
+			data += 16 + "," + BoolToInt(IsConnectedToBus_16);
+			data += ";";
 			return data;
 		}
 		private string FormatGrounddata_pt1()
 		{
 			string data = (int)BoardFunctions.CONNECT_TO_GROUND + ",";
-			data = data + 1 + "," + BoolToInt(IsConnectedToGround_1) + ",";
-			data = data + 2 + "," + BoolToInt(IsConnectedToGround_2) + ",";
-			data = data + 3 + "," + BoolToInt(IsConnectedToGround_3) + ",";
-			data = data + 4 + "," + BoolToInt(IsConnectedToGround_4) + ",";
-			data = data + 5 + "," + BoolToInt(IsConnectedToGround_5) + ",";
-			data = data + 6 + "," + BoolToInt(IsConnectedToGround_6) + ",";
-			data = data + 7 + "," + BoolToInt(IsConnectedToGround_7) + ",";
-			data = data + 8 + "," + BoolToInt(IsConnectedToGround_8) + ",";
-			data = data + ";";
+			data += 1 + "," + BoolToInt(IsConnectedToGround_1) + ",";
+			data += 2 + "," + BoolToInt(IsConnectedToGround_2) + ",";
+			data += 3 + "," + BoolToInt(IsConnectedToGround_3) + ",";
+			data += 4 + "," + BoolToInt(IsConnectedToGround_4) + ",";
+			data += 5 + "," + BoolToInt(IsConnectedToGround_5) + ",";
+			data += 6 + "," + BoolToInt(IsConnectedToGround_6) + ",";
+			data += 7 + "," + BoolToInt(IsConnectedToGround_7) + ",";
+			data += 8 + "," + BoolToInt(IsConnectedToGround_8);
+			data += ";";
 			return data;
 		}
 		private string FormatGrounddata_pt2()
 		{
 			string data = (int)BoardFunctions.CONNECT_TO_GROUND + ",";
-			data = data + 9 + "," + BoolToInt(IsConnectedToGround_9) + ",";
-			data = data + 10 + "," + BoolToInt(IsConnectedToGround_10) + ",";
-			data = data + 11 + "," + BoolToInt(IsConnectedToGround_11) + ",";
-			data = data + 12 + "," + BoolToInt(IsConnectedToGround_12) + ",";
-			data = data + 13 + "," + BoolToInt(IsConnectedToGround_13) + ",";
-			data = data + 14 + "," + BoolToInt(IsConnectedToGround_14) + ",";
-			data = data + 15 + "," + BoolToInt(IsConnectedToGround_15) + ",";
-			data = data + 16 + "," + BoolToInt(IsConnectedToGround_16);
-			data = data + ";";
+			data += 9 + "," + BoolToInt(IsConnectedToGround_9) + ",";
+			data += 10 + "," + BoolToInt(IsConnectedToGround_10) + ",";
+			data += 11 + "," + BoolToInt(IsConnectedToGround_11) + ",";
+			data += 12 + "," + BoolToInt(IsConnectedToGround_12) + ",";
+			data += 13 + "," + BoolToInt(IsConnectedToGround_13) + ",";
+			data += 14 + "," + BoolToInt(IsConnectedToGround_14) + ",";
+			data += 15 + "," + BoolToInt(IsConnectedToGround_15) + ",";
+			data += 16 + "," + BoolToInt(IsConnectedToGround_16);
+			data += ";";
 			return data;
 		}
 
@@ -101,6 +100,7 @@ namespace AdjustableVoltageSource
 		
 		public void FilterInput(string readSciMessage)
 		{
+			Debug.WriteLine(readSciMessage);
             string[] strings = readSciMessage.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             foreach (String str in strings)
             {

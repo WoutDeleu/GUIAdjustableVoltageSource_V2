@@ -134,16 +134,13 @@ namespace AdjustableVoltageSource
         }
 		private string MeasureCurrent()
 		{
-
 			WriteSerialPort((int)BoardFunctions.MEASURE_CURRENT + ";");
 
 			String input = "";
-            Thread.Sleep(200);
-
-            while (serialPort.BytesToRead != 0)
-            {
-                input += serialPort.ReadExisting();
-            }
+			while (serialPort.BytesToRead != 0)
+			{
+				input += serialPort.ReadExisting();
+			}
             FilterInput(input);
             string current = "";
             if (input != "") current = ExtractInput(input).Replace(".", ",");
@@ -236,5 +233,12 @@ namespace AdjustableVoltageSource
 
 			InitializeCommunication();
 		}
-	}
+
+		// Save settings permanent on Arduino, it remembers voltage, and can set it on reconnection
+		public void WritePermanent(object sender, RoutedEventArgs e)
+		{
+			int arg = BoolToInt((bool)SaveSettingsPermanentBox.IsChecked);
+			WriteSerialPort((int)BoardFunctions.PERMANENT_WRITE + "," + arg + ";");
+        }
+    }
 }
