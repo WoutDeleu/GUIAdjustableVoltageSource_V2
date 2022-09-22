@@ -4,8 +4,6 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
-using System.Windows.Data;
-using System.Threading;
 
 namespace AdjustableVoltageSource
 {
@@ -107,16 +105,19 @@ namespace AdjustableVoltageSource
 						input += serialPort.ReadExisting();
 					}
                     FilterInput(input);
-                    string voltage = ExtractInput(input).Replace(".", ",");
-					if (double.TryParse(voltage, out double voltage_out))
+					if (input != null)
 					{
-						StatusBox_Status = "Measured Voltage: " + voltage_out;
-						return voltage_out + " V";
-					}
-					else
-					{
-						StatusBox_Error = "Fault in measure format (received)...";
-						return "FAULT";
+						string voltage = ExtractInput(input).Replace(".", ",");
+						if (double.TryParse(voltage, out double voltage_out))
+						{
+							StatusBox_Status = "Measured Voltage: " + voltage_out;
+							return voltage_out + " V";
+						}
+						else
+						{
+							StatusBox_Error = "Fault in measure format (received)...";
+							return "FAULT";
+						}
 					}
 				}
 				else

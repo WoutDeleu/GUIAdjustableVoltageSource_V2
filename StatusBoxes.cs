@@ -53,7 +53,7 @@ namespace AdjustableVoltageSource
             }
             else
             {
-                if(ToggleTab_Status.IsChecked == true) TabController.SelectedIndex = 3;
+                TabController.SelectedIndex = 3;
                 ArduinoStatusLabel.Text = "Not Connected";
                 ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
             }
