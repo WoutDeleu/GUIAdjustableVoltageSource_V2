@@ -85,32 +85,8 @@ namespace AdjustableVoltageSource
                         message += serialPort.ReadExisting();
                         if (message.Contains("##Setup Complete##")) finished = true;
                     }
-
-                    // Check if session is restored
-                    started = false;
-                    finished = false; 
-                    message = "";
-                    while (!started)
-                    {
-                        message += serialPort.ReadExisting();
-                        if (startupTimer.ElapsedMilliseconds >= 20000) throw new Exception("TIMEOUT: can't START setup communication Arduino. (Restoring session not started)");
-                        if (message.Contains("##Restoring session##")) started = true;
-                        else if (message.Contains("##Not Restoring session##")) started = finished = true;
-                    }
-                    while (!finished)
-                    {
-                        message += serialPort.ReadExisting();
-                        if (startupTimer.ElapsedMilliseconds >= 25000) throw new Exception("TIMEOUT: can't FINISH setup communication Arduino. Message Received: " + message);
-                        if (message.Contains("##Finished Restoring session")) finished = true;
-                    }
-                    do
-                    {
-                        if (serialPort.IsOpen) message += serialPort.ReadExisting();
-                    } while (serialPort.IsOpen && serialPort.BytesToRead != 0);
-                    FilterInput(message);
-                    StatusBox_Status = "Setup Arduino finished";
-
-                    RestoreSession();
+                    RestoreSession(startupTimer);
+                    StatusBox_Status = "Setup Arduino finished \n";
 
                     UpdateBoardNumber();
 
@@ -147,10 +123,31 @@ namespace AdjustableVoltageSource
         }
         
         // Retrieve previous settings
-        public void RestoreSession()
+        public void RestoreSession(Stopwatch startupTimer)
         {
-            MeasuredCurrentPeriodResult.Text = MeasureCurrent();
-            // RetrievePreviousState();
+            bool started = false;
+            bool finished = false;
+            string message = "";
+            while (!started)
+            {
+                message += serialPort.ReadExisting();
+                if (startupTimer.ElapsedMilliseconds >= 20000) throw new Exception("TIMEOUT: can't START Restoring previous state Arduino. Message Received: " + message);
+                if (message.Contains("##Restoring session##")) started = true;
+                else if (message.Contains("##Not Restoring session##")) started = finished = true;
+            }
+            while (!finished)
+            {
+                message += serialPort.ReadExisting();
+                if (startupTimer.ElapsedMilliseconds >= 25000) throw new Exception("TIMEOUT: can't FINISH Restoring previous state Arduino. Message Received: " + message);
+                if (message.Contains("##Finished Restoring session##")) finished = true;
+            }
+            do
+            {
+                if (serialPort.IsOpen) message += serialPort.ReadExisting();
+            } while (serialPort.IsOpen && serialPort.BytesToRead != 0);
+            FilterInput(message);
+
+            RetrievePreviousState();
 
         }
         public void RetrievePreviousState()
@@ -178,12 +175,14 @@ namespace AdjustableVoltageSource
                         }
                         else
                         {
-                            StatusBox_Status = "Recover data flag = ture. Recover previous state";
+                            StatusBox_Status = "Recover data flag = true. Recover previous state"; 
+                            SaveSettingsPermanentBox.IsChecked = true;
                             IsConnectedToBus_1 = true;
+                            MeasureVoltageCh1.IsEnabled = true;
                             counter++;
                         }
                     }
-                    if(counter == 1)
+                    else if(counter == 1)
                     {
 
                         Voltage = double.Parse(ExtractInput(str));
