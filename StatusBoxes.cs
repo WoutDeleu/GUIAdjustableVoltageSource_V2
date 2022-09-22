@@ -44,6 +44,7 @@ namespace AdjustableVoltageSource
             IsBusUpdated = isConnected;
 
             labelCurrentCOM.Text = CurrentCOMPort;
+            currentCOM.Content = CurrentCOMPort;
 
             if (isConnected)
             {

@@ -2,11 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Data;
-using System.Windows.Media;
 using System;
-using System.Windows.Threading;
-using System.IO.Ports;
-using System.Threading;
 
 namespace AdjustableVoltageSource
 {
@@ -179,6 +175,7 @@ namespace AdjustableVoltageSource
             if (counter > 2) StatusBox_Error = "Something went completetly wrong.";
         }
         
+        // Bindings GUI values
         public void SetUpBindings()
         {
             MeasuredResult.SetBinding(ContentProperty, new Binding("MeasuredValue"));
