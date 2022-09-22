@@ -60,6 +60,8 @@ namespace AdjustableVoltageSource
                 serialPort.Dispose();
                 serialPort.Close();
 
+                Thread.Sleep(50);
+
                 IsConnectionSuccesfull = false;
                 StatusBox_Status = "'" + serialPort.PortName + "' Port Closed Succesfully";
                 isClosing = false;
@@ -82,8 +84,7 @@ namespace AdjustableVoltageSource
                     switch (data[0])
                     {
                         case '0':
-                            if(AppTimer.Elapsed.TotalSeconds.ToString().Length>=10) CommandBox = "Ping: \t\t" + data;
-                            else CommandBox = "Ping: \t" + data; ;
+                            CommandBox = "Ping: " + data; ;
                             break;
                         case '1':
                             if (data[1] == '0') CommandBox = "Enable/Disable permanent: " + data;
@@ -149,7 +150,7 @@ namespace AdjustableVoltageSource
                         do
                         {
                             if (serialPort.IsOpen) readSciMessage += serialPort.ReadExisting();
-                        } while (serialPort.BytesToRead != 0);
+                        } while (serialPort.IsOpen && serialPort.BytesToRead != 0);
 
                         FilterInput(readSciMessage);
                     }
@@ -173,6 +174,10 @@ namespace AdjustableVoltageSource
                 IsConnectionSuccesfull = false;
 
                 ResetWithClosedPort();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString() + "\n");
             }
         }
 
@@ -446,26 +451,6 @@ namespace AdjustableVoltageSource
                     return output;
                 }
                 else return registersMessage;
-            }
-        }
-        public string [] ExtractPreviousState(string input)
-        {
-
-            char[] inputArray = input.ToCharArray();
-            int begin = 0, end = 0;
-            for (int i = 0; i < inputArray.Length - 1; i++)
-            {
-                if (inputArray[i] == '[') begin = i;
-                if (inputArray[i] == ']') end = i;
-            }
-            if (end != 0)
-            {
-                return input.Substring(begin + 1, (end - begin - 1)).Split("::");
-            }
-            else
-            {
-                StatusBox_Error = "Fault in communication. Could not extract message from previous state message. Message: (" + input + ")";
-                return null;
             }
         }
     }

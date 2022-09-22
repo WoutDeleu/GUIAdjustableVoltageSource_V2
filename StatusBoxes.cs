@@ -10,61 +10,28 @@ namespace AdjustableVoltageSource
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        DispatcherTimer RefreshArduinoStatus;
         DispatcherTimer RefreshCurrentMeasure;
         public void SetupPeriodicStatusses()
         {
-            // Every 8s - Measure Current
-            RefreshArduinoStatus = new()
-            {
-                Interval = TimeSpan.FromSeconds(8)
-            };
-            RefreshArduinoStatus.Tick += PingArduino;
-
-            // Every 30s - Measure Current
+            // Every 1s - Measure Current
             RefreshCurrentMeasure = new()
             {
-                Interval = TimeSpan.FromSeconds(30)
+                Interval = TimeSpan.FromSeconds(1)
             };
             MeasuredCurrentPeriodResult.Text = "...";
             RefreshCurrentMeasure.Tick += UpdateMeasuredCurrent;
 
             RefreshCurrentMeasure.Start();
-            RefreshArduinoStatus.Start();
         }
         
-        // Consistently check the connection with the Arduino
-        private void PingArduino(object sender, EventArgs e)
-        {
-            if (serialPort.IsOpen)
-            {
-                string message = "";
-                Stopwatch pingTimer = new();
-                pingTimer.Start();
-                bool connected = false;
-
-                WriteSerialPort((int)BoardFunctions.PING + ";");
-                while (!connected)
-                {
-                    if (pingTimer.ElapsedMilliseconds >= 3000) break;
-                    message += serialPort.ReadExisting();
-                    if (message.Contains("PING_PING_PING"))
-                    {
-                        IsConnectionSuccesfull = true;
-                        connected = true;
-                    }
-                }
-            }
-            else if(IsConnectionSuccesfull) IsConnectionSuccesfull = false; ;
-        }
-        
-        // Current is updated every 30s (based on the DispatchTimer)
+        // Current is updated every 1s (based on the DispatchTimer)
         private void UpdateMeasuredCurrent(object sender, EventArgs e)
         {
             if (serialPort.IsOpen)
             {
                 MeasuredCurrentPeriodResult.Text = MeasureCurrent();
             }
+            else if (IsConnectionSuccesfull) IsConnectionSuccesfull = false;
         }
         public void UpdateArduinoStatus(bool isConnected)
         {
@@ -85,7 +52,7 @@ namespace AdjustableVoltageSource
             }
             else
             {
-                TabController.SelectedIndex = 3;
+                if(ToggleTab_Status.IsChecked == true) TabController.SelectedIndex = 3;
                 ArduinoStatusLabel.Text = "Not Connected";
                 ArduinoStatusBar.Background = BrushFromHex("#FFFBFB7A");
             }
@@ -102,7 +69,7 @@ namespace AdjustableVoltageSource
                 {
                     if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
                     CommandStatusBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r");
-                    CommandStatusBox.ScrollToEnd();
+                    if(AutoScroll_Commands.IsChecked == true) CommandStatusBox.ScrollToEnd();
                 });
             }
         }
@@ -114,7 +81,7 @@ namespace AdjustableVoltageSource
                 {
                     if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
                     RegistersTextBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r");
-                    RegistersTextBox.ScrollToEnd();
+                    if (AutoScroll_Register.IsChecked == true) RegistersTextBox.ScrollToEnd();
                 });
             }
         }
@@ -124,11 +91,12 @@ namespace AdjustableVoltageSource
             {
                 this.Dispatcher.BeginInvoke(() =>
                 {
+                    Debug.WriteLine(value);
                     if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
                     TextRange tr = new TextRange(Status.Document.ContentEnd, Status.Document.ContentEnd);
                     tr.Text = "[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
-                    Status.ScrollToEnd();
+                    if (AutoScroll_Status.IsChecked == true) Status.ScrollToEnd();
                 });
             }
         }
@@ -138,12 +106,13 @@ namespace AdjustableVoltageSource
             {
                 this.Dispatcher.BeginInvoke(() =>
                 {
-                    TabController.SelectedIndex = 3;
+                    Debug.WriteLine(value);
+                    if (ToggleTab_Status.IsChecked == true) TabController.SelectedIndex = 3;
                     if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
                     TextRange tr = new TextRange(Status.Document.ContentEnd, Status.Document.ContentEnd);
                     tr.Text = "[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
-                    Status.ScrollToEnd();
+                    if (AutoScroll_Status.IsChecked == true) Status.ScrollToEnd();
                 });
             }
         }

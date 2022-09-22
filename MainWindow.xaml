@@ -230,7 +230,7 @@
                             <StackPanel>
                                 <Separator Height="6" Background="Transparent"></Separator>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <CheckBox Content="Save Settings permanent on Disconnect" x:Name="SaveSettingsPermanentBox"/>
+                                    <CheckBox Content="Save Settings permanent" x:Name="SaveSettingsPermanentBox"/>
                                     <Separator Width="25" Background="Transparent"></Separator>
                                     <Button Content="  Save Changes  " Click="WritePermanent"/>
                                 </StackPanel>
@@ -300,14 +300,21 @@
                         </Grid.RowDefinitions>
                         <DockPanel Grid.Row="0" LastChildFill="True">
                             <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">Commands:</Label>
+                            <CheckBox DockPanel.Dock="Top" Content="AutoScroll" IsChecked="true" x:Name="AutoScroll_Commands"/>
                             <RichTextBox x:Name="CommandStatusBox" Height="120" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                         </DockPanel>
                         <DockPanel Grid.Row="1" LastChildFill="True">
                             <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">Status:</Label>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <CheckBox Content="AutoScroll" IsChecked="true" x:Name="AutoScroll_Status"/>
+                                <Separator Width="20" Background="Transparent"/>
+                                <CheckBox Content="Toggle Tab On Error" IsChecked="true" x:Name="ToggleTab_Status"/>
+                            </StackPanel>
                             <RichTextBox x:Name="Status" Height="200" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                         </DockPanel>
                         <DockPanel Grid.Row="2" LastChildFill="True">
                             <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">RegistersTextBox:</Label>
+                            <CheckBox DockPanel.Dock="Top" Content="AutoScroll" IsChecked="true" Name="AutoScroll_Register"/>
                             <RichTextBox x:Name="RegistersTextBox" Height="300" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                         </DockPanel>
                     </Grid>
