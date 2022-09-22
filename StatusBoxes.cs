@@ -11,7 +11,7 @@ namespace AdjustableVoltageSource
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         DispatcherTimer RefreshCurrentMeasure;
-        public void SetupPeriodicStatusses()
+        public void SetupPeriodicCurrent()
         {
             // Every 1s - Measure Current
             RefreshCurrentMeasure = new()
@@ -65,11 +65,14 @@ namespace AdjustableVoltageSource
         {
             set
             {
-                this.Dispatcher.BeginInvoke(() =>
+                Dispatcher.BeginInvoke(() =>
                 {
                     if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
-                    CommandStatusBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r");
-                    if(AutoScroll_Commands.IsChecked == true) CommandStatusBox.ScrollToEnd();
+                    if (MeasureCurrentFilter.IsChecked == false || !HasCurrentRefs_Command(value))
+                    {
+                        CommandStatusBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r");
+                        if (AutoScroll_Commands.IsChecked == true) CommandStatusBox.ScrollToEnd();
+                    }
                 });
             }
         }
@@ -77,11 +80,14 @@ namespace AdjustableVoltageSource
         {
             set
             {
-                this.Dispatcher.BeginInvoke(() =>
+                Dispatcher.BeginInvoke(() =>
                 {
                     if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
-                    RegistersTextBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r");
-                    if (AutoScroll_Register.IsChecked == true) RegistersTextBox.ScrollToEnd();
+                    if (MeasureCurrentFilter.IsChecked == false || !HasCurrentRefs_Register(value))
+                    {
+                        RegistersTextBox.AppendText("[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r");
+                        if (AutoScroll_Register.IsChecked == true) RegistersTextBox.ScrollToEnd();
+                    }
                 });
             }
         }
@@ -89,14 +95,19 @@ namespace AdjustableVoltageSource
         {
             set
             {
-                this.Dispatcher.BeginInvoke(() =>
+                Dispatcher.BeginInvoke(() =>
                 {
                     Debug.WriteLine(value);
                     if (AppTimer.Elapsed.TotalSeconds > 1000) AppTimer.Restart();
-                    TextRange tr = new TextRange(Status.Document.ContentEnd, Status.Document.ContentEnd);
-                    tr.Text = "[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
-                    if (AutoScroll_Status.IsChecked == true) Status.ScrollToEnd();
+                    // Filter out messages containing info about Current
+                    if (MeasureCurrentFilter.IsChecked == false || !HasCurrentRefs_Status(value))
+                    {
+                        TextRange tr = new TextRange(Status.Document.ContentEnd, Status.Document.ContentEnd);
+                        tr.Text = "[" + AppTimer.Elapsed.TotalSeconds + "] " + value + "\r";
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
+                        if (AutoScroll_Status.IsChecked == true) Status.ScrollToEnd();
+                    }
+
                 });
             }
         }
@@ -129,6 +140,30 @@ namespace AdjustableVoltageSource
             RegistersTextBox.Selection.Text = "";
 
             MeasuredValue = "";
+        }
+        
+
+        // Check if messages have a relation to Current measurement (Filter current measurement messages)
+        public static bool HasCurrentRefs_Status(string Message)
+        {
+            if (Message.Contains("current measurement")) return true;
+            else if (Message.Contains("Measured Current")) return true;
+            else return false;
+        }
+        public static bool HasCurrentRefs_Register(string Message)
+        {
+            if (Message.Contains("MEASURE REGISTER")) return true;
+            else return false;
+        }
+        public static bool HasCurrentRefs_Command(string Message)
+        {
+            if (Message.Contains("Measure Current")) return true;
+            else return false;
+        }
+
+        public void ClearLogs(object sender, EventArgs e)
+        {
+            ClearTextboxes();
         }
     }
 }

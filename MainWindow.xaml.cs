@@ -48,7 +48,7 @@ namespace AdjustableVoltageSource
 
             InitializeCommunication();
 
-            SetupPeriodicStatusses();
+            SetupPeriodicCurrent();
 
             SetUpBindings();
 
@@ -85,6 +85,7 @@ namespace AdjustableVoltageSource
                         message += serialPort.ReadExisting();
                         if (message.Contains("##Setup Complete##")) finished = true;
                     }
+                    // Get previously saved settings on Arduino
                     RestoreSession(startupTimer);
                     StatusBox_Status = "Setup Arduino finished \n";
 
@@ -104,24 +105,6 @@ namespace AdjustableVoltageSource
             }
         }
 
-        public void SetUpBindings()
-        {
-            MeasuredResult.SetBinding(ContentProperty, new Binding("MeasuredValue"));
-            CurrentBoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
-            currentCOM.SetBinding(ContentProperty, new Binding("CurrentCOMPort"));
-        }
-        
-        public void CloseMainWindow()
-        {
-            CloseSerialPort();
-            Close();
-        }
-        public void ResetButton(object sender, RoutedEventArgs e)
-        {
-            ResetBasedOnCOM();
-            e.Handled = true;
-        }
-        
         // Retrieve previous settings
         public void RestoreSession(Stopwatch startupTimer)
         {
@@ -162,11 +145,11 @@ namespace AdjustableVoltageSource
             FilterInput(input);
             string[] inputArr = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             int counter = 0;
-            foreach(string str in inputArr)
+            foreach (string str in inputArr)
             {
-                if(str.Contains("["))
+                if (str.Contains("["))
                 {
-                    if(counter == 0)
+                    if (counter == 0)
                     {
                         if (int.Parse(ExtractInput(str)) == 0)
                         {
@@ -175,14 +158,15 @@ namespace AdjustableVoltageSource
                         }
                         else
                         {
-                            StatusBox_Status = "Recover data flag = true. Recover previous state"; 
+                            StatusBox_Status = "Recover data flag = true. Recover previous state";
                             SaveSettingsPermanentBox.IsChecked = true;
                             IsConnectedToBus_1 = true;
+                            IsBusUpdated = true;
                             MeasureVoltageCh1.IsEnabled = true;
                             counter++;
                         }
                     }
-                    else if(counter == 1)
+                    else if (counter == 1)
                     {
 
                         Voltage = double.Parse(ExtractInput(str));
@@ -194,5 +178,24 @@ namespace AdjustableVoltageSource
             }
             if (counter > 2) StatusBox_Error = "Something went completetly wrong.";
         }
+        
+        public void SetUpBindings()
+        {
+            MeasuredResult.SetBinding(ContentProperty, new Binding("MeasuredValue"));
+            CurrentBoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
+            currentCOM.SetBinding(ContentProperty, new Binding("CurrentCOMPort"));
+        }
+        
+        public void CloseMainWindow()
+        {
+            CloseSerialPort();
+            Close();
+        }
+        public void ResetButton(object sender, RoutedEventArgs e)
+        {
+            ResetBasedOnCOM();
+            e.Handled = true;
+        }
+        
     }
 }

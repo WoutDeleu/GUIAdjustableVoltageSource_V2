@@ -297,6 +297,7 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <DockPanel Grid.Row="0" LastChildFill="True">
                             <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">Commands:</Label>
@@ -315,8 +316,15 @@
                         <DockPanel Grid.Row="2" LastChildFill="True">
                             <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">RegistersTextBox:</Label>
                             <CheckBox DockPanel.Dock="Top" Content="AutoScroll" IsChecked="true" Name="AutoScroll_Register"/>
-                            <RichTextBox x:Name="RegistersTextBox" Height="300" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
+                            <RichTextBox x:Name="RegistersTextBox" Height="200" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                         </DockPanel>
+                        <StackPanel Grid.Row="3" HorizontalAlignment="Center">
+                            <Separator Height="10" Background="Transparent"/>
+                            <CheckBox Content="Filter Periodic Current Measure" x:Name="MeasureCurrentFilter"/>
+                            <Separator Height="10" Background="Transparent"/>
+                            <Button Click="ClearLogs">Clear Logs</Button>
+                            <Separator Height="10" Background="Transparent"/>
+                        </StackPanel>
                     </Grid>
                 </TabItem>
             </TabControl>
