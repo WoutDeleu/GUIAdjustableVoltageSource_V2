@@ -48,11 +48,10 @@ namespace AdjustableVoltageSource
 
             InitializeCommunication();
 
-            SetupPeriodicStatusses();
-            Thread.Sleep(50);
-            MeasuredCurrentPeriodResult.Text = MeasureCurrent();
+            SetupPeriodicCurrent();
 
             SetUpBindings();
+
             SelectionVisible = Visibility.Visible;
         }
 
@@ -86,9 +85,12 @@ namespace AdjustableVoltageSource
                         message += serialPort.ReadExisting();
                         if (message.Contains("##Setup Complete##")) finished = true;
                     }
-                    StatusBox_Status = "Setup Arduino finished";
+                    // Get previously saved settings on Arduino
+                    RestoreSession(startupTimer);
+                    StatusBox_Status = "Setup Arduino finished \n";
 
                     UpdateBoardNumber();
+
                     DataContext = this;
                 }
                 // Time Out Exception
@@ -103,11 +105,85 @@ namespace AdjustableVoltageSource
             }
         }
 
+        // Retrieve previous settings
+        public void RestoreSession(Stopwatch startupTimer)
+        {
+            bool started = false;
+            bool finished = false;
+            string message = "";
+            while (!started)
+            {
+                message += serialPort.ReadExisting();
+                if (startupTimer.ElapsedMilliseconds >= 20000) throw new Exception("TIMEOUT: can't START Restoring previous state Arduino. Message Received: " + message);
+                if (message.Contains("##Restoring session##")) started = true;
+                else if (message.Contains("##Not Restoring session##")) started = finished = true;
+            }
+            while (!finished)
+            {
+                message += serialPort.ReadExisting();
+                if (startupTimer.ElapsedMilliseconds >= 25000) throw new Exception("TIMEOUT: can't FINISH Restoring previous state Arduino. Message Received: " + message);
+                if (message.Contains("##Finished Restoring session##")) finished = true;
+            }
+            do
+            {
+                if (serialPort.IsOpen) message += serialPort.ReadExisting();
+            } while (serialPort.IsOpen && serialPort.BytesToRead != 0);
+            FilterInput(message);
+
+            RetrievePreviousState();
+
+        }
+        public void RetrievePreviousState()
+        {
+            WriteSerialPort((int)BoardFunctions.GET_PEVIOUS_STATE + ";");
+
+            string input = "";
+            do
+            {
+                input += serialPort.ReadExisting();
+            } while (serialPort.BytesToRead != 0);
+            FilterInput(input);
+            string[] inputArr = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            int counter = 0;
+            foreach (string str in inputArr)
+            {
+                if (str.Contains("["))
+                {
+                    if (counter == 0)
+                    {
+                        if (int.Parse(ExtractInput(str)) == 0)
+                        {
+                            StatusBox_Status = "Recover data flag = false. Previous data was not saved";
+                            break;
+                        }
+                        else
+                        {
+                            StatusBox_Status = "Recover data flag = true. Recover previous state";
+                            SaveSettingsPermanentBox.IsChecked = true;
+                            IsConnectedToBus_1 = true;
+                            IsBusUpdated = true;
+                            MeasureVoltageCh1.IsEnabled = true;
+                            counter++;
+                        }
+                    }
+                    else if (counter == 1)
+                    {
+
+                        Voltage = double.Parse(ExtractInput(str));
+                        SetVoltageTextBox.Text = ExtractInput(str);
+                        counter++;
+                    }
+                }
+                if (counter == 2) break;
+            }
+            if (counter > 2) StatusBox_Error = "Something went completetly wrong.";
+        }
+        
         public void SetUpBindings()
         {
             MeasuredResult.SetBinding(ContentProperty, new Binding("MeasuredValue"));
             CurrentBoardNumber.SetBinding(ContentProperty, new Binding("BoardNumber"));
-            currentCOM.SetBinding(ContentProperty, new Binding("currentCOMPort"));
+            currentCOM.SetBinding(ContentProperty, new Binding("CurrentCOMPort"));
         }
         
         public void CloseMainWindow()
@@ -120,5 +196,6 @@ namespace AdjustableVoltageSource
             ResetBasedOnCOM();
             e.Handled = true;
         }
+        
     }
 }

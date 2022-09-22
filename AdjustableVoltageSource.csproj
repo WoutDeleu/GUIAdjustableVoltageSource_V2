@@ -9,10 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="SerialPortStream" Version="2.4.0" />
     <PackageReference Include="System.IO.Ports" Version="7.0.0-preview.6.22324.4" />
     <PackageReference Include="System.Management" Version="6.0.0" />
+    <PackageReference Include="ToggleSwitch" Version="1.2.0" />
   </ItemGroup>
 
 </Project>

@@ -26,7 +26,9 @@ namespace AdjustableVoltageSource
         CHANGE_BOARDNUMBER = 6,
         GET_BOARDNUMBER = 7,
         DISCONNECT_VOLTAGE = 8,
-        RESET = 9
+        RESET = 9,
+        PERMANENT_WRITE = 10,
+        GET_PEVIOUS_STATE = 11
     }
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
@@ -58,6 +60,8 @@ namespace AdjustableVoltageSource
                 serialPort.Dispose();
                 serialPort.Close();
 
+                Thread.Sleep(50);
+
                 IsConnectionSuccesfull = false;
                 StatusBox_Status = "'" + serialPort.PortName + "' Port Closed Succesfully";
                 isClosing = false;
@@ -74,47 +78,48 @@ namespace AdjustableVoltageSource
             {
                 if (serialPort.IsOpen)
                 {
-                    isClosing = true;
                     Thread.Sleep(50);
+                    isClosing = true;
                     serialPort.WriteLine(data);
                     switch (data[0])
                     {
                         case '0':
-                            if(AppTimer.Elapsed.TotalSeconds.ToString().Length>=10) CommandBox = "Ping: \t\t" + data;
-                            else CommandBox = "Ping: \t" + data; ;
+                            CommandBox = "Ping: " + data; ;
                             break;
                         case '1':
-                            CommandBox = "Put Voltage: \t\t" + data;
+                            if (data[1] == '0') CommandBox = "Enable/Disable permanent: " + data;
+                            else if (data[1] == '1') CommandBox = "Get previous settings: " + data;
+                            else CommandBox = "Put Voltage: " + data;
                             break;
                         case '2':
-                            CommandBox = "Connect to Gnd: \t" + data;
+                            CommandBox = "Connect to Gnd: " + data;
                             break;
                         case '3':
-                            CommandBox = "Connect to Bus: \t" + data;
+                            CommandBox = "Connect to Bus: " + data;
                             break;
                         case '4':
-                            CommandBox = "Measure Voltage: \t" + data;
+                            CommandBox = "Measure Voltage: " + data;
                             break;
                         case '5':
-                            CommandBox = "Measure Current: \t" + data;
+                            CommandBox = "Measure Current: " + data;
                             break;
                         case '6':
                             CommandBox = "Change BoardNumber: " + data;
                             break;
                         case '7':
-                            CommandBox = "Get BoardNumber: \t" + data;
+                            CommandBox = "Get BoardNumber: " + data;
                             break;
                         case '8':
-                            CommandBox = "Disconnect Voltage: \t" + data;
+                            CommandBox = "Disconnect Voltage: " + data;
                             break;
                         case '9':
-                            CommandBox = "RESET: \t" + data;
+                            CommandBox = "RESET: " + data;
                             break;
                         default:
                             break;
                     }
+                    isClosing = false;
                     Thread.Sleep(50);
-                    isClosing = true;
                 }
                 else
                 {
@@ -145,9 +150,8 @@ namespace AdjustableVoltageSource
                         do
                         {
                             if (serialPort.IsOpen) readSciMessage += serialPort.ReadExisting();
-                        } while (serialPort.BytesToRead != 0);
+                        } while (serialPort.IsOpen && serialPort.BytesToRead != 0);
 
-                        Debug.WriteLine(readSciMessage);
                         FilterInput(readSciMessage);
                     }
                 }
@@ -171,8 +175,11 @@ namespace AdjustableVoltageSource
 
                 ResetWithClosedPort();
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString() + "\n");
+            }
         }
-
 
         public void InitSerialPort()
         {

@@ -1,4 +1,5 @@
-﻿    <Window x:Class="AdjustableVoltageSource.MainWindow"
+﻿<Window
+        x:Class="AdjustableVoltageSource.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -225,6 +226,17 @@
                 </TabItem>
                 <TabItem x:Name="SettingsTab" Header="Settings">
                     <StackPanel Orientation="Vertical">
+                        <GroupBox>
+                            <StackPanel>
+                                <Separator Height="6" Background="Transparent"></Separator>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <CheckBox Content="Save Settings permanent" x:Name="SaveSettingsPermanentBox"/>
+                                    <Separator Width="25" Background="Transparent"></Separator>
+                                    <Button Content="  Save Changes  " Click="WritePermanent"/>
+                                </StackPanel>
+                                <Separator Height="1" Background="Transparent"></Separator>
+                            </StackPanel>
+                        </GroupBox>
                         <GroupBox x:Name="BoardNumberSettings" Header="BoardNumber" Width="425" HorizontalAlignment="left" FontSize="10">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
@@ -285,19 +297,34 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <DockPanel Grid.Row="0" LastChildFill="True">
                             <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">Commands:</Label>
+                            <CheckBox DockPanel.Dock="Top" Content="AutoScroll" IsChecked="true" x:Name="AutoScroll_Commands"/>
                             <RichTextBox x:Name="CommandStatusBox" Height="120" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                         </DockPanel>
                         <DockPanel Grid.Row="1" LastChildFill="True">
                             <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">Status:</Label>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <CheckBox Content="AutoScroll" IsChecked="true" x:Name="AutoScroll_Status"/>
+                                <Separator Width="20" Background="Transparent"/>
+                                <CheckBox Content="Toggle Tab On Error" IsChecked="true" x:Name="ToggleTab_Status"/>
+                            </StackPanel>
                             <RichTextBox x:Name="Status" Height="200" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                         </DockPanel>
                         <DockPanel Grid.Row="2" LastChildFill="True">
                             <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">RegistersTextBox:</Label>
-                            <RichTextBox x:Name="RegistersTextBox" Height="300" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
+                            <CheckBox DockPanel.Dock="Top" Content="AutoScroll" IsChecked="true" Name="AutoScroll_Register"/>
+                            <RichTextBox x:Name="RegistersTextBox" Height="200" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                         </DockPanel>
+                        <StackPanel Grid.Row="3" HorizontalAlignment="Center">
+                            <Separator Height="10" Background="Transparent"/>
+                            <CheckBox Content="Filter Periodic Current Measure" x:Name="MeasureCurrentFilter"/>
+                            <Separator Height="10" Background="Transparent"/>
+                            <Button Click="ClearLogs">Clear Logs</Button>
+                            <Separator Height="10" Background="Transparent"/>
+                        </StackPanel>
                     </Grid>
                 </TabItem>
             </TabControl>
