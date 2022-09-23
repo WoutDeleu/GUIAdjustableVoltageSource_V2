@@ -116,7 +116,7 @@ namespace AdjustableVoltageSource
 						}
 						else
 						{
-							StatusBox_Error = "Fault in measure format (received)...";
+							StatusBox_Error = "Fault in measure format (Voltage): received: (" +input + ")" ;
 							return "FAULT";
 						}
 					}
@@ -139,21 +139,30 @@ namespace AdjustableVoltageSource
 			WriteSerialPort((int)BoardFunctions.MEASURE_CURRENT + ";");
 
 			String input = "";
-			while (serialPort.BytesToRead != 0)
+			if (serialPort.IsOpen)
 			{
-				input += serialPort.ReadExisting();
+				while (serialPort.BytesToRead != 0)
+				{
+					input += serialPort.ReadExisting();
+				}
+				FilterInput(input);
+				string current = "";
+				if (input != "" && input.Contains("Measured current")) current = ExtractInput(input).Replace(".", ",");
+				if (double.TryParse(current, out double current_out))
+				{
+					StatusBox_Status = "Measured Current: " + current_out;
+					return current_out + " A";
+				}
+				else
+				{
+                    StatusBox_Error = "Fault in measure format (Current): received: (" + input + ")";
+                    return "FAULT";
+				}
 			}
-            FilterInput(input);
-            string current = "";
-            if (input != "" && input.Contains("Measured current")) current = ExtractInput(input).Replace(".", ",");
-            if (double.TryParse(current, out double current_out))
-            {
-                StatusBox_Status = "Measured Current: " + current_out;
-                return current_out + " A";
-            }
-            else
-            {
-                StatusBox_Error = "Fault in measure format";
+			else
+			{
+				CloseSerialPort();
+				StatusBox_Error = "Port closed in the middle of an action (Measure Current).";
                 return "FAULT";
             }
         }
