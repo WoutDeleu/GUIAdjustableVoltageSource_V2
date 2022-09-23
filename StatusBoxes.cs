@@ -147,32 +147,21 @@ namespace AdjustableVoltageSource
         // Check if messages have a relation to Current measurement (Filter current measurement messages)
         public static bool HasCurrentRefs_Status(string Message)
         {
-            if (Message != null)
-            {
-                if (Message.Contains("current measurement")) return true;
-                else if (Message.Contains("Measured Current")) return true;
-                else return false;
-            }
+            if (Message.Contains("current measurement")) return true;
+            else if (Message.Contains("Measured Current")) return true;
             else return false;
         }
         public static bool HasCurrentRefs_Register(string Message)
         {
-            if (Message != null)
-            {
-                if (Message.Contains("MEASURE REGISTER")) return true;
-                else return false;
-            }
+            if (Message.Contains("MEASURE REGISTER")) return true;
             else return false;
         }
         public static bool HasCurrentRefs_Command(string Message)
         {
-            if (Message != null)
-            {
-                if (Message.Contains("Measure Current")) return true;
-                else return false;
-            }
+            if (Message.Contains("Measure Current")) return true;
             else return false;
         }
+
         public void ClearLogs(object sender, EventArgs e)
         {
             ClearTextboxes();
