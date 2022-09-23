@@ -311,12 +311,12 @@
                                 <Separator Width="20" Background="Transparent"/>
                                 <CheckBox Content="Toggle Tab On Error" IsChecked="true" x:Name="ToggleTab_Status"/>
                             </StackPanel>
-                            <RichTextBox x:Name="Status" Height="200" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
+                            <RichTextBox x:Name="Status" Height="150" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                         </DockPanel>
                         <DockPanel Grid.Row="2" LastChildFill="True">
                             <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">RegistersTextBox:</Label>
                             <CheckBox DockPanel.Dock="Top" Content="AutoScroll" IsChecked="true" Name="AutoScroll_Register"/>
-                            <RichTextBox x:Name="RegistersTextBox" Height="200" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
+                            <RichTextBox x:Name="RegistersTextBox" Height="150" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
                         </DockPanel>
                         <StackPanel Grid.Row="3" HorizontalAlignment="Center">
                             <Separator Height="10" Background="Transparent"/>
