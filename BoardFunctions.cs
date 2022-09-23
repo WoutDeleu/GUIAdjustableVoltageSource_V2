@@ -107,7 +107,8 @@ namespace AdjustableVoltageSource
                     FilterInput(input);
 					if (input != null)
 					{
-						string voltage = ExtractInput(input).Replace(".", ",");
+						string voltage = "";
+                        if (input != "" && input.Contains("Measured voltage")) voltage = ExtractInput(input).Replace(".", ",");
 						if (double.TryParse(voltage, out double voltage_out))
 						{
 							StatusBox_Status = "Measured Voltage: " + voltage_out;
@@ -144,7 +145,7 @@ namespace AdjustableVoltageSource
 			}
             FilterInput(input);
             string current = "";
-            if (input != "") current = ExtractInput(input).Replace(".", ",");
+            if (input != "" && input.Contains("Measured current")) current = ExtractInput(input).Replace(".", ",");
             if (double.TryParse(current, out double current_out))
             {
                 StatusBox_Status = "Measured Current: " + current_out;
