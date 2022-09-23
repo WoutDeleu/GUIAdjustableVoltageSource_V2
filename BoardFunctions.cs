@@ -108,7 +108,7 @@ namespace AdjustableVoltageSource
 					if (input != null)
 					{
 						string voltage = "";
-                        if (input != "" && input.Contains("Measured Voltage")) voltage = ExtractInput(input).Replace(".", ",");
+                        if (input != "" && input.Contains("Measured voltage")) voltage = ExtractInput(input).Replace(".", ",");
 						if (double.TryParse(voltage, out double voltage_out))
 						{
 							StatusBox_Status = "Measured Voltage: " + voltage_out;
